@@ -924,6 +924,12 @@
                 // Alternar color de fondo por día
                 currentColorClass = (index % 2 === 0) ? 'date-group-odd' : 'date-group-even';
 
+                // ====================================================================
+                // CONVERSIÓN DE FECHA YYYY-MM-DD a DD-MM-YYYY
+                const parts = dayData.date.split('-'); // [YYYY, MM, DD]
+                const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // DD-MM-YYYY
+                // ====================================================================
+
                 // Construir el desglose de tipos (muestra cada tipo y su subtotal)
                 let typeBreakdown = '';
                 // Ordenar los tipos alfabéticamente para consistencia
@@ -940,7 +946,7 @@
 
                 html += `
                     <tr class="${currentColorClass}">
-                        <td style="font-weight: bold; font-size: 1.1em;">${dayData.date}</td>
+                        <td style="font-weight: bold; font-size: 1.1em;">${formattedDate}</td>
                         <td style="font-weight: bold; color: #007bff; font-size: 1.1em; text-align: right;">${formatoMoneda(dayData.total)}</td>
                         <td style="font-size: 0.9em;">${typeBreakdown}</td>
                     </tr>
