@@ -69,6 +69,9 @@
             justify-content: space-between;
             gap: 10px;
             margin-bottom: 20px;
+            /* TRES COLUMNAS */
+            grid-template-columns: repeat(3, 1fr);
+            display: grid; 
         }
 
         /* ESTILO UNIFICADO PARA BOTONES Y EL NUEVO ENLACE */
@@ -123,6 +126,7 @@
             border: 1px solid #007bff; 
             border-radius: 5px; 
             background-color: #e6f0ff;
+            margin-bottom: 15px; /* Espacio extra para separarlo del desglose esperado */
         }
         
         .update-info-container {
@@ -145,7 +149,28 @@
             margin-bottom: 20px; /* Espacio debajo del botón de comparar */
         }
         
-        /* --------------------- ESTILOS DEL DESGLOSE FINAL --------------------- */
+        /* --------------------- ESTILOS DEL DESGLOSE ESPERADO --------------------- */
+        #desglose-esperado table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        #desglose-esperado th, #desglose-esperado td {
+            border: 1px solid #eee;
+            padding: 6px;
+        }
+        #desglose-esperado th {
+            background-color: #f2f2f2;
+            color: #007bff;
+            text-align: left;
+        }
+        #desglose-esperado td:last-child {
+            text-align: right;
+            font-weight: bold;
+        }
+        /* ------------------- FIN ESTILOS DEL DESGLOSE ESPERADO ------------------- */
+        
+        /* --------------------- ESTILOS DEL DESGLOSE CONTADO --------------------- */
         #desglose-contado table {
             width: 100%;
             border-collapse: collapse;
@@ -175,7 +200,7 @@
             padding-top: 10px;
             border-top: 2px solid #007bff;
         }
-        /* ------------------- FIN ESTILOS DEL DESGLOSE FINAL ------------------- */
+        /* ------------------- FIN ESTILOS DEL DESGLOSE CONTADO ------------------- */
 
 
         /* --------------------- MODAL STYLES (Conteo) --------------------- */
@@ -279,7 +304,7 @@
         }
 
         .total-display input.cantidad-input {
-            width: 55px; /* MODIFICADO: Aumentado a 55px para 3-4 cifras */
+            width: 55px; /* Ajuste para 3-4 cifras */
             padding: 3px;
             border: 1px solid #007bff; 
             border-radius: 4px;
@@ -391,6 +416,40 @@
         #import-file {
             display: none; /* Oculta el input de archivo por defecto */
         }
+        
+        /* ------------------- NUEVOS ESTILOS PARA EL MODAL HISTORIAL ------------------- */
+        #historyModal .modal-content {
+             max-width: 900px; /* Ancho suficiente para la tabla de historial */
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top; /* Importante para el desglose */
+        }
+        .history-table th {
+            background-color: #e9e9e9;
+            color: #333;
+            font-weight: bold;
+        }
+        .history-table td:nth-child(2) { /* Columna de TOTAL */
+            text-align: right;
+        }
+        
+        /* >>>>>>>>>>>>>>>>>> ESTILOS AÑADIDOS PARA EL SOMBREADO POR FECHA <<<<<<<<<<<<<<<<< */
+        .history-table .date-group-odd {
+            background-color: #f0f0f0; /* Gris muy claro */
+        }
+        .history-table .date-group-even {
+            background-color: #ffffff; /* Fondo blanco */
+        }
+        /* ------------------- FIN NUEVOS ESTILOS PARA EL MODAL HISTORIAL ------------------- */
     </style>
 </head>
 <body>
@@ -405,10 +464,10 @@
             <button onclick="abrirModalDetalle()" style="background-color: #6c757d; color: white;">
                 📜 Ver Detalle de Movimientos
             </button>
-            <a href="https://diario-propi.vercel.app" target="_blank" style="background-color: #f0ad4e; color: white;">
-                📊 Recaudaciones
-            </a>
-        </div>
+            <button onclick="openHistoryModal()" style="background-color: #17a2b8; color: white;">
+                📋 Ver Historial Apps Script
+            </button>
+            </div>
         
         <div class="main-layout">
             
@@ -428,6 +487,14 @@
                             <strong>Último Divisor:</strong> 
                             <span class="divisor-value-display" id="divisor-value" style="color:#007bff; font-weight: bold;">1.00</span>
                         </p>
+                    </div>
+                    <div id="desglose-esperado-container">
+                        <h3 style="margin: 10px 0 5px 0; color: #333; font-size: 1.1em; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                            Detalle de Recaudaciones Esperadas
+                        </h3>
+                        <div id="desglose-esperado">
+                            <p style="text-align: center; color: #666;">Esperando datos del servidor...</p>
+                        </div>
                     </div>
                     <div class="update-info-container">
                         <small id="update-status" style="display: block; color: #007bff;">Valor cargado automáticamente desde el Apps Script.</small>
@@ -509,7 +576,7 @@
         <div class="modal-content">
             <span class="close" onclick="cerrarModalEdicionDetalle()">&times;</span>
             <h2 id="edicion-detalle-titulo">✏️ Editar Movimientos de [Denominación]</h2>
-            <p>Edita la cantidad y el signo (+/-) de cada movimiento. Solo se permiten números enteros y los signos `+` o `-`.</p>
+            <p>Edita la cantidad y el signo (+/-) de cada movimiento. Solo se permiten números enteros y los signos `+` o ` -`.</p>
             
             <ul id="movimientos-edicion">
                 </ul>
@@ -519,6 +586,7 @@
             </button>
         </div>
     </div>
+    
     <div id="modalDetalle" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModalDetalle()">&times;</span>
@@ -530,7 +598,16 @@
             </button>
         </div>
     </div>
-
+    
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeHistoryModal()">&times;</span>
+            <h2>📋 Historial Detallado (Apps Script)</h2>
+            <div id="historyContainer">
+                <p style="text-align: center; color: #666;"><i class="fas fa-spinner fa-spin"></i> Solicitando datos al servidor...</p>
+            </div>
+        </div>
+    </div>
     <script>
         /* ---------------------------------------------------- */
         /* JavaScript: Lógica, Suma Acumulativa, Fetch y Storage*/
@@ -538,10 +615,9 @@
 
         // ** REEMPLAZA ESTA URL CON TU URL DE IMPLEMENTACIÓN DEL APPS SCRIPT **
         // DEBE SER LA URL DE IMPLEMENTACIÓN, NO LA DE PRUEBA (termina en /exec)
+        // AHORA SE ESPERA UN OBJETO JSON COMO RESPUESTA
         const ESPERADO_URL = 'https://script.google.com/macros/s/AKfycbz_kCb4aEe437zHGbRqnjCibw1NtAqfCbTNmsVPn9jaZOPBFaZ6-FwmiTLqVxq39X1P/exec'; // <--- ¡ACTUALIZA ESTO!
         
-        // ** CONFIGURACIÓN DE ACTUALIZACIÓN AUTOMÁTICA **
-        // El intervalo automático ha sido eliminado. La actualización es manual (con el botón).
         const FETCH_TIMEOUT_MS = 10000; // Timeout de 10 segundos
 
         // 1. Definir las denominaciones de Chile
@@ -566,6 +642,7 @@
         const listaMovimientosUl = document.getElementById('lista-movimientos');
         const esperadoDisplay = document.getElementById('esperadoDisplay'); 
         const updateStatusSpan = document.getElementById('update-status'); 
+        const desgloseEsperadoDiv = document.getElementById('desglose-esperado'); // NUEVO
         
         // Nuevos elementos DOM para el Divisor/Total Día:
         const divisorDayTotalSpan = document.getElementById('divisor-day-total');
@@ -575,6 +652,8 @@
         const modalConteo = document.getElementById('modalConteo'); 
         const modalDetalle = document.getElementById('modalDetalle'); 
         const modalEdicionDetalle = document.getElementById('modalEdicionDetalle'); 
+        const historyModal = document.getElementById('historyModal'); // NUEVO MODAL
+        const historyContainer = document.getElementById('historyContainer'); // CONTENEDOR DE LA TABLA HISTORIAL
         const undoBtn = document.getElementById('undo-btn');
         const redoBtn = document.getElementById('redo-btn');
 
@@ -610,6 +689,7 @@
             divisorDayTotalSpan.textContent = '...';
             divisorValueSpan.textContent = '...';
             divisorDateSpan.textContent = 'Fecha: ...';
+            desgloseEsperadoDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando desglose...';
             updateStatusSpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando con Google Sheets...';
 
             const controller = new AbortController();
@@ -624,32 +704,40 @@
                     throw new Error(`Error HTTP: ${response.status} (${response.statusText})`);
                 }
                 
-                const textData = await response.text();
+                // 2. PROCESAMIENTO DE DATOS: AHORA ESPERAMOS JSON
+                const data = await response.json(); 
                 
-                // 2. PROCESAMIENTO DE DATOS: (El Apps Script devuelve: TotalAcumuladoInflado,LastDivisorValue,TotalLastDivisorDayInflado,LastDivisorDateString)
-                const dataArray = textData.split(',');
-                
-                if (dataArray.length < 4 || textData.includes('Error')) { // Asegura que se reciben los 4 valores
-                    throw new Error(`Datos no válidos o error en Apps Script: ${textData.substring(0, 50)}`);
+                if (!data.totalAcumulado || !data.lastDivisor || !data.desgloseEsperado) {
+                    throw new Error(`Datos no válidos o estructura JSON incorrecta: ${JSON.stringify(data).substring(0, 50)}`);
                 }
 
-                // 3. DESEMPAQUETAR Y CONVERTIR LOS 4 VALORES
-                const totalAcumuladoInflado = parseInt(dataArray[0].trim()) || 0; 
-                const lastDivisorValue = parseFloat(dataArray[1].trim()) || 1.0; 
-                const totalLastDivisorDayInflado = parseInt(dataArray[2].trim()) || 0; 
-                const lastDivisorDateString = dataArray[3].trim();
+                // 3. DESEMPAQUETAR Y CORREGIR LOS VALORES (dividir por 100 si vienen inflados)
+                const totalAcumuladoInflado = data.totalAcumulado;
+                const lastDivisorValue = data.lastDivisor; 
+                const totalLastDivisorDayInflado = data.totalLastDivisorDay; 
+                const lastDivisorDateString = data.lastDivisorDate;
+                const desgloseEsperadoRaw = data.desgloseEsperado;
 
-                // 4. CORRECCIÓN: Dividir por 100 para obtener los valores en CLP
+                // CORRECCIÓN: Dividir por 100
                 const expectedValue = totalAcumuladoInflado / 100;
                 const totalLastDivisorDay = totalLastDivisorDayInflado / 100;
+                
+                // Corregir montos del desglose
+                const desgloseEsperado = desgloseEsperadoRaw.map(item => ({
+                    tipo: item.tipo,
+                    monto: item.monto / 100 
+                }));
 
-                // 5. ACTUALIZAR PANTALLA
+
+                // 4. ACTUALIZAR PANTALLA
                 esperadoDisplay.textContent = formatoMoneda(expectedValue); // Total Efectivo Esperado
                 
                 divisorDayTotalSpan.textContent = formatoMoneda(totalLastDivisorDay); // Total Día del último registro
                 divisorValueSpan.textContent = lastDivisorValue.toFixed(2); // Valor del Divisor
                 divisorDateSpan.textContent = `Fecha: ${lastDivisorDateString}`; // Fecha del Divisor
                 
+                mostrarDesgloseEsperado(desgloseEsperado); // Mostrar el nuevo desglose
+
                 const now = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 updateStatusSpan.innerHTML = `Última actualización: <strong>${now}</strong> (Manual)`;
 
@@ -663,23 +751,211 @@
                     errorMessage = "Tiempo de espera agotado (Timeout). Verifica si el script está ejecutándose lento o la conexión.";
                 } else if (error.message.includes('Failed to fetch') || error.message.includes('network error')) {
                     errorMessage = "Error de red/CORS. Asegúrate que la URL es **correcta** y el Apps Script permite acceso a **'Cualquier persona'**.";
+                } else if (error instanceof SyntaxError) {
+                    errorMessage = `Error al procesar la respuesta (JSON inválido). Revise que su Apps Script devuelve JSON. Detalles: ${error.message}`;
                 } else {
                     errorMessage = `Fallo interno del script: ${error.message}`;
                 }
 
                 console.error("Error al obtener el Efectivo Esperado desde el Apps Script:", error);
                 
-                // Muestra el error en la interfaz y resetea los valores del divisor
+                // Muestra el error en la interfaz y resetea los valores
                 esperadoDisplay.textContent = formatoMoneda(0); 
                 divisorDayTotalSpan.textContent = formatoMoneda(0);
                 divisorValueSpan.textContent = '1.00';
                 divisorDateSpan.textContent = 'Fecha: N/A';
+                desgloseEsperadoDiv.innerHTML = '<p style="text-align: center; color: #d9534f; font-weight: bold;">Error al cargar el desglose.</p>';
                 updateStatusSpan.innerHTML = `<span style="color:#d9534f;">Error de conexión: ${errorMessage}</span>`;
                 mensajeArqueoP.textContent = "🚨 ERROR AL CARGAR DATOS DEL SERVIDOR. Revisa la consola para más detalles.";
                 mensajeArqueoP.classList.add('error-fetch');
             }
         }
         
+        // --- FUNCIÓN PARA MOSTRAR EL NUEVO DESGLOSE ESPERADO ---
+        function mostrarDesgloseEsperado(data) {
+            if (!data || data.length === 0) {
+                desgloseEsperadoDiv.innerHTML = '<p style="text-align: center; color: #666;">No hay desglose disponible.</p>';
+                return;
+            }
+            
+            let totalDesglose = 0;
+            // >>> CÓDIGO AÑADIDO: Inicializar variable para la suma específica <<<
+            let totalMaquinasMesas = 0; 
+            // >>> FIN CÓDIGO AÑADIDO <<<
+            
+            let html = '<table>';
+            html += '<thead><tr><th>Tipo Recaudación</th><th>Monto Esperado</th></tr></thead>';
+            html += '<tbody>';
+            
+            data.forEach(item => {
+                html += `
+                    <tr>
+                        <td>${item.tipo}</td>
+                        <td>${formatoMoneda(item.monto)}</td>
+                    </tr>
+                `;
+                totalDesglose += item.monto;
+                
+                // >>> CÓDIGO AÑADIDO: Sumar si el tipo es 'Máquinas' o 'Mesas' <<<
+                // Se utiliza .toLowerCase() y .includes() para capturar variantes ('máquina', 'maquina', 'Maquinas', 'Mesas', etc.)
+                const tipoLower = item.tipo.toLowerCase();
+                if (tipoLower.includes('máquina') || tipoLower.includes('maquina') || tipoLower.includes('mesa')) {
+                    totalMaquinasMesas += item.monto;
+                }
+                // >>> FIN CÓDIGO AÑADIDO <<<
+            });
+            
+            html += '</tbody>';
+            html += '<tfoot>';
+            
+            // >>> CÓDIGO AÑADIDO: Fila con el total de Máquinas y Mesas <<<
+            html += `
+                <tr style="border-top: 1px dashed #007bff;">
+                    <td style="font-weight: bold; color: #6c757d;">TOTAL MÁQUINAS Y MESAS</td>
+                    <td style="font-weight: bold; color: #6c757d;">${formatoMoneda(totalMaquinasMesas)}</td>
+                </tr>
+            `;
+            // >>> FIN CÓDIGO AÑADIDO <<<
+            
+            html += `
+                <tr style="border-top: 2px solid #007bff;">
+                    <td style="font-weight: bold;">TOTAL ESPERADO (Suma General)</td>
+                    <td style="font-weight: bold; color: #007bff;">${formatoMoneda(totalDesglose)}</td>
+                </tr>
+            `;
+            html += '</tfoot></table>';
+            
+            desgloseEsperadoDiv.innerHTML = html;
+        }
+        
+        // ----------------------------------------------------------------------------------
+        // --- FUNCIONES PARA EL HISTORIAL DETALLADO (action=get) ---
+        // ----------------------------------------------------------------------------------
+
+        /**
+         * Abre el modal y carga el historial detallado.
+         */
+        async function openHistoryModal() {
+            historyModal.style.display = 'block';
+            await fetchHistorialDetallado();
+        }
+
+        /**
+         * Cierra el modal de historial.
+         */
+        function closeHistoryModal() {
+            historyModal.style.display = 'none';
+        }
+
+        /**
+         * Solicita el historial completo de recaudaciones (fecha, tipo, monto) del Apps Script.
+         */
+        async function fetchHistorialDetallado() {
+            const HISTORIAL_URL = `${ESPERADO_URL}?action=get`;
+            historyContainer.innerHTML = '<p style="text-align: center; color: #666;"><i class="fas fa-spinner fa-spin"></i> Solicitando datos al servidor...</p>';
+            
+            try {
+                const response = await fetch(HISTORIAL_URL);
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                
+                const result = await response.json();
+                
+                if (result.status === 'success' && Array.isArray(result.data)) {
+                    renderHistoryTable(result.data, historyContainer);
+                } else {
+                    historyContainer.innerHTML = `<p class="error-fetch">Error: ${result.message || 'Respuesta no exitosa o formato incorrecto.'}</p>`;
+                }
+            } catch (error) {
+                historyContainer.innerHTML = `<p class="error-fetch">Error al obtener el historial detallado: ${error.message}</p>`;
+                console.error("Error al obtener el historial detallado:", error);
+            }
+        }
+
+        /**
+         * Renderiza la tabla de historial en el contenedor, agrupando por fecha y mostrando el total y desglose por tipo.
+         * @param {Array} historial Array de registros.
+         * @param {HTMLElement} container Elemento donde insertar la tabla.
+         */
+        function renderHistoryTable(historial, container) {
+            if (historial.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">No hay registros de recaudaciones detallados en la hoja "Datos".</p>';
+                return;
+            }
+
+            // 1. Agrupar y sumar por fecha y tipo
+            const dailySummary = {};
+
+            historial.forEach(registro => {
+                // Extraer solo la fecha (YYYY-MM-DD)
+                const dateKey = registro.fecha.split(' ')[0];
+                const monto = registro.monto;
+                const tipo = registro.tipo || 'Sin Tipo';
+
+                if (!dailySummary[dateKey]) {
+                    dailySummary[dateKey] = {
+                        date: dateKey,
+                        total: 0,
+                        types: {}
+                    };
+                }
+
+                dailySummary[dateKey].total += monto;
+
+                // Sumar por tipo
+                if (!dailySummary[dateKey].types[tipo]) {
+                    dailySummary[dateKey].types[tipo] = 0;
+                }
+                dailySummary[dateKey].types[tipo] += monto;
+            });
+
+            // 2. Convertir a array y ordenar por fecha (más reciente a más antigua)
+            const summaryArray = Object.values(dailySummary).sort((a, b) => {
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+            });
+
+            // 3. Renderizar la tabla resumida
+            let html = '<table class="history-table">';
+            html += '<thead><tr><th>Fecha</th><th>TOTAL RECAUDADO DEL DÍA</th><th>Desglose por Tipo de Entrada</th></tr></thead>';
+            html += '<tbody>';
+
+            let currentColorClass = 'date-group-odd';
+
+            summaryArray.forEach((dayData, index) => {
+                // Alternar color de fondo por día
+                currentColorClass = (index % 2 === 0) ? 'date-group-odd' : 'date-group-even';
+
+                // Construir el desglose de tipos (muestra cada tipo y su subtotal)
+                let typeBreakdown = '';
+                // Ordenar los tipos alfabéticamente para consistencia
+                const sortedTypes = Object.entries(dayData.types).sort(([tipoA], [tipoB]) => tipoA.localeCompare(tipoB));
+                
+                sortedTypes.forEach(([tipo, monto]) => {
+                    typeBreakdown += `<p style="margin: 0; font-size: 0.9em;"><strong>${tipo}:</strong> ${formatoMoneda(monto)}</p>`;
+                });
+                
+                // Si no hay desglose (lo cual es raro si hay total, pero por seguridad)
+                if (typeBreakdown === '') {
+                    typeBreakdown = '<p style="margin: 0; font-style: italic; color: #666;">Sin desglose disponible.</p>';
+                }
+
+                html += `
+                    <tr class="${currentColorClass}">
+                        <td style="font-weight: bold; font-size: 1.1em;">${dayData.date}</td>
+                        <td style="font-weight: bold; color: #007bff; font-size: 1.1em; text-align: right;">${formatoMoneda(dayData.total)}</td>
+                        <td style="font-size: 0.9em;">${typeBreakdown}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // ----------------------------------------------------------------------------------
+        // --- FIN NUEVAS FUNCIONES DE HISTORIAL DETALLADO ---
+        // ----------------------------------------------------------------------------------
+
+
         // --- Funciones de Historial (Deshacer/Rehacer) ---
         function guardarEstado(nuevoConteo, nuevoDetalle, nuevoTotalRetirado, nuevoMovimientoDisplay) {
             if (historyIndex < history.length - 1) {
@@ -1254,6 +1530,9 @@
             }
             if (event.target == modalEdicionDetalle) {
                 cerrarModalEdicionDetalle();
+            }
+            if (event.target == historyModal) { // CERRAR NUEVO MODAL
+                closeHistoryModal();
             }
         }
 
