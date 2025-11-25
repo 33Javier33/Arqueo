@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Arqueo de Caja (Con Datos Externos) (CLP)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <style>
+        /* ---------------------------------------------------- */
+        /* CSS: Estilos principales y Modal (CON SCROLL EN DETALLE) */
+        /* ---------------------------------------------------- */
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 650px;
+            width: 100%;
+        }
+
+        h1, h2 {
+            color: #007bff;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Contenedor de botones principales */
+        .main-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .main-actions button {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        
+        /* Grupo de efectivo esperado y botón principal */
+        .input-group {
+            margin: 15px 0;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* ESTILO PARA EL DATO NO EDITABLE */
+        #esperadoDisplay {
+            display: block;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 1.1em;
+            text-align: right;
+            box-sizing: border-box;
+            background-color: #f8f8f8; 
+            color: #007bff; 
+        }
+        
+        .update-info-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        button.compare-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        /* --------------------- ESTILOS DEL DESGLOSE FINAL --------------------- */
+        #desglose-contado table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            border: 1px solid #ddd; 
+        }
+
+        #desglose-contado th, #desglose-contado td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+        }
+        
+        #desglose-contado th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        #desglose-contado td:first-child {
+            text-align: left; 
+        }
+        
+        .total-summary {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #007bff;
+        }
+        /* ------------------- FIN ESTILOS DEL DESGLOSE FINAL ------------------- */
+
+
+        /* --------------------- MODAL STYLES (Conteo) --------------------- */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%; 
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        /* Estilos dentro del modal de conteo - Alineación (Flexbox) */
+        .denominacion-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dotted #ccc;
+            width: 100%; 
+            gap: 5px; 
+        }
+        
+        .denominacion-row label {
+            font-weight: bold;
+            flex-basis: 35%; 
+            flex-shrink: 0;
+            font-size: 0.9em; 
+        }
+        
+        #arqueo-form input[type="number"]:not(.cantidad-input) {
+            width: 40px; 
+            padding: 5px 3px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 3px; 
+            flex-shrink: 0;
+        }
+
+        .denominacion-row button {
+            width: 30px; 
+            padding: 5px 0;
+            font-size: 0.8em; 
+            margin-top: 0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn-add { background-color: #28a745; }
+        .btn-retire { background-color: #d9534f; }
+        .btn-edit-detalle { 
+            background-color: #007bff; 
+            width: 25px; 
+            margin-left: 5px;
+        }
+
+        .total-display {
+            flex-grow: 1; 
+            max-width: 140px; 
+            text-align: right;
+            font-weight: bold;
+            color: #28a745;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-left: auto; 
+        }
+
+        .total-display input.cantidad-input {
+            width: 35px; 
+            padding: 3px;
+            border: 1px solid #007bff; 
+            border-radius: 4px;
+            text-align: right;
+            font-size: 0.8em; 
+            color: #007bff;
+            font-weight: bold;
+            box-sizing: border-box;
+            margin-bottom: 2px;
+        }
+        
+        .cantidad-controls-wrapper {
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end;
+            width: 100%;
+            gap: 3px; 
+        }
+
+        .total-display .cantidad-total-moneda {
+            font-size: 0.8em; 
+            color: #333;
+            margin-top: 3px;
+        }
+        
+        .total-display .detalle-movimiento {
+            /* AJUSTE CLAVE PARA MOSTRAR TODO EL TEXTO SIN SALIRSE DEL MODAL */
+            overflow-x: auto; /* Permite desplazamiento horizontal */
+            white-space: nowrap; /* Mantiene todo en una línea */
+            
+            max-width: 100%; /* El campo usa todo el espacio disponible */
+            padding-right: 3px; /* Pequeño padding para que el scroll no choque con el borde */
+            
+            font-size: 0.7em; 
+            font-weight: normal;
+            color: #666;
+            margin-top: 2px;
+            text-align: right; 
+        }
+        /* ------------------- FIN ESTILOS MODAL CONTEO ------------------- */
+
+        /* Estilos específicos para el nuevo modal de edición detallada */
+        #movimientos-edicion {
+            list-style: none;
+            padding: 0;
+        }
+        #movimientos-edicion li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        #movimientos-edicion li input {
+            width: 100%;
+            padding: 5px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            text-align: right;
+            margin-left: 10px;
+        }
+
+        /* Controles de Deshacer/Rehacer */
+        #history-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        
+        #history-controls button:disabled {
+            background-color: #ccc !important;
+            cursor: not-allowed;
+        }
+
+        /* Resultados y Desglose */
+        .mensaje.cuadrado { background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px;}
+        .mensaje.sobrante { background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px;}
+        .mensaje.faltante { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px;}
+        .error-fetch { background-color: #d9534f; color: white; padding: 10px; border-radius: 5px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>💰 Arqueo de Caja (CLP)</h1>
+        
+        <div class="main-actions">
+            <button onclick="abrirModalConteo()" style="background-color: #007bff; color: white;">
+                💸 Ingresar/Retirar Efectivo
+            </button>
+            <button onclick="abrirModalDetalle()" style="background-color: #6c757d; color: white;">
+                📜 Ver Detalle de Movimientos
+            </button>
+        </div>
+        
+        <div class="input-group">
+            <label for="esperadoDisplay">Total Efectivo **Esperado** (CLP):</label>
+            <strong id="esperadoDisplay">Cargando...</strong>
+            
+            <div class="update-info-container">
+                <small id="update-status" style="display: block; color: #007bff;">Valor cargado automáticamente desde el Apps Script.</small>
+                <button onclick="fetchEsperadoData()" style="padding: 5px 10px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <button class="compare-button" onclick="realizarArqueo()">Realizar Arqueo y Comparar</button>
+
+        <div id="resultados">
+            <h2>Resultados del Conteo Total:</h2>
+            <div id="desglose-contado"></div>
+            
+            <div class="total-summary">
+                <p>
+                    <strong>TOTAL ACUMULADO CONTADO:</strong> 
+                    <span id="total-contado-final" style="color:#28a745;">$0</span>
+                </p>
+                <p>
+                    <strong>TOTAL RETIRADO (Egresos):</strong> 
+                    <span id="total-retiros-final">$0</span>
+                </p>
+            </div>
+        </div>
+
+        <div id="comparacion">
+            <h2>Análisis del Arqueo:</h2>
+            <p><strong>TotalEgresos (Contado - Esperado):</strong> <span id="diferencia">$0</span></p>
+            <p id="mensaje-arqueo" class="mensaje"></p>
+        </div>
+    </div>
+    
+    <div id="modalConteo" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalConteo()">&times;</span>
+            <h2>💸 Gestión de Efectivo</h2>
+            <p>
+                Puedes usar **+** o **-** para movimientos incrementales, **escribir directamente la cantidad total**, o usar **...** para editar el historial de movimientos.
+            </p>
+            
+            <div id="history-controls">
+                <button id="undo-btn" onclick="undoAction()" style="background-color: #ffc107; color: #333;" disabled>
+                    ↩️ Deshacer Última Acción
+                </button>
+                <button id="redo-btn" onclick="redoAction()" style="background-color: #17a2b8; color: white;" disabled>
+                    ↪️ Rehacer
+                </button>
+            </div>
+            
+            <div id="arqueo-form">
+                </div>
+            
+            <button onclick="cerrarModalConteo(true)" style="background-color: #007bff; color: white; width: 100%; margin-top: 20px;">
+                Guardar Cambios y Cerrar Gestión
+            </button>
+        </div>
+    </div>
+
+    <div id="modalEdicionDetalle" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalEdicionDetalle()">&times;</span>
+            <h2 id="edicion-detalle-titulo">✏️ Editar Movimientos de [Denominación]</h2>
+            <p>Edita la cantidad y el signo (+/-) de cada movimiento. Solo se permiten números enteros y los signos `+` o `-`.</p>
+            
+            <ul id="movimientos-edicion">
+                </ul>
+
+            <button onclick="guardarEdicionDetalle()" style="background-color: #28a745; color: white; width: 100%; margin-top: 20px;">
+                Guardar Correcciones
+            </button>
+        </div>
+    </div>
+    <div id="modalDetalle" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalDetalle()">&times;</span>
+            <h2>📜 Detalle de Ingresos y Retiros</h2>
+            <ul id="lista-movimientos"></ul>
+            
+            <button onclick="limpiarRegistros()" style="background-color: #d9534f; color: white; width: 100%; margin-top: 20px;">
+                🗑️ Reiniciar Conteo y Detalle
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* ---------------------------------------------------- */
+        /* JavaScript: Lógica, Suma Acumulativa, Fetch y Storage*/
+        /* ---------------------------------------------------- */
+
+        // ** REEMPLAZA ESTA URL CON TU URL DE IMPLEMENTACIÓN DEL APPS SCRIPT **
+        // DEBE SER LA URL DE IMPLEMENTACIÓN, NO LA DE PRUEBA (termina en /exec)
+        const ESPERADO_URL = 'https://script.google.com/macros/s/AKfycbz_kCb4aEe437zHGbRqnjCibw1NtAqfCbTNmsVPn9jaZOPBFaZ6-FwmiTLqVxq39X1P/exec'; // <--- ¡ACTUALIZA ESTO!
+        
+        // ** CONFIGURACIÓN DE ACTUALIZACIÓN AUTOMÁTICA (30 segundos) **
+        const INTERVALO_ACTUALIZACION = 30000; 
+        const FETCH_TIMEOUT_MS = 10000; // Timeout de 10 segundos
+
+        // 1. Definir las denominaciones de Chile
+        const DENOMINACIONES = [
+            20000, 10000, 5000, 2000, 1000, // Billetes
+            500, 100, 50, 10 // Monedas
+        ];
+
+        // Claves de localStorage
+        const STORAGE_KEY_CONTEO = 'arqueoConteoCLP';
+        const STORAGE_KEY_DETALLE = 'arqueoDetalleCLP';
+        const STORAGE_KEY_RETIROS = 'arqueoRetirosCLP'; 
+        const STORAGE_KEY_HISTORY = 'arqueoHistoryCLP';
+
+        // Elementos del DOM
+        const contenedorForm = document.getElementById('arqueo-form');
+        const totalContadoFinalSpan = document.getElementById('total-contado-final');
+        const totalRetirosFinalSpan = document.getElementById('total-retiros-final');
+        const desgloseContadoDiv = document.getElementById('desglose-contado');
+        const diferenciaSpan = document.getElementById('diferencia');
+        const mensajeArqueoP = document.getElementById('mensaje-arqueo');
+        const listaMovimientosUl = document.getElementById('lista-movimientos');
+        const esperadoDisplay = document.getElementById('esperadoDisplay'); 
+        const updateStatusSpan = document.getElementById('update-status'); 
+        
+        const modalConteo = document.getElementById('modalConteo'); 
+        const modalDetalle = document.getElementById('modalDetalle'); 
+        const modalEdicionDetalle = document.getElementById('modalEdicionDetalle'); 
+        const undoBtn = document.getElementById('undo-btn');
+        const redoBtn = document.getElementById('redo-btn');
+
+        // Estado del Conteo
+        let conteoActual = {}; 
+        let detalleMovimientos = []; 
+        let totalRetirado = 0; 
+        let movimientoDisplay = {}; 
+
+        // Historial de Estados para Deshacer/Rehacer
+        let history = [];
+        let historyIndex = -1;
+        
+        // Estado temporal para la edición detallada
+        let denominacionEnEdicion = null; 
+
+        // Función para formatear números como moneda chilena
+        function formatoMoneda(numero) {
+            return new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+                minimumFractionDigits: 0
+            }).format(Math.round(numero));
+        }
+
+        // --- Funciones de Fetch para el Esperado ---
+        async function fetchEsperadoData() {
+            // Limpia mensajes anteriores
+            mensajeArqueoP.classList.remove('error-fetch');
+            mensajeArqueoP.textContent = '';
+            
+            esperadoDisplay.textContent = 'Actualizando...';
+            updateStatusSpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando con Google Sheets...';
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+            try {
+                // 1. INTENTO DE FETCH
+                const response = await fetch(ESPERADO_URL, { signal: controller.signal });
+                clearTimeout(timeoutId); // Limpiar el timeout si la respuesta llega a tiempo
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status} (${response.statusText})`);
+                }
+                
+                const textData = await response.text();
+                
+                // 2. PROCESAMIENTO DE DATOS (El Apps Script devuelve la cadena "EsperadoInflado,TotalDiaInflado,Divisor")
+                const dataArray = textData.split(',');
+                
+                if (dataArray.length < 1 || textData.includes('Error')) {
+                    throw new Error(`Datos no válidos o error en Apps Script: ${textData.substring(0, 50)}`);
+                }
+
+                // El primer elemento es el Total Esperado, inflado x100.
+                const expectedValueInflated = parseInt(dataArray[0].trim()) || 0; 
+                
+                // 3. CORRECCIÓN: Dividir por 100 para obtener el valor en CLP (sin centavos)
+                const expectedValue = expectedValueInflated / 100;
+                
+                const valorFormateado = formatoMoneda(expectedValue);
+                
+                esperadoDisplay.textContent = valorFormateado; 
+                
+                const now = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                updateStatusSpan.innerHTML = `Última actualización: <strong>${now}</strong> (Automática)`;
+
+                realizarArqueo();
+
+            } catch (error) {
+                clearTimeout(timeoutId); // Asegurarse de limpiar si el error ocurre antes del timeout
+
+                let errorMessage;
+                if (error.name === 'AbortError') {
+                    errorMessage = "Tiempo de espera agotado (Timeout). Verifica si el script está ejecutándose lento o la conexión.";
+                } else if (error.message.includes('Failed to fetch') || error.message.includes('network error')) {
+                    errorMessage = "Error de red/CORS. Asegúrate que la URL es **correcta** y el Apps Script permite acceso a **'Cualquier persona'**.";
+                } else {
+                    errorMessage = `Fallo interno del script: ${error.message}`;
+                }
+
+                console.error("Error al obtener el Efectivo Esperado desde el Apps Script:", error);
+                
+                // Muestra el error en la interfaz
+                esperadoDisplay.textContent = formatoMoneda(0); 
+                updateStatusSpan.innerHTML = `<span style="color:#d9534f;">Error de conexión: ${errorMessage}</span>`;
+                mensajeArqueoP.textContent = "🚨 ERROR AL CARGAR DATOS DEL SERVIDOR. Revisa la consola para más detalles.";
+                mensajeArqueoP.classList.add('error-fetch');
+            }
+        }
+        
+        // --- Funciones de Historial (Deshacer/Rehacer) ---
+        function guardarEstado(nuevoConteo, nuevoDetalle, nuevoTotalRetirado, nuevoMovimientoDisplay) {
+            if (historyIndex < history.length - 1) {
+                history = history.slice(0, historyIndex + 1);
+            }
+            
+            const nuevoEstado = {
+                conteo: JSON.parse(JSON.stringify(nuevoConteo)),
+                detalle: JSON.parse(JSON.stringify(nuevoDetalle)),
+                retiros: nuevoTotalRetirado, 
+                movimientoDisplay: JSON.parse(JSON.stringify(nuevoMovimientoDisplay))
+            };
+            
+            history.push(nuevoEstado);
+            historyIndex = history.length - 1;
+            
+            if (history.length > 20) {
+                history.shift();
+                historyIndex--;
+            }
+            
+            actualizarControlesHistoria();
+            guardarEstadoLocal();
+        }
+
+        function aplicarEstado(index) {
+            if (index >= 0 && index < history.length) {
+                const estado = history[index];
+                conteoActual = estado.conteo;
+                detalleMovimientos = estado.detalle;
+                totalRetirado = estado.retiros; 
+                movimientoDisplay = estado.movimientoDisplay || {};
+                historyIndex = index;
+                
+                guardarConteo();
+                guardarDetalle();
+                guardarRetiros();
+                generarCampos(); 
+                actualizarControlesHistoria();
+                realizarArqueo();
+            }
+        }
+        
+        function undoAction() {
+            if (historyIndex > 0) {
+                aplicarEstado(historyIndex - 1);
+            }
+        }
+
+        function redoAction() {
+            if (historyIndex < history.length - 1) {
+                aplicarEstado(historyIndex + 1);
+            }
+        }
+
+        function actualizarControlesHistoria() {
+            undoBtn.disabled = historyIndex <= 0;
+            redoBtn.disabled = historyIndex >= history.length - 1;
+        }
+
+        // --- Funciones de Guardado/Cargado ---
+        function cargarEstado() {
+            try {
+                const storedConteo = localStorage.getItem(STORAGE_KEY_CONTEO);
+                const storedDetalle = localStorage.getItem(STORAGE_KEY_DETALLE);
+                const storedRetiros = localStorage.getItem(STORAGE_KEY_RETIROS); 
+                const storedHistory = localStorage.getItem(STORAGE_KEY_HISTORY);
+                
+                conteoActual = storedConteo ? JSON.parse(storedConteo) : {};
+                detalleMovimientos = storedDetalle ? JSON.parse(storedDetalle) : [];
+                totalRetirado = storedRetiros ? parseInt(storedRetiros) : 0; 
+                movimientoDisplay = {}; 
+
+                if (storedHistory) {
+                    const h = JSON.parse(storedHistory);
+                    history = h.history;
+                    historyIndex = h.index;
+                    if (history.length > 0) {
+                        movimientoDisplay = history[historyIndex].movimientoDisplay || {};
+                    }
+                } else {
+                    guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
+                }
+                
+            } catch (e) {
+                console.error("Error cargando localStorage:", e);
+                conteoActual = {}; detalleMovimientos = []; totalRetirado = 0; movimientoDisplay = {}; history = []; historyIndex = -1;
+                guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
+            }
+        }
+        
+        function guardarEstadoLocal() { localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify({ history: history, index: historyIndex })); }
+        function guardarConteo() { localStorage.setItem(STORAGE_KEY_CONTEO, JSON.stringify(conteoActual)); }
+        function guardarDetalle() { localStorage.setItem(STORAGE_KEY_DETALLE, JSON.stringify(detalleMovimientos)); }
+        function guardarRetiros() { localStorage.setItem(STORAGE_KEY_RETIROS, totalRetirado.toString()); }
+        
+        // --- Generación de Interfaz y Conteo (Modal) ---
+        function generarCampos() {
+            contenedorForm.innerHTML = '';
+            let totalGeneral = calcularTotalGeneral();
+            
+            DENOMINACIONES.forEach(valor => {
+                const esBillete = valor >= 1000;
+                const nombreTipo = esBillete ? "Billetes" : "Monedas";
+                const valorFormateado = formatoMoneda(valor);
+                
+                if (conteoActual[valor] === undefined) { conteoActual[valor] = 0; }
+                if (movimientoDisplay[valor] === undefined) { movimientoDisplay[valor] = ""; }
+                
+                const totalPorDenominacion = valor * conteoActual[valor];
+                
+                const group = document.createElement('div');
+                group.className = 'denominacion-row';
+                
+                // Formato del detalle incremental
+                let detalleText = movimientoDisplay[valor].length > 0 ? 
+                                  `(${movimientoDisplay[valor]})` : 
+                                  '(0 movimientos)'; 
+                
+                group.innerHTML = `
+                    <label>${nombreTipo} de ${valorFormateado}:</label>
+                    <input type="number" id="input-qty-${valor}" placeholder="Cant." min="0" onfocus="this.value=''">
+                    <div class="button-group">
+                        <button class="btn-add" onclick="actualizarCantidad(${valor}, 1)">+</button>
+                        <button class="btn-retire" onclick="actualizarCantidad(${valor}, -1)">-</button>
+                    </div>
+                    <div class="total-display" id="total-val-${valor}">
+                        <div class="cantidad-controls-wrapper">
+                            <input type="number" class="cantidad-input" value="${conteoActual[valor]}" min="0" id="current-qty-${valor}" 
+                                    onchange="guardarCambioDirecto(${valor})" onblur="this.value=${conteoActual[valor]}">
+                            
+                            <button class="btn-edit-detalle" onclick="abrirModalEdicion(${valor})">
+                                ...
+                            </button>
+                        </div>
+
+                        <span class="cantidad-total-moneda">${formatoMoneda(totalPorDenominacion)}</span>
+                        
+                        <span class="detalle-movimiento">${detalleText}</span>
+                    </div>
+                `;
+                contenedorForm.appendChild(group);
+            });
+            
+            totalContadoFinalSpan.textContent = formatoMoneda(totalGeneral);
+            totalRetirosFinalSpan.textContent = formatoMoneda(totalRetirado); 
+        }
+
+        function calcularTotalGeneral() {
+            let total = 0;
+            DENOMINACIONES.forEach(valor => {
+                total += valor * (conteoActual[valor] || 0);
+            });
+            return total;
+        }
+        
+        // --- FUNCIÓN PARA MODIFICAR DIRECTAMENTE EL TOTAL (MODAL) ---
+        function guardarCambioDirecto(valorDenominacion) {
+            const inputId = `current-qty-${valorDenominacion}`;
+            const input = document.getElementById(inputId);
+            const nuevaCantidad = parseInt(input.value) || 0;
+            const cantidadAnterior = conteoActual[valorDenominacion] || 0;
+
+            if (nuevaCantidad < 0) {
+                 alert("La cantidad no puede ser negativa.");
+                 input.value = cantidadAnterior;
+                 return;
+            }
+
+            if (nuevaCantidad === cantidadAnterior) {
+                return; 
+            }
+            
+            let nuevoConteo = JSON.parse(JSON.stringify(conteoActual));
+            let nuevoDetalle = JSON.parse(JSON.stringify(detalleMovimientos));
+            let nuevoTotalRetirado = totalRetirado; 
+
+            nuevoConteo[valorDenominacion] = nuevaCantidad;
+            
+            const diferencia = nuevaCantidad - cantidadAnterior;
+            const signo = diferencia > 0 ? '+' : '';
+            const fecha = new Date().toLocaleTimeString('es-CL');
+            
+            const mensaje = `[${fecha}] CORRECCIÓN MANUAL (TOTAL): Cantidad de ${formatoMoneda(valorDenominacion)} ajustada de ${cantidadAnterior} a ${nuevaCantidad}. (Diferencia: ${signo}${diferencia})`;
+            
+            let nuevoMovimientoDisplay = JSON.parse(JSON.stringify(movimientoDisplay));
+            nuevoMovimientoDisplay[valorDenominacion] = 'Ajuste Manual de Total'; 
+
+            nuevoDetalle.unshift(mensaje);
+            
+            guardarEstado(nuevoConteo, nuevoDetalle, nuevoTotalRetirado, nuevoMovimientoDisplay); 
+            aplicarEstado(historyIndex);
+        }
+
+        // --- FUNCIÓN PARA MOVIMIENTOS INCREMENTALES (+ / -) (MODAL) ---
+        function actualizarCantidad(valorDenominacion, tipo) {
+            const inputId = `input-qty-${valorDenominacion}`;
+            const input = document.getElementById(inputId);
+            const cantidad = parseInt(input.value) || 0;
+
+            if (cantidad <= 0) {
+                console.error("Por favor, ingrese una cantidad válida (mayor a 0).");
+                return;
+            }
+            
+            let nuevoConteo = JSON.parse(JSON.stringify(conteoActual));
+            let nuevoDetalle = JSON.parse(JSON.stringify(detalleMovimientos));
+            let nuevoTotalRetirado = totalRetirado; 
+            let nuevoMovimientoDisplay = JSON.parse(JSON.stringify(movimientoDisplay));
+
+            let cantidadFinal = cantidad * tipo;
+            
+            if (tipo === -1) {
+                if ((nuevoConteo[valorDenominacion] || 0) < cantidad) {
+                    alert(`No se puede retirar ${cantidad} unidades de ${formatoMoneda(valorDenominacion)}. Solo hay ${nuevoConteo[valorDenominacion] || 0} en caja.`);
+                    return;
+                }
+                nuevoTotalRetirado += (valorDenominacion * cantidad); 
+            }
+
+            nuevoConteo[valorDenominacion] = (nuevoConteo[valorDenominacion] || 0) + cantidadFinal;
+            
+            const signo = tipo === 1 ? '+' : '-';
+            
+            // Si hubo un ajuste manual de total, lo limpiamos para empezar el conteo incremental
+            if (nuevoMovimientoDisplay[valorDenominacion] === 'Ajuste Manual de Total') {
+                nuevoMovimientoDisplay[valorDenominacion] = '';
+            }
+            
+            nuevoMovimientoDisplay[valorDenominacion] += signo + cantidad;
+
+            const fecha = new Date().toLocaleTimeString('es-CL');
+            let mensaje;
+            if (tipo === 1) {
+                mensaje = `[${fecha}] INGRESO: Se sumaron ${cantidad} uds. de ${formatoMoneda(valorDenominacion)}. (Detalle: ${signo}${cantidad})`;
+            } else {
+                mensaje = `[${fecha}] RETIRO: Se restaron ${cantidad} uds. de ${formatoMoneda(valorDenominacion)}. (Egreso: ${formatoMoneda(valorDenominacion * cantidad)} | Detalle: ${signo}${cantidad})`;
+            }
+            nuevoDetalle.unshift(mensaje);
+            
+            guardarEstado(nuevoConteo, nuevoDetalle, nuevoTotalRetirado, nuevoMovimientoDisplay); 
+            aplicarEstado(historyIndex); 
+
+            input.value = '';
+        }
+        
+        // --- FUNCIONES DE EDICIÓN DETALLADA (Modal Edición) ---
+        
+        // Función auxiliar para parsear la cadena de movimientos (ej: "+1-3+5")
+        function parsearMovimientos(cadena) {
+            if (cadena === 'Ajuste Manual de Total' || !cadena || cadena.length === 0) return [];
+            
+            // Busca patrones de +o- seguido de uno o más dígitos.
+            const matches = cadena.match(/[\+\-]\d+/g);
+            return matches || [];
+        }
+
+        function abrirModalEdicion(valorDenominacion) {
+            denominacionEnEdicion = valorDenominacion;
+            const movimientosUl = document.getElementById('movimientos-edicion');
+            movimientosUl.innerHTML = '';
+            
+            const nombreDenominacion = formatoMoneda(valorDenominacion);
+            document.getElementById('edicion-detalle-titulo').textContent = `✏️ Editar Movimientos de ${nombreDenominacion}`;
+
+            const movimientos = parsearMovimientos(movimientoDisplay[valorDenominacion] || '');
+            
+            if (movimientos.length === 0) {
+                movimientosUl.innerHTML = '<li style="justify-content: center; color: #d9534f;">No hay movimientos incrementales para editar.</li>';
+            } else {
+                movimientos.forEach((movimiento, index) => {
+                    const signo = movimiento[0];
+                    const cantidad = movimiento.substring(1);
+                    
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <select id="signo-${index}">
+                            <option value="+" ${signo === '+' ? 'selected' : ''}>+</option>
+                            <option value="-" ${signo === '-' ? 'selected' : ''}>-</option>
+                        </select>
+                        <input type="number" id="qty-${index}" value="${cantidad}" min="1" required>
+                    `;
+                    movimientosUl.appendChild(li);
+                });
+            }
+            
+            modalEdicionDetalle.style.display = 'block';
+        }
+
+        function guardarEdicionDetalle() {
+            if (denominacionEnEdicion === null) return;
+
+            const movimientosUl = document.getElementById('movimientos-edicion');
+            let nuevaCadenaMovimientos = '';
+            let nuevoTotalDenominacion = 0;
+            const valorDenominacion = denominacionEnEdicion;
+            
+            const listItems = movimientosUl.querySelectorAll('li');
+
+            if (listItems.length > 0 && listItems[0].querySelector('select')) {
+                // 1. Recorrer los movimientos editados y construir la nueva cadena
+                listItems.forEach((li, index) => {
+                    const signo = document.getElementById(`signo-${index}`).value;
+                    const cantidad = parseInt(document.getElementById(`qty-${index}`).value) || 0;
+                    
+                    if (cantidad > 0) {
+                        nuevaCadenaMovimientos += signo + cantidad;
+                        nuevoTotalDenominacion += (signo === '+') ? cantidad : -cantidad;
+                    }
+                });
+            } else {
+                // Caso: No había movimientos incrementales.
+                nuevaCadenaMovimientos = '';
+            }
+
+            // 2. Calcular el nuevo total de la denominación
+            let nuevoConteo = JSON.parse(JSON.stringify(conteoActual));
+            let nuevoDetalle = JSON.parse(JSON.stringify(detalleMovimientos));
+            let nuevoMovimientoDisplay = JSON.parse(JSON.stringify(movimientoDisplay));
+
+            const cantidadAnterior = nuevoConteo[valorDenominacion] || 0;
+            const totalRetiradoAnterior = totalRetirado;
+
+            // Establecer la nueva cantidad total de la denominación
+            nuevoConteo[valorDenominacion] = nuevoTotalDenominacion; 
+            
+            const fecha = new Date().toLocaleTimeString('es-CL');
+
+            const mensaje = `[${fecha}] CORRECCIÓN DETALLADA: Movimientos de ${formatoMoneda(valorDenominacion)} ajustados. Nuevo detalle: (${nuevaCadenaMovimientos || 'N/A'}). Nuevo total de unidades: ${nuevoTotalDenominacion}`;
+
+            nuevoDetalle.unshift(mensaje);
+            nuevoMovimientoDisplay[valorDenominacion] = nuevaCadenaMovimientos;
+            
+            guardarEstado(nuevoConteo, nuevoDetalle, totalRetiradoAnterior, nuevoMovimientoDisplay); 
+            aplicarEstado(historyIndex);
+
+            cerrarModalEdicionDetalle();
+        }
+
+        function cerrarModalEdicionDetalle() {
+            modalEdicionDetalle.style.display = 'none';
+            denominacionEnEdicion = null;
+        }
+
+        function actualizarListaMovimientos() {
+            listaMovimientosUl.innerHTML = '';
+            detalleMovimientos.forEach(movimiento => {
+                const li = document.createElement('li');
+                li.textContent = movimiento;
+                if (movimiento.includes("RETIRO")) {
+                    li.style.color = '#d9534f'; 
+                    li.style.fontWeight = 'bold';
+                } else if (movimiento.includes("INGRESO")) {
+                    li.style.color = '#28a745';
+                } else if (movimiento.includes("CORRECCIÓN")) {
+                    li.style.color = '#007bff'; 
+                    li.style.fontStyle = 'italic';
+                }
+                listaMovimientosUl.appendChild(li);
+            });
+        }
+
+        // --- Comparación y Resultados (Pantalla Principal) ---
+        function realizarArqueo() {
+            const totalContado = calcularTotalGeneral();
+            
+            const esperadoDisplayText = esperadoDisplay.textContent;
+            // Limpia el valor esperado formateado (ej. "$ 5.000.000") para obtener el número puro
+            // Excluye el error-fetch si está activo
+            if (mensajeArqueoP.classList.contains('error-fetch')) {
+                 // Si hay error de fetch, no comparamos, solo mostramos el contado.
+                 diferenciaSpan.textContent = "$0";
+                 diferenciaSpan.style.color = '#333';
+            } else {
+                 const efectivoEsperadoRaw = esperadoDisplayText.replace(/[^0-9-]/g, '');
+                 const efectivoEsperado = parseInt(efectivoEsperadoRaw) || 0; 
+                 const diferencia = totalContado - efectivoEsperado;
+                 
+                 diferenciaSpan.textContent = formatoMoneda(diferencia);
+                 diferenciaSpan.className = '';
+                 mensajeArqueoP.className = 'mensaje';
+
+                 if (Math.round(diferencia) === 0) {
+                     mensajeArqueoP.textContent = "¡ARQUEO CUADRADO! 🎉";
+                     mensajeArqueoP.classList.add('cuadrado');
+                     diferenciaSpan.style.color = '#28a745';
+                 } else if (diferencia > 0) {
+                     mensajeArqueoP.textContent = `SOBRANTE: ${formatoMoneda(diferencia)} de más. ⚠️`;
+                     mensajeArqueoP.classList.add('sobrante');
+                     diferenciaSpan.style.color = '#ffc107';
+                 } else {
+                     mensajeArqueoP.textContent = `FALTANTE: Faltan ${formatoMoneda(Math.abs(diferencia))}. 🚨`;
+                     mensajeArqueoP.classList.add('faltante');
+                     diferenciaSpan.style.color = '#d9534f';
+                 }
+            }
+
+            // Generar y mostrar el desglose de la tabla
+            desgloseContadoDiv.innerHTML = generarDesgloseFinal();
+        }
+
+        function generarDesgloseFinal() {
+            let html = '<table><tr><th>Denominación</th><th>Cant. Total</th><th>Subtotal</th></tr>';
+            
+            DENOMINACIONES.forEach(valor => {
+                const cantidad = conteoActual[valor] || 0;
+                const subtotal = valor * cantidad;
+                
+                if (cantidad > 0) {
+                    const esBillete = valor >= 1000;
+                    const nombreTipo = esBillete ? "Billetes" : "Monedas";
+                    const valorFormateado = formatoMoneda(valor);
+                    
+                    html += `
+                        <tr>
+                            <td>${nombreTipo} de ${valorFormateado}</td>
+                            <td>${cantidad}</td>
+                            <td>${formatoMoneda(subtotal)}</td>
+                        </tr>
+                    `;
+                }
+            });
+            html += '</table>';
+            return html;
+        }
+
+        function limpiarRegistros() {
+            if (!confirm("¿Estás seguro de que quieres REINICIAR el CONTEO, DETALLE y RETIROS? Esta acción es irreversible.")) {
+                return;
+            }
+            
+            localStorage.removeItem(STORAGE_KEY_CONTEO);
+            localStorage.removeItem(STORAGE_KEY_DETALLE);
+            localStorage.removeItem(STORAGE_KEY_RETIROS);
+            localStorage.removeItem(STORAGE_KEY_HISTORY);
+            
+            conteoActual = {};
+            detalleMovimientos = [];
+            totalRetirado = 0; 
+            movimientoDisplay = {}; 
+            history = [];
+            historyIndex = -1;
+            
+            guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
+
+            generarCampos(); 
+            fetchEsperadoData(); 
+            totalContadoFinalSpan.textContent = formatoMoneda(0);
+            totalRetirosFinalSpan.textContent = formatoMoneda(0);
+            diferenciaSpan.textContent = formatoMoneda(0);
+            mensajeArqueoP.textContent = "";
+            desgloseContadoDiv.innerHTML = "";
+            
+            cerrarModalConteo();
+            cerrarModalDetalle();
+            cerrarModalEdicionDetalle();
+        }
+        
+        // --- Funciones de Modales ---
+        function abrirModalConteo() {
+            generarCampos(); 
+            actualizarControlesHistoria();
+            modalConteo.style.display = 'block';
+        }
+        function cerrarModalConteo(shouldRerender = false) {
+            modalConteo.style.display = 'none';
+            if (shouldRerender) {
+                realizarArqueo(); // Realiza el cálculo final al cerrar
+            }
+        }
+        function abrirModalDetalle() {
+            actualizarListaMovimientos();
+            modalDetalle.style.display = 'block';
+        }
+        function cerrarModalDetalle() {
+            modalDetalle.style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modalConteo) {
+                cerrarModalConteo(true); // Guarda al hacer clic fuera
+            }
+            if (event.target == modalDetalle) {
+                cerrarModalDetalle();
+            }
+            if (event.target == modalEdicionDetalle) {
+                cerrarModalEdicionDetalle();
+            }
+        }
+
+
+        // --- Inicialización y Bucle de Actualización ---
+        window.onload = function() {
+            cargarEstado(); 
+            generarCampos(); 
+            actualizarControlesHistoria();
+            
+            fetchEsperadoData(); 
+            
+            setInterval(fetchEsperadoData, INTERVALO_ACTUALIZACION);
+            
+            console.log(`Actualización automática de Sheets activada cada ${INTERVALO_ACTUALIZACION/1000} segundos.`);
+        };
+    </script>
+</body>
+</html>
