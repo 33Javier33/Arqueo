@@ -79,6 +79,15 @@
             background-color: #f8f8f8; 
             color: #007bff; 
         }
+
+        /* ESTILOS DEL BLOQUE DE INFO ADICIONAL (Divisor/Total Día) */
+        #divisor-info {
+            margin-top: 10px; 
+            padding: 10px; 
+            border: 1px solid #007bff; 
+            border-radius: 5px; 
+            background-color: #e6f0ff;
+        }
         
         .update-info-container {
             display: flex;
@@ -338,6 +347,17 @@
             <label for="esperadoDisplay">Total Recaudado **Esperado** (CLP):</label>
             <strong id="esperadoDisplay">Cargando...</strong>
             
+            <div id="divisor-info" style="margin-top: 10px; padding: 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #e6f0ff;">
+                <p style="margin: 0;">
+                    <strong>Total Día (Último Reg.):</strong> 
+                    <span class="day-total-display" id="divisor-day-total" style="color:#007bff; font-weight: bold;">$0</span>
+                    <small id="divisor-date" style="display: block; margin-top: 3px; font-size: 0.8em;">Fecha: N/A</small>
+                </p>
+                <p style="margin: 5px 0 0 0;">
+                    <strong>Último Divisor:</strong> 
+                    <span class="divisor-value-display" id="divisor-value" style="color:#007bff; font-weight: bold;">1.00</span>
+                </p>
+            </div>
             <div class="update-info-container">
                 <small id="update-status" style="display: block; color: #007bff;">Valor cargado automáticamente desde el Apps Script.</small>
                 <button onclick="fetchEsperadoData()" style="padding: 5px 10px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
@@ -459,6 +479,11 @@
         const esperadoDisplay = document.getElementById('esperadoDisplay'); 
         const updateStatusSpan = document.getElementById('update-status'); 
         
+        // Nuevos elementos DOM para el Divisor/Total Día:
+        const divisorDayTotalSpan = document.getElementById('divisor-day-total');
+        const divisorValueSpan = document.getElementById('divisor-value');
+        const divisorDateSpan = document.getElementById('divisor-date');
+
         const modalConteo = document.getElementById('modalConteo'); 
         const modalDetalle = document.getElementById('modalDetalle'); 
         const modalEdicionDetalle = document.getElementById('modalEdicionDetalle'); 
@@ -487,13 +512,16 @@
             }).format(Math.round(numero));
         }
 
-        // --- Funciones de Fetch para el Esperado ---
+        // --- Funciones de Fetch para el Esperado (CORREGIDA) ---
         async function fetchEsperadoData() {
             // Limpia mensajes anteriores
             mensajeArqueoP.classList.remove('error-fetch');
             mensajeArqueoP.textContent = '';
             
             esperadoDisplay.textContent = 'Actualizando...';
+            divisorDayTotalSpan.textContent = '...';
+            divisorValueSpan.textContent = '...';
+            divisorDateSpan.textContent = 'Fecha: ...';
             updateStatusSpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando con Google Sheets...';
 
             const controller = new AbortController();
@@ -510,22 +538,29 @@
                 
                 const textData = await response.text();
                 
-                // 2. PROCESAMIENTO DE DATOS (El Apps Script devuelve la cadena "EsperadoInflado,TotalDiaInflado,Divisor")
+                // 2. PROCESAMIENTO DE DATOS: (El Apps Script devuelve: TotalAcumuladoInflado,LastDivisorValue,TotalLastDivisorDayInflado,LastDivisorDateString)
                 const dataArray = textData.split(',');
                 
-                if (dataArray.length < 1 || textData.includes('Error')) {
+                if (dataArray.length < 4 || textData.includes('Error')) { // Asegura que se reciben los 4 valores
                     throw new Error(`Datos no válidos o error en Apps Script: ${textData.substring(0, 50)}`);
                 }
 
-                // El primer elemento es el Total Esperado, inflado x100.
-                const expectedValueInflated = parseInt(dataArray[0].trim()) || 0; 
+                // 3. DESEMPAQUETAR Y CONVERTIR LOS 4 VALORES
+                const totalAcumuladoInflado = parseInt(dataArray[0].trim()) || 0; 
+                const lastDivisorValue = parseFloat(dataArray[1].trim()) || 1.0; 
+                const totalLastDivisorDayInflado = parseInt(dataArray[2].trim()) || 0; 
+                const lastDivisorDateString = dataArray[3].trim();
+
+                // 4. CORRECCIÓN: Dividir por 100 para obtener los valores en CLP
+                const expectedValue = totalAcumuladoInflado / 100;
+                const totalLastDivisorDay = totalLastDivisorDayInflado / 100;
+
+                // 5. ACTUALIZAR PANTALLA
+                esperadoDisplay.textContent = formatoMoneda(expectedValue); // Total Efectivo Esperado
                 
-                // 3. CORRECCIÓN: Dividir por 100 para obtener el valor en CLP (sin centavos)
-                const expectedValue = expectedValueInflated / 100;
-                
-                const valorFormateado = formatoMoneda(expectedValue);
-                
-                esperadoDisplay.textContent = valorFormateado; 
+                divisorDayTotalSpan.textContent = formatoMoneda(totalLastDivisorDay); // Total Día del último registro
+                divisorValueSpan.textContent = lastDivisorValue.toFixed(2); // Valor del Divisor
+                divisorDateSpan.textContent = `Fecha: ${lastDivisorDateString}`; // Fecha del Divisor
                 
                 const now = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 updateStatusSpan.innerHTML = `Última actualización: <strong>${now}</strong> (Automática)`;
@@ -546,8 +581,11 @@
 
                 console.error("Error al obtener el Efectivo Esperado desde el Apps Script:", error);
                 
-                // Muestra el error en la interfaz
+                // Muestra el error en la interfaz y resetea los valores del divisor
                 esperadoDisplay.textContent = formatoMoneda(0); 
+                divisorDayTotalSpan.textContent = formatoMoneda(0);
+                divisorValueSpan.textContent = '1.00';
+                divisorDateSpan.textContent = 'Fecha: N/A';
                 updateStatusSpan.innerHTML = `<span style="color:#d9534f;">Error de conexión: ${errorMessage}</span>`;
                 mensajeArqueoP.textContent = "🚨 ERROR AL CARGAR DATOS DEL SERVIDOR. Revisa la consola para más detalles.";
                 mensajeArqueoP.classList.add('error-fetch');
@@ -921,13 +959,13 @@
             const totalContado = calcularTotalGeneral();
             
             const esperadoDisplayText = esperadoDisplay.textContent;
-            // Limpia el valor esperado formateado (ej. "$ 5.000.000") para obtener el número puro
-            // Excluye el error-fetch si está activo
+            
+            // Si hay error de fetch, no comparamos.
             if (mensajeArqueoP.classList.contains('error-fetch')) {
-                 // Si hay error de fetch, no comparamos, solo mostramos el contado.
                  diferenciaSpan.textContent = "$0";
                  diferenciaSpan.style.color = '#333';
             } else {
+                 // Limpia el valor esperado formateado (ej. "$ 5.000.000") para obtener el número puro
                  const efectivoEsperadoRaw = esperadoDisplayText.replace(/[^0-9-]/g, '');
                  const efectivoEsperado = parseInt(efectivoEsperadoRaw) || 0; 
                  const diferencia = totalContado - efectivoEsperado;
