@@ -327,6 +327,33 @@
         .mensaje.sobrante { background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px;}
         .mensaje.faltante { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px;}
         .error-fetch { background-color: #d9534f; color: white; padding: 10px; border-radius: 5px; text-align: center; }
+        
+        /* Estilos para Importar/Exportar */
+        .backup-controls {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .backup-controls button, .backup-controls label {
+            flex-grow: 1;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+        
+        #import-file-label {
+            background-color: #f0ad4e;
+            color: white;
+            font-weight: bold;
+        }
+        #import-file {
+            display: none; /* Oculta el input de archivo por defecto */
+        }
     </style>
 </head>
 <body>
@@ -347,7 +374,7 @@
             <label for="esperadoDisplay">Total Recaudado **Esperado** (CLP):</label>
             <strong id="esperadoDisplay">Cargando...</strong>
             
-            <div id="divisor-info" style="margin-top: 10px; padding: 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #e6f0ff;">
+            <div id="divisor-info">
                 <p style="margin: 0;">
                     <strong>Total Día (Último Reg.):</strong> 
                     <span class="day-total-display" id="divisor-day-total" style="color:#007bff; font-weight: bold;">$0</span>
@@ -389,7 +416,17 @@
             <p><strong>TotalEgresos (Contado - Esperado):</strong> <span id="diferencia">$0</span></p>
             <p id="mensaje-arqueo" class="mensaje"></p>
         </div>
-    </div>
+
+        <div class="backup-controls">
+            <button onclick="exportarDataToJson()" style="background-color: #5cb85c; color: white;">
+                📥 Exportar Datos (JSON)
+            </button>
+            <input type="file" id="import-file" accept=".json" onchange="importarDataFromJson(event)">
+            <label for="import-file" id="import-file-label">
+                ⬆️ Importar Datos (JSON)
+            </label>
+        </div>
+        </div>
     
     <div id="modalConteo" class="modal">
         <div class="modal-content">
@@ -512,7 +549,7 @@
             }).format(Math.round(numero));
         }
 
-        // --- Funciones de Fetch para el Esperado (CORREGIDA) ---
+        // --- Funciones de Fetch para el Esperado ---
         async function fetchEsperadoData() {
             // Limpia mensajes anteriores
             mensajeArqueoP.classList.remove('error-fetch');
@@ -1048,6 +1085,93 @@
             cerrarModalConteo();
             cerrarModalDetalle();
             cerrarModalEdicionDetalle();
+        }
+        
+        // --- FUNCIONES DE EXPORTACIÓN / IMPORTACIÓN JSON ---
+
+        function exportarDataToJson() {
+            // Recolectar todos los datos almacenados localmente
+            const dataToExport = {
+                conteoActual: conteoActual,
+                detalleMovimientos: detalleMovimientos,
+                totalRetirado: totalRetirado,
+                history: history,
+                historyIndex: historyIndex
+            };
+
+            const jsonString = JSON.stringify(dataToExport, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            
+            // Crear un enlace temporal para la descarga
+            const a = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            a.download = `respaldo_arqueo_${date}.json`;
+            a.href = URL.createObjectURL(blob);
+            a.click();
+            
+            URL.revokeObjectURL(a.href);
+            alert('✅ Datos exportados con éxito como "respaldo_arqueo_YYYY-MM-DD.json"');
+        }
+
+        function importarDataFromJson(event) {
+            if (!confirm("⚠️ ¿Está seguro que desea importar datos? Esto SOBREESCRIBIRÁ todos los registros de conteo, movimientos e historial actuales.")) {
+                event.target.value = ''; // Limpiar el input para permitir re-seleccionar
+                return;
+            }
+
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (!importedData.conteoActual || !importedData.history) {
+                        throw new Error("Estructura de archivo JSON no válida. Faltan claves principales.");
+                    }
+
+                    // 1. Aplicar los datos al estado global
+                    conteoActual = importedData.conteoActual || {};
+                    detalleMovimientos = importedData.detalleMovimientos || [];
+                    totalRetirado = importedData.totalRetirado || 0;
+                    history = importedData.history || [];
+                    historyIndex = importedData.historyIndex !== undefined ? importedData.historyIndex : -1;
+                    
+                    // Asegurar que el estado actual del historial se aplique al inicio
+                    if (history.length > 0 && historyIndex >= 0) {
+                        const currentState = history[historyIndex];
+                        conteoActual = currentState.conteo;
+                        detalleMovimientos = currentState.detalle;
+                        totalRetirado = currentState.retiros;
+                        movimientoDisplay = currentState.movimientoDisplay || {};
+                    } else {
+                        // Si el historial está vacío o mal, guardar el estado inicial de la importación
+                        guardarEstado(conteoActual, detalleMovimientos, totalRetirado, importedData.conteoActual || {});
+                    }
+                    
+                    // 2. Guardar los nuevos datos en localStorage
+                    guardarConteo();
+                    guardarDetalle();
+                    guardarRetiros();
+                    guardarEstadoLocal();
+                    
+                    // 3. Refrescar la interfaz
+                    generarCampos();
+                    realizarArqueo();
+                    
+                    alert('🎉 Datos importados con éxito.');
+                } catch (error) {
+                    alert('❌ Error al importar o leer el archivo JSON: ' + error.message);
+                    console.error('Error de Importación:', error);
+                } finally {
+                    event.target.value = ''; // Limpiar el input de archivo
+                }
+            };
+
+            reader.readAsText(file);
         }
         
         // --- Funciones de Modales ---
