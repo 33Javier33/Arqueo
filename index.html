@@ -44,13 +44,22 @@
             margin-bottom: 20px;
         }
 
-        .main-actions button {
+        /* ESTILO UNIFICADO PARA BOTONES Y EL NUEVO ENLACE */
+        .main-actions button, .main-actions a {
             flex-grow: 1;
             padding: 10px;
             border: none;
             border-radius: 5px;
-            font-size: 1em;
+            font-size: 0.9em; /* Ajuste para que quepan 3 botones */
             cursor: pointer;
+            font-weight: bold;
+            
+            /* Propiedades para que el enlace se vea y se comporte como un botón */
+            text-decoration: none; 
+            text-align: center;
+            display: flex; 
+            align-items: center;
+            justify-content: center;
         }
         
         /* Grupo de efectivo esperado y botón principal */
@@ -368,6 +377,9 @@
             <button onclick="abrirModalDetalle()" style="background-color: #6c757d; color: white;">
                 📜 Ver Detalle de Movimientos
             </button>
+            <a href="https://diario-propi.vercel.app" target="_blank" style="background-color: #f0ad4e; color: white;">
+                📊 Recaudaciones
+            </a>
         </div>
         
         <div class="input-group">
@@ -489,8 +501,8 @@
         // DEBE SER LA URL DE IMPLEMENTACIÓN, NO LA DE PRUEBA (termina en /exec)
         const ESPERADO_URL = 'https://script.google.com/macros/s/AKfycbz_kCb4aEe437zHGbRqnjCibw1NtAqfCbTNmsVPn9jaZOPBFaZ6-FwmiTLqVxq39X1P/exec'; // <--- ¡ACTUALIZA ESTO!
         
-        // ** CONFIGURACIÓN DE ACTUALIZACIÓN AUTOMÁTICA (30 segundos) **
-        const INTERVALO_ACTUALIZACION = 30000; 
+        // ** CONFIGURACIÓN DE ACTUALIZACIÓN AUTOMÁTICA **
+        // El intervalo automático ha sido eliminado. La actualización es manual (con el botón).
         const FETCH_TIMEOUT_MS = 10000; // Timeout de 10 segundos
 
         // 1. Definir las denominaciones de Chile
@@ -600,7 +612,7 @@
                 divisorDateSpan.textContent = `Fecha: ${lastDivisorDateString}`; // Fecha del Divisor
                 
                 const now = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                updateStatusSpan.innerHTML = `Última actualización: <strong>${now}</strong> (Automática)`;
+                updateStatusSpan.innerHTML = `Última actualización: <strong>${now}</strong> (Manual)`;
 
                 realizarArqueo();
 
@@ -851,7 +863,7 @@
 
             nuevoConteo[valorDenominacion] = (nuevoConteo[valorDenominacion] || 0) + cantidadFinal;
             
-            const signo = tipo === 1 ? '+' : '-';
+            const signo = tipo === 1 ? '+' : '';
             
             // Si hubo un ajuste manual de total, lo limpiamos para empezar el conteo incremental
             if (nuevoMovimientoDisplay[valorDenominacion] === 'Ajuste Manual de Total') {
@@ -863,9 +875,9 @@
             const fecha = new Date().toLocaleTimeString('es-CL');
             let mensaje;
             if (tipo === 1) {
-                mensaje = `[${fecha}] INGRESO: Se sumaron ${cantidad} uds. de ${formatoMoneda(valorDenominacion)}. (Detalle: ${signo}${cantidad})`;
+                mensaje = `[${fecha}] INGRESO: Se sumaron ${cantidad} uds. de ${formatoMoneda(valorDenominacion)}. (Detalle: +${cantidad})`;
             } else {
-                mensaje = `[${fecha}] RETIRO: Se restaron ${cantidad} uds. de ${formatoMoneda(valorDenominacion)}. (Egreso: ${formatoMoneda(valorDenominacion * cantidad)} | Detalle: ${signo}${cantidad})`;
+                mensaje = `[${fecha}] RETIRO: Se restaron ${cantidad} uds. de ${formatoMoneda(valorDenominacion)}. (Egreso: ${formatoMoneda(valorDenominacion * cantidad)} | Detalle: -${cantidad})`;
             }
             nuevoDetalle.unshift(mensaje);
             
@@ -1207,17 +1219,14 @@
         }
 
 
-        // --- Inicialización y Bucle de Actualización ---
+        // --- Inicialización (SIN INTERVALO DE ACTUALIZACIÓN AUTOMÁTICA) ---
         window.onload = function() {
             cargarEstado(); 
             generarCampos(); 
             actualizarControlesHistoria();
             
+            // La actualización se realiza solo al cargar la página
             fetchEsperadoData(); 
-            
-            setInterval(fetchEsperadoData, INTERVALO_ACTUALIZACION);
-            
-            console.log(`Actualización automática de Sheets activada cada ${INTERVALO_ACTUALIZACION/1000} segundos.`);
         };
     </script>
 </body>
