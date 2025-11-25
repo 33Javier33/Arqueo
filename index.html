@@ -129,20 +129,6 @@
             margin-bottom: 15px; /* Espacio extra para separarlo del desglose esperado */
         }
         
-        /* CORRECCIÓN: Separar la fecha del total del día */
-        #divisor-info p {
-            margin: 0;
-            line-height: 1.4;
-        }
-        
-        /* ESTILO ESPECÍFICO PARA LA FECHA DEL DIVISOR */
-        #divisor-date {
-            display: block; 
-            margin-top: 3px; 
-            font-size: 0.9em; 
-            color: #6c757d;
-        }
-        
         .update-info-container {
             display: flex;
             justify-content: space-between;
@@ -492,12 +478,11 @@
                     <strong id="esperadoDisplay">Cargando...</strong>
                     
                     <div id="divisor-info">
-                        <p>
+                        <p style="margin: 0;">
                             <strong>Total Día (Último Reg.):</strong> 
                             <span class="day-total-display" id="divisor-day-total" style="color:#007bff; font-weight: bold;">$0</span>
+                            <small id="divisor-date" style="display: block; margin-top: 3px; font-size: 0.8em;">Fecha: N/A</small>
                         </p>
-                        <span id="divisor-date">Fecha: N/A</span>
-                        
                         <p style="margin: 5px 0 0 0;">
                             <strong>Último Divisor:</strong> 
                             <span class="divisor-value-display" id="divisor-value" style="color:#007bff; font-weight: bold;">1.00</span>
@@ -662,7 +647,7 @@
         // Nuevos elementos DOM para el Divisor/Total Día:
         const divisorDayTotalSpan = document.getElementById('divisor-day-total');
         const divisorValueSpan = document.getElementById('divisor-value');
-        const divisorDateSpan = document.getElementById('divisor-date'); 
+        const divisorDateSpan = document.getElementById('divisor-date');
 
         const modalConteo = document.getElementById('modalConteo'); 
         const modalDetalle = document.getElementById('modalDetalle'); 
@@ -694,58 +679,6 @@
             }).format(Math.round(numero));
         }
 
-        /**
-         * Formatea una cadena de fecha a un formato legible con el día de la semana, 
-         * manejando formatos de entrada YYYY-MM-DD o DD-MM-YYYY.
-         * @param {string} dateString La fecha en formato de entrada (ej: '2025-11-24' o '24-11-2025').
-         * @returns {string} La fecha formateada como 'Día, DD-MM-YYYY'.
-         */
-        function formatFechaConDia(dateString) {
-            if (!dateString || dateString.length !== 10) return "Fecha: N/A";
-
-            // 1. Detección y Conversión del Formato de Entrada
-            let YYYY, MM, DD;
-            const parts = dateString.split('-'); // Asume que el separador es siempre el guion
-
-            // Si parts[0] tiene 4 dígitos, es YYYY-MM-DD (ISO estándar)
-            if (parts[0].length === 4) {
-                YYYY = parts[0];
-                MM = parts[1];
-                DD = parts[2];
-            } 
-            // Si parts[2] tiene 4 dígitos, es DD-MM-YYYY (Tu formato actual)
-            else if (parts[2].length === 4) {
-                DD = parts[0];
-                MM = parts[1];
-                YYYY = parts[2];
-            } else {
-                // Fallback si el formato no es ninguno de los dos
-                return `Formato de fecha de entrada desconocido: ${dateString}`;
-            }
-
-            // 2. Crear la cadena segura para el objeto Date
-            // La forma más segura en JS (sin librerías) es YYYY/MM/DD
-            const safeDateString = `${YYYY}/${MM}/${DD}`;
-            const dateObj = new Date(safeDateString); 
-
-            if (isNaN(dateObj.getTime())) {
-                // Esto debería ser casi imposible con la reordenación, pero es el seguro final.
-                console.error("DEBUG: La fecha sigue siendo inválida para:", dateString, "usando string seguro:", safeDateString);
-                return "Fecha Inválida 🚨";
-            }
-            
-            // 3. Formato de Salida
-            // Usamos las variables DD, MM, YYYY que ya se extrajeron correctamente
-            const formattedDateOnly = `${DD}-${MM}-${YYYY}`; 
-
-            const dayName = dateObj.toLocaleDateString('es-CL', { weekday: 'long' });
-            const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
-
-            // Combinar: Día, DD-MM-YYYY
-            return `${capitalizedDayName}, ${formattedDateOnly}`;
-        }
-
-
         // --- Funciones de Fetch para el Esperado ---
         async function fetchEsperadoData() {
             // Limpia mensajes anteriores
@@ -755,8 +688,7 @@
             esperadoDisplay.textContent = 'Actualizando...';
             divisorDayTotalSpan.textContent = '...';
             divisorValueSpan.textContent = '...';
-            // CORRECCIÓN: Se actualiza el texto de la fecha
-            divisorDateSpan.textContent = 'Cargando fecha...'; 
+            divisorDateSpan.textContent = 'Fecha: ...';
             desgloseEsperadoDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando desglose...';
             updateStatusSpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando con Google Sheets...';
 
@@ -783,18 +715,47 @@
                 const totalAcumuladoInflado = data.totalAcumulado;
                 const lastDivisorValue = data.lastDivisor; 
                 const totalLastDivisorDayInflado = data.totalLastDivisorDay; 
-                const lastDivisorDateString = data.lastDivisorDate; // Formato de entrada (ej: YYYY-MM-DD o DD-MM-YYYY)
-                const desgloseEsperadoRaw = data.desgloseEsperado;
+                const lastDivisorDateString = data.lastDivisorDate;
 
-                // CORRECCIÓN: Dividir por 100
+                // CORRECCIÓN: Dividir por 100 (ASUMIENDO QUE SOLO ESTOS TRES VALORES VIENEN INFLADOS)
                 const expectedValue = totalAcumuladoInflado / 100;
                 const totalLastDivisorDay = totalLastDivisorDayInflado / 100;
                 
-                // Corregir montos del desglose
-                const desgloseEsperado = desgloseEsperadoRaw.map(item => ({
+                // Corregir montos del desglose (Dividir por 100)
+                const desgloseEsperado = data.desgloseEsperado.map(item => ({
                     tipo: item.tipo,
                     monto: item.monto / 100 
                 }));
+
+                // =======================================================
+                // LÓGICA ROBUSTA PARA FECHA Y DÍA EN PANTALLA PRINCIPAL
+                
+                const dateParts = lastDivisorDateString.split('-'); // [DD, MM, YYYY]
+                
+                if (dateParts.length !== 3) {
+                    throw new Error(`Fecha inválida devuelta por el servidor: ${lastDivisorDateString}. Formato esperado DD-MM-YYYY.`);
+                }
+                
+                // REORDENAR Y CONVERTIR A FORMATO YYYY/MM/DD para compatibilidad universal
+                const compatibleDateString = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; // YYYY/MM/DD
+                
+                const dateObj = new Date(compatibleDateString); 
+                
+                // Si la conversión falla, mostramos un error claro.
+                if (isNaN(dateObj)) {
+                    // Si falla aquí, significa que DD o MM estaban fuera de rango (ej. 32-01-2025)
+                    throw new Error(`Fecha no válida (${compatibleDateString}). Revise los valores en Google Sheets.`);
+                }
+
+                const formattedDateOnly = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`; // DD-MM-YYYY (Para mostrar)
+
+                // Obtener el nombre del día en español (ej: "lunes")
+                const dayName = dateObj.toLocaleDateString('es-CL', { weekday: 'long' });
+                const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+
+                // Combinar: DD-MM-YYYY Día
+                const formattedDateWithDay = `${formattedDateOnly} ${capitalizedDayName}`;
+                // =======================================================
 
 
                 // 4. ACTUALIZAR PANTALLA
@@ -802,10 +763,7 @@
                 
                 divisorDayTotalSpan.textContent = formatoMoneda(totalLastDivisorDay); // Total Día del último registro
                 divisorValueSpan.textContent = lastDivisorValue.toFixed(2); // Valor del Divisor
-                
-                // USO DE LA FUNCIÓN CORREGIDA PARA EL FORMATO DE FECHA
-                const formattedDateWithDay = formatFechaConDia(lastDivisorDateString);
-                divisorDateSpan.textContent = formattedDateWithDay; 
+                divisorDateSpan.textContent = `Fecha: ${formattedDateWithDay}`; // Fecha + Día (Ej: 24-11-2025 Lunes)
                 
                 mostrarDesgloseEsperado(desgloseEsperado); // Mostrar el nuevo desglose
 
@@ -824,6 +782,8 @@
                     errorMessage = "Error de red/CORS. Asegúrate que la URL es **correcta** y el Apps Script permite acceso a **'Cualquier persona'**.";
                 } else if (error instanceof SyntaxError) {
                     errorMessage = `Error al procesar la respuesta (JSON inválido). Revise que su Apps Script devuelve JSON. Detalles: ${error.message}`;
+                } else if (error.message.includes('Fecha inválida') || error.message.includes('Fecha no válida')) {
+                    errorMessage = `Error de fecha: El servidor devolvió un valor de fecha inválido. Detalles: ${error.message}`;
                 } else {
                     errorMessage = `Fallo interno del script: ${error.message}`;
                 }
@@ -850,6 +810,7 @@
             }
             
             let totalDesglose = 0;
+            // Inicializar variable para la suma específica (Máquinas y Mesas)
             let totalMaquinasMesas = 0; 
             
             let html = '<table>';
@@ -865,7 +826,7 @@
                 `;
                 totalDesglose += item.monto;
                 
-                // Sumar si el tipo es 'Máquinas' o 'Mesas' (buscando por sub-string y minúsculas)
+                // Sumar si el tipo es 'Máquinas' o 'Mesas'
                 const tipoLower = item.tipo.toLowerCase();
                 if (tipoLower.includes('máquina') || tipoLower.includes('maquina') || tipoLower.includes('mesa')) {
                     totalMaquinasMesas += item.monto;
@@ -875,6 +836,7 @@
             html += '</tbody>';
             html += '<tfoot>';
             
+            // Fila con el total de Máquinas y Mesas
             html += `
                 <tr style="border-top: 1px dashed #007bff;">
                     <td style="font-weight: bold; color: #6c757d;">TOTAL MÁQUINAS Y MESAS</td>
@@ -951,9 +913,12 @@
             const dailySummary = {};
 
             historial.forEach(registro => {
-                // Extraer solo la fecha (YYYY-MM-DD o DD-MM-YYYY, se maneja en formatFechaConDia)
+                // Extraer solo la fecha (YYYY-MM-DD)
                 const dateKey = registro.fecha.split(' ')[0];
-                const monto = registro.monto;
+                
+                // CORRECCIÓN CLAVE: No dividir por 100 si los datos del historial ya están correctos
+                // Se asume que el servidor devuelve el monto ya corregido para el historial.
+                const monto = parseFloat(registro.monto); 
                 const tipo = registro.tipo || 'Sin Tipo';
 
                 if (!dailySummary[dateKey]) {
@@ -975,15 +940,8 @@
 
             // 2. Convertir a array y ordenar por fecha (más reciente a más antigua)
             const summaryArray = Object.values(dailySummary).sort((a, b) => {
-                // Usamos la misma lógica de reordenación para asegurar la comparación de fechas:
-                const getDateForSort = (dateStr) => {
-                    const parts = dateStr.split('-');
-                    if (parts[0].length === 4) return new Date(`${parts[0]}/${parts[1]}/${parts[2]}`).getTime(); // YYYY-MM-DD
-                    if (parts[2].length === 4) return new Date(`${parts[2]}/${parts[1]}/${parts[0]}`).getTime(); // DD-MM-YYYY
-                    return 0;
-                };
-
-                return getDateForSort(b.date) - getDateForSort(a.date); // Orden descendente (más nuevo primero)
+                // Ordenar por la clave de fecha (YYYY-MM-DD) para asegurar un orden cronológico correcto.
+                return b.date.localeCompare(a.date);
             });
 
             // 3. Renderizar la tabla resumida
@@ -997,9 +955,36 @@
                 // Alternar color de fondo por día
                 currentColorClass = (index % 2 === 0) ? 'date-group-odd' : 'date-group-even';
 
-                // CONVERSIÓN DE FECHA CORREGIDA
-                const formattedDate = formatFechaConDia(dayData.date); 
-                
+                // ====================================================================
+                // LÓGICA DE FECHA MEJORADA (Se espera YYYY-MM-DD desde el dateKey)
+                const parts = dayData.date.split('-'); // [YYYY, MM, DD]
+
+                let formattedDate;
+                if (parts.length === 3) {
+                    const YYYY = parts[0];
+                    const MM = parts[1];
+                    const DD = parts[2];
+                    
+                    // Usar YYYY/MM/DD para construir el objeto Date de manera consistente
+                    const compatibleDateString = `${YYYY}/${MM}/${DD}`; 
+                    const dateObj = new Date(compatibleDateString); 
+                    const formattedDateOnly = `${DD}-${MM}-${YYYY}`; // DD-MM-YYYY (Para mostrar)
+
+                    if (!isNaN(dateObj)) {
+                         // Obtener el nombre del día en español (ej: "lunes")
+                        const dayName = dateObj.toLocaleDateString('es-CL', { weekday: 'long' });
+                        // Capitalizar la primera letra del día (Lunes)
+                        const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+                        // Combinar: DD-MM-YYYY Día
+                        formattedDate = `${formattedDateOnly} **${capitalizedDayName}**`; 
+                    } else {
+                         formattedDate = formattedDateOnly; // Fallback si la conversión falla
+                    }
+                } else {
+                    formattedDate = dayData.date; // Fallback si el formato no es el esperado
+                }
+                // ====================================================================
+
                 // Construir el desglose de tipos (muestra cada tipo y su subtotal)
                 let typeBreakdown = '';
                 // Ordenar los tipos alfabéticamente para consistencia
@@ -1009,7 +994,7 @@
                     typeBreakdown += `<p style="margin: 0; font-size: 0.9em;"><strong>${tipo}:</strong> ${formatoMoneda(monto)}</p>`;
                 });
                 
-                // Si no hay desglose (lo cual es raro si hay total, pero por seguridad)
+                // Si no hay desglose 
                 if (typeBreakdown === '') {
                     typeBreakdown = '<p style="margin: 0; font-style: italic; color: #666;">Sin desglose disponible.</p>';
                 }
@@ -1017,7 +1002,8 @@
                 html += `
                     <tr class="${currentColorClass}">
                         <td style="font-weight: bold; font-size: 1.1em;">${formattedDate}</td>
-                        <td style="font-weight: bold; color: #007bff; font-size: 1.1em; text-align: right;">${formatoMoneda(dayData.total / 100)}</td> <td style="font-size: 0.9em;">${typeBreakdown}</td>
+                        <td style="font-weight: bold; color: #007bff; font-size: 1.1em; text-align: right;">${formatoMoneda(dayData.total)}</td>
+                        <td style="font-size: 0.9em;">${typeBreakdown}</td>
                     </tr>
                 `;
             });
@@ -1112,13 +1098,13 @@
                         movimientoDisplay = history[historyIndex].movimientoDisplay || {};
                     }
                 } else {
-                    guardarEstado(conteoActual, detalleMovimientos, totalRetirado, conteoActual);
+                    guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
                 }
                 
             } catch (e) {
                 console.error("Error cargando localStorage:", e);
                 conteoActual = {}; detalleMovimientos = []; totalRetirado = 0; movimientoDisplay = {}; history = []; historyIndex = -1;
-                guardarEstado(conteoActual, detalleMovimientos, totalRetirado, conteoActual);
+                guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
             }
         }
         
@@ -1474,7 +1460,7 @@
             history = [];
             historyIndex = -1;
             
-            guardarEstado(conteoActual, detalleMovimientos, totalRetirado, conteoActual);
+            guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
 
             generarCampos(); 
             fetchEsperadoData(); 
@@ -1551,7 +1537,7 @@
                         movimientoDisplay = currentState.movimientoDisplay || {};
                     } else {
                         // Si el historial está vacío o mal, guardar el estado inicial de la importación
-                        guardarEstado(conteoActual, detalleMovimientos, totalRetirado, conteoActual);
+                        guardarEstado(conteoActual, detalleMovimientos, totalRetirado, importedData.conteoActual || {});
                     }
                     
                     // 2. Guardar los nuevos datos en localStorage
