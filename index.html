@@ -24,7 +24,7 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 1000px; /* AUMENTADO PARA OCUPAR MÁS PANTALLA */
+            max-width: 1000px; 
             width: 100%;
         }
 
@@ -36,55 +36,44 @@
             margin-bottom: 20px;
         }
 
-        /* --- NUEVO LAYOUT DE DOS COLUMNAS (Para escritorios/tablets) --- */
         .main-layout {
             display: flex;
-            gap: 20px; /* Espacio entre columnas */
+            gap: 20px; 
             margin-top: 20px;
         }
         
         .left-column {
-            flex-basis: 40%; /* Menos espacio para controles/entradas */
+            flex-basis: 40%; 
             min-width: 350px;
             flex-grow: 1;
         }
         
         .right-column {
-            flex-basis: 60%; /* Más espacio para la tabla de desglose/resultados */
+            flex-basis: 60%; 
             flex-grow: 1;
         }
 
-        /* MEDIA QUERY: En pantallas pequeñas (< 768px), vuelve a una sola columna */
         @media (max-width: 768px) {
             .main-layout {
                 flex-direction: column;
             }
         }
-        /* --------------------------------------------------------------- */
 
-
-        /* Contenedor de botones principales */
         .main-actions {
-            display: flex;
-            justify-content: space-between;
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 20px;
-            /* TRES COLUMNAS */
-            grid-template-columns: repeat(3, 1fr);
-            display: grid; 
         }
 
-        /* ESTILO UNIFICADO PARA BOTONES Y EL NUEVO ENLACE */
         .main-actions button, .main-actions a {
             flex-grow: 1;
             padding: 10px;
             border: none;
             border-radius: 5px;
-            font-size: 0.9em; /* Ajuste para que quepan 3 botones */
+            font-size: 0.9em; 
             cursor: pointer;
             font-weight: bold;
-            
-            /* Propiedades para que el enlace se vea y se comporte como un botón */
             text-decoration: none; 
             text-align: center;
             display: flex; 
@@ -92,7 +81,6 @@
             justify-content: center;
         }
         
-        /* Grupo de efectivo esperado y botón principal */
         .input-group {
             margin: 15px 0;
             padding-top: 10px;
@@ -105,7 +93,6 @@
             font-weight: bold;
         }
 
-        /* ESTILO PARA EL DATO NO EDITABLE */
         #esperadoDisplay {
             display: block;
             padding: 8px;
@@ -119,14 +106,13 @@
             color: #007bff; 
         }
 
-        /* ESTILOS DEL BLOQUE DE INFO ADICIONAL (Divisor/Total Día) */
         #divisor-info {
             margin-top: 10px; 
             padding: 10px; 
             border: 1px solid #007bff; 
             border-radius: 5px; 
             background-color: #e6f0ff;
-            margin-bottom: 15px; /* Espacio extra para separarlo del desglose esperado */
+            margin-bottom: 15px;
         }
         
         .update-info-container {
@@ -146,10 +132,9 @@
             font-size: 1.1em;
             cursor: pointer;
             margin-top: 20px;
-            margin-bottom: 20px; /* Espacio debajo del botón de comparar */
+            margin-bottom: 20px; 
         }
         
-        /* --------------------- ESTILOS DEL DESGLOSE ESPERADO --------------------- */
         #desglose-esperado table {
             width: 100%;
             border-collapse: collapse;
@@ -168,9 +153,7 @@
             text-align: right;
             font-weight: bold;
         }
-        /* ------------------- FIN ESTILOS DEL DESGLOSE ESPERADO ------------------- */
         
-        /* --------------------- ESTILOS DEL DESGLOSE CONTADO --------------------- */
         #desglose-contado table {
             width: 100%;
             border-collapse: collapse;
@@ -200,10 +183,7 @@
             padding-top: 10px;
             border-top: 2px solid #007bff;
         }
-        /* ------------------- FIN ESTILOS DEL DESGLOSE CONTADO ------------------- */
-
-
-        /* --------------------- MODAL STYLES (Conteo) --------------------- */
+        
         .modal {
             display: none; 
             position: fixed;
@@ -240,7 +220,6 @@
             cursor: pointer;
         }
         
-        /* Estilos dentro del modal de conteo - Alineación (Flexbox) */
         .denominacion-row {
             display: flex;
             align-items: center;
@@ -304,7 +283,7 @@
         }
 
         .total-display input.cantidad-input {
-            width: 55px; /* Ajuste para 3-4 cifras */
+            width: 55px; 
             padding: 3px;
             border: 1px solid #007bff; 
             border-radius: 4px;
@@ -331,22 +310,17 @@
         }
         
         .total-display .detalle-movimiento {
-            /* AJUSTE CLAVE PARA MOSTRAR TODO EL TEXTO SIN SALIRSE DEL MODAL */
-            overflow-x: auto; /* Permite desplazamiento horizontal */
-            white-space: nowrap; /* Mantiene todo en una línea */
-            
-            max-width: 100%; /* El campo usa todo el espacio disponible */
-            padding-right: 3px; /* Pequeño padding para que el scroll no choque con el borde */
-            
+            overflow-x: auto; 
+            white-space: nowrap; 
+            max-width: 100%; 
+            padding-right: 3px; 
             font-size: 0.7em; 
             font-weight: normal;
             color: #666;
             margin-top: 2px;
             text-align: right; 
         }
-        /* ------------------- FIN ESTILOS MODAL CONTEO ------------------- */
-
-        /* Estilos específicos para el nuevo modal de edición detallada */
+        
         #movimientos-edicion {
             list-style: none;
             padding: 0;
@@ -358,17 +332,47 @@
             padding: 5px;
             border: 1px solid #eee;
             border-radius: 4px;
+            gap: 10px; 
         }
-        #movimientos-edicion li input {
-            width: 100%;
-            padding: 5px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            text-align: right;
-            margin-left: 10px;
+        
+        .sign-control {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+            width: 70px; 
         }
 
-        /* Controles de Deshacer/Rehacer */
+        .sign-control button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            flex-grow: 1;
+        }
+        
+        .sign-control button.active-sign {
+            background-color: #007bff;
+            color: white;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .sign-control button:not(.active-sign) {
+            background-color: #f0f0f0;
+            color: #6c757d;
+            border: 1px solid #ccc;
+        }
+
+        #movimientos-edicion li input {
+            width: 100%; 
+            padding: 5px;
+            font-size: 1.1em;
+            border: 1px solid #ccc;
+            text-align: right;
+            flex-grow: 1;
+        }
+
         #history-controls {
             display: flex;
             justify-content: center;
@@ -384,13 +388,11 @@
             cursor: not-allowed;
         }
 
-        /* Resultados y Desglose */
         .mensaje.cuadrado { background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px;}
         .mensaje.sobrante { background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px;}
         .mensaje.faltante { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px;}
         .error-fetch { background-color: #d9534f; color: white; padding: 10px; border-radius: 5px; text-align: center; }
         
-        /* Estilos para Importar/Exportar */
         .backup-controls {
             display: flex;
             justify-content: space-between;
@@ -414,12 +416,11 @@
             font-weight: bold;
         }
         #import-file {
-            display: none; /* Oculta el input de archivo por defecto */
+            display: none; 
         }
         
-        /* ------------------- NUEVOS ESTILOS PARA EL MODAL HISTORIAL ------------------- */
         #historyModal .modal-content {
-             max-width: 900px; /* Ancho suficiente para la tabla de historial */
+             max-width: 900px; 
         }
         
         .history-table {
@@ -431,25 +432,56 @@
             border: 1px solid #ccc;
             padding: 8px;
             text-align: left;
-            vertical-align: top; /* Importante para el desglose */
+            vertical-align: top; 
         }
         .history-table th {
             background-color: #e9e9e9;
             color: #333;
             font-weight: bold;
         }
-        .history-table td:nth-child(2) { /* Columna de TOTAL */
-            text-align: right;
+        
+        /* Ajuste para las nuevas columnas */
+        .history-table th:nth-child(2), .history-table td:nth-child(2) { 
+            text-align: center; 
+        }
+        /* PUNTO DIARIO */
+        .history-table th:nth-child(3), .history-table td:nth-child(3) { 
+            text-align: right; 
+            font-weight: bold;
+            color: #28a745;
+        }
+        /* TOTAL RECAUDADO */
+        .history-table th:nth-child(4), .history-table td:nth-child(4) { 
+            text-align: right; 
+            font-weight: bold;
+            color: #007bff;
         }
         
-        /* >>>>>>>>>>>>>>>>>> ESTILOS AÑADIDOS PARA EL SOMBREADO POR FECHA <<<<<<<<<<<<<<<<< */
         .history-table .date-group-odd {
-            background-color: #f0f0f0; /* Gris muy claro */
+            background-color: #f0f0f0; 
         }
         .history-table .date-group-even {
-            background-color: #ffffff; /* Fondo blanco */
+            background-color: #ffffff; 
         }
-        /* ------------------- FIN NUEVOS ESTILOS PARA EL MODAL HISTORIAL ------------------- */
+
+        #filter-controls {
+            display: flex; 
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        #filter-controls label {
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        #divisorFilter {
+            padding: 8px;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            flex-grow: 1;
+        }
     </style>
 </head>
 <body>
@@ -483,10 +515,26 @@
                             <span class="day-total-display" id="divisor-day-total" style="color:#007bff; font-weight: bold;">$0</span>
                             <small id="divisor-date" style="display: block; margin-top: 3px; font-size: 0.8em;">Fecha: N/A</small>
                         </p>
-                        <p style="margin: 5px 0 0 0;">
+                        <p style="margin: 5px 0 0 0; border-bottom: 1px dotted #ccc; padding-bottom: 5px;">
                             <strong>Último Divisor:</strong> 
-                            <span class="divisor-value-display" id="divisor-value" style="color:#007bff; font-weight: bold;">1.00</span>
+                            <span class="divisor-value-display" id="divisor-value" style="color:#007bff; font-weight: bold;">1</span>
                         </p>
+                        <p style="margin: 5px 0 0 0; border-bottom: 1px dotted #007bff; padding-bottom: 5px;">
+                            <strong>💰 Punto del Día (Cálculo Inverso):</strong> 
+                            <span id="punto-del-dia" style="color:#28a745; font-weight: bold;">N/A</span>
+                        </p>
+                        <p style="margin: 5px 0 0 0; background-color: #ccffcc; padding: 5px; border-radius: 4px;">
+                            <strong>📊 TOTAL Puntos (Historial):</strong> 
+                            <span id="suma-total-puntos-historial" style="color:#28a745; font-weight: bold;">N/A</span>
+                        </p>
+                        <div style="margin-top: 15px; border-top: 1px dashed #007bff; padding-top: 10px;">
+                            <label for="divisor-planta" style="font-weight: bold; display: block; margin-bottom: 5px;">Divisor Planta (Sólo Dato):</label>
+                            <input type="number" id="divisor-planta" value="1.0" step="0.01" style="width: 100%; padding: 5px; border: 1px solid #007bff; border-radius: 4px; text-align: right;">
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <label for="divisor-part-time" style="font-weight: bold; display: block; margin-bottom: 5px;">Divisor Part-Time (Para Filtro):</label>
+                            <input type="number" id="divisor-part-time" value="1.0" step="0.01" style="width: 100%; padding: 5px; border: 1px solid #007bff; border-radius: 4px; text-align: right;">
+                        </div>
                     </div>
                     <div id="desglose-esperado-container">
                         <h3 style="margin: 10px 0 5px 0; color: #333; font-size: 1.1em; border-bottom: 1px solid #eee; padding-bottom: 5px;">
@@ -525,11 +573,11 @@
                     
                     <div class="total-summary">
                         <p>
-                            <strong>TOTAL ACUMULADO CONTADO:</strong> 
+                            <strong>TOTAL en CAJA:</strong> 
                             <span id="total-contado-final" style="color:#28a745;">$0</span>
                         </p>
                         <p>
-                            <strong>TOTAL RETIRADO (Egresos):</strong> 
+                            <strong>TOTAL RETIRADO (Efectivo):</strong> 
                             <span id="total-retiros-final">$0</span>
                         </p>
                     </div>
@@ -537,7 +585,8 @@
 
                 <div id="comparacion">
                     <h2>Análisis del Arqueo:</h2>
-                    <p><strong>Total (Contado - Esperado):</strong> <span id="diferencia">$0</span></p>
+                    <p><strong>Total EGRESO (Contado - Esperado):</strong> <span id="diferencia">$0</span></p>
+                    <p><strong>📊 TOTAL Puntos (Historial):</strong> <span id="division-result">N/A</span></p>
                     <p id="mensaje-arqueo" class="mensaje"></p>
                 </div>
 
@@ -576,7 +625,7 @@
         <div class="modal-content">
             <span class="close" onclick="cerrarModalEdicionDetalle()">&times;</span>
             <h2 id="edicion-detalle-titulo">✏️ Editar Movimientos de [Denominación]</h2>
-            <p>Edita la cantidad y el signo (+/-) de cada movimiento. Solo se permiten números enteros y los signos `+` o ` -`.</p>
+            <p>Edita la **cantidad** y el **signo (+/-)** de cada movimiento.</p>
             
             <ul id="movimientos-edicion">
                 </ul>
@@ -603,36 +652,43 @@
         <div class="modal-content">
             <span class="close" onclick="closeHistoryModal()">&times;</span>
             <h2>📋 Historial Detallado (Apps Script)</h2>
+            
+            <div id="filter-controls">
+                <label for="divisorFilter">Filtrar por Divisor:</label>
+                <select id="divisorFilter" onchange="fetchHistorialDetallado(true)">
+                    <option value="">-- Ver Todo (Total General) --</option>
+                    </select>
+            </div>
+            <div id="history-summary" style="margin-top: 15px; margin-bottom: 15px; padding: 10px; border: 2px solid #28a745; border-radius: 5px;">
+                <p style="text-align: center; color: #666;"><i class="fas fa-spinner fa-spin"></i> Solicitando resumen...</p>
+            </div>
             <div id="historyContainer">
-                <p style="text-align: center; color: #666;"><i class="fas fa-spinner fa-spin"></i> Solicitando datos al servidor...</p>
+                <p style="text-align: center; color: #666;"><i class="fas fa-spinner fa-spin"></i> Solicitando tabla...</p>
             </div>
         </div>
     </div>
     <script>
-        /* ---------------------------------------------------- */
-        /* JavaScript: Lógica, Suma Acumulativa, Fetch y Storage*/
-        /* ---------------------------------------------------- */
-
+        
         // ** REEMPLAZA ESTA URL CON TU URL DE IMPLEMENTACIÓN DEL APPS SCRIPT **
-        // DEBE SER LA URL DE IMPLEMENTACIÓN, NO LA DE PRUEBA (termina en /exec)
-        // AHORA SE ESPERA UN OBJETO JSON COMO RESPUESTA
         const ESPERADO_URL = 'https://script.google.com/macros/s/AKfycbz_kCb4aEe437zHGbRqnjCibw1NtAqfCbTNmsVPn9jaZOPBFaZ6-FwmiTLqVxq39X1P/exec'; // <--- ¡ACTUALIZA ESTO!
         
-        const FETCH_TIMEOUT_MS = 10000; // Timeout de 10 segundos
+        const FETCH_TIMEOUT_MS = 10000; 
 
-        // 1. Definir las denominaciones de Chile
         const DENOMINACIONES = [
-            20000, 10000, 5000, 2000, 1000, // Billetes
-            500, 100, 50, 10 // Monedas
+            20000, 10000, 5000, 2000, 1000, 
+            500, 100, 50, 10 
         ];
 
-        // Claves de localStorage
         const STORAGE_KEY_CONTEO = 'arqueoConteoCLP';
         const STORAGE_KEY_DETALLE = 'arqueoDetalleCLP';
         const STORAGE_KEY_RETIROS = 'arqueoRetirosCLP'; 
         const STORAGE_KEY_HISTORY = 'arqueoHistoryCLP';
+        const STORAGE_KEY_PUNTO_DIA_VALOR = 'arqueoPuntoDiaValorCLP';
+        const STORAGE_KEY_DIVISOR_VALOR = 'arqueoDivisorValorCLP'; 
+        const STORAGE_KEY_SUMA_PUNTOS = 'arqueoSumaPuntosCLP'; 
+        const STORAGE_KEY_DIVISOR_PLANTA = 'arqueoDivisorPlantaCLP'; 
+        const STORAGE_KEY_DIVISOR_PARTTIME = 'arqueoDivisorPartTimeCLP'; 
 
-        // Elementos del DOM
         const contenedorForm = document.getElementById('arqueo-form');
         const totalContadoFinalSpan = document.getElementById('total-contado-final');
         const totalRetirosFinalSpan = document.getElementById('total-retiros-final');
@@ -642,46 +698,63 @@
         const listaMovimientosUl = document.getElementById('lista-movimientos');
         const esperadoDisplay = document.getElementById('esperadoDisplay'); 
         const updateStatusSpan = document.getElementById('update-status'); 
-        const desgloseEsperadoDiv = document.getElementById('desglose-esperado'); // NUEVO
+        const desgloseEsperadoDiv = document.getElementById('desglose-esperado'); 
         
-        // Nuevos elementos DOM para el Divisor/Total Día:
         const divisorDayTotalSpan = document.getElementById('divisor-day-total');
         const divisorValueSpan = document.getElementById('divisor-value');
         const divisorDateSpan = document.getElementById('divisor-date');
+        const puntoDelDiaSpan = document.getElementById('punto-del-dia'); 
+        const divisionResultSpan = document.getElementById('division-result');
+        const sumaTotalPuntosHistorialSpan = document.getElementById('suma-total-puntos-historial');
 
         const modalConteo = document.getElementById('modalConteo'); 
         const modalDetalle = document.getElementById('modalDetalle'); 
         const modalEdicionDetalle = document.getElementById('modalEdicionDetalle'); 
-        const historyModal = document.getElementById('historyModal'); // NUEVO MODAL
-        const historyContainer = document.getElementById('historyContainer'); // CONTENEDOR DE LA TABLA HISTORIAL
+        const historyModal = document.getElementById('historyModal'); 
+        const historyContainer = document.getElementById('historyContainer'); 
+        const historySummaryDiv = document.getElementById('history-summary');
         const undoBtn = document.getElementById('undo-btn');
         const redoBtn = document.getElementById('redo-btn');
+        
+        const divisorPlantaInput = document.getElementById('divisor-planta');
+        const divisorPartTimeInput = document.getElementById('divisor-part-time');
+        const divisorFilterSelect = document.getElementById('divisorFilter');
 
-        // Estado del Conteo
         let conteoActual = {}; 
         let detalleMovimientos = []; 
         let totalRetirado = 0; 
         let movimientoDisplay = {}; 
+        let puntoDelDiaValor = 0; 
+        let ultimoDivisor = 1.0; 
+        let sumaTotalPuntos = 0; 
 
-        // Historial de Estados para Deshacer/Rehacer
         let history = [];
         let historyIndex = -1;
         
-        // Estado temporal para la edición detallada
         let denominacionEnEdicion = null; 
 
-        // Función para formatear números como moneda chilena
         function formatoMoneda(numero) {
+            // Asegura que el número pasado al formateador es un entero.
             return new Intl.NumberFormat('es-CL', {
                 style: 'currency',
                 currency: 'CLP',
-                minimumFractionDigits: 0
-            }).format(Math.round(numero));
+                maximumFractionDigits: 0 
+            }).format(Math.round(numero)); 
+        }
+        
+        function formatoFactor(numero) {
+            // Mostrar el divisor con dos decimales para precisión en el filtro
+            if (isNaN(numero) || !isFinite(numero)) return "N/A";
+            // Usamos toLocaleString para manejar el separador decimal correcto (coma en Chile)
+            return parseFloat(numero).toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
+        }
+        
+        function formatoPunto(numero) {
+             return formatoMoneda(numero);
         }
 
-        // --- Funciones de Fetch para el Esperado ---
         async function fetchEsperadoData() {
-            // Limpia mensajes anteriores
+            // 1. Resetear interfaz y mostrar estado de carga
             mensajeArqueoP.classList.remove('error-fetch');
             mensajeArqueoP.textContent = '';
             
@@ -689,83 +762,95 @@
             divisorDayTotalSpan.textContent = '...';
             divisorValueSpan.textContent = '...';
             divisorDateSpan.textContent = 'Fecha: ...';
-            desgloseEsperadoDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando desglose...';
+            puntoDelDiaSpan.textContent = 'Calculando...';
+            desgloseEsperadoDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando datos desde el servidor...'; 
             updateStatusSpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando con Google Sheets...';
-
+            
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
             try {
-                // 1. INTENTO DE FETCH
+                // 2. Intentar el Fetch
                 const response = await fetch(ESPERADO_URL, { signal: controller.signal });
-                clearTimeout(timeoutId); // Limpiar el timeout si la respuesta llega a tiempo
+                clearTimeout(timeoutId); 
                 
                 if (!response.ok) {
                     throw new Error(`Error HTTP: ${response.status} (${response.statusText})`);
                 }
                 
-                // 2. PROCESAMIENTO DE DATOS: AHORA ESPERAMOS JSON
                 const data = await response.json(); 
                 
-                if (!data.totalAcumulado || !data.lastDivisor || !data.desgloseEsperado) {
-                    throw new Error(`Datos no válidos o estructura JSON incorrecta: ${JSON.stringify(data).substring(0, 50)}`);
+                // 3. Validación Mínima y Asignación
+                if (data.totalAcumulado === undefined || data.lastDivisor === undefined || data.totalLastDivisorDay === undefined) {
+                     throw new Error(`Datos faltantes en la respuesta JSON (totalAcumulado, lastDivisor o totalLastDivisorDay).`);
                 }
-
-                // 3. DESEMPAQUETAR Y CORREGIR LOS VALORES (dividir por 100 si vienen inflados)
+                
                 const totalAcumuladoInflado = data.totalAcumulado;
-                const lastDivisorValue = data.lastDivisor; 
+                const lastDivisorValue = parseFloat(data.lastDivisor); 
                 const totalLastDivisorDayInflado = data.totalLastDivisorDay; 
-                const lastDivisorDateString = data.lastDivisorDate;
 
-                // CORRECCIÓN: Dividir por 100 (ASUMIENDO QUE SOLO ESTOS TRES VALORES VIENEN INFLADOS)
-                const expectedValue = totalAcumuladoInflado / 100;
-                const totalLastDivisorDay = totalLastDivisorDayInflado / 100;
+                // Montos monetarios: Dividir por 100 y REDONDEAR a entero.
+                const expectedValue = Math.round(totalAcumuladoInflado / 100); 
+                const totalLastDivisorDay = Math.round(totalLastDivisorDayInflado / 100); 
+                const lastDivisorDateString = data.lastDivisorDate || 'N/A'; 
                 
-                // Corregir montos del desglose (Dividir por 100)
-                const desgloseEsperado = data.desgloseEsperado.map(item => ({
-                    tipo: item.tipo,
-                    monto: item.monto / 100 
-                }));
+                ultimoDivisor = lastDivisorValue || 1.0;
 
-                // =======================================================
-                // LÓGICA ROBUSTA PARA FECHA Y DÍA EN PANTALLA PRINCIPAL
-                
-                const dateParts = lastDivisorDateString.split('-'); // [DD, MM, YYYY]
-                
-                if (dateParts.length !== 3) {
-                    throw new Error(`Fecha inválida devuelta por el servidor: ${lastDivisorDateString}. Formato esperado DD-MM-YYYY.`);
-                }
-                
-                // REORDENAR Y CONVERTIR A FORMATO YYYY/MM/DD para compatibilidad universal
-                const compatibleDateString = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; // YYYY/MM/DD
-                
-                const dateObj = new Date(compatibleDateString); 
-                
-                // Si la conversión falla, mostramos un error claro.
-                if (isNaN(dateObj)) {
-                    // Si falla aquí, significa que DD o MM estaban fuera de rango (ej. 32-01-2025)
-                    throw new Error(`Fecha no válida (${compatibleDateString}). Revise los valores en Google Sheets.`);
+                // 4. CÁLCULO DEL PUNTO DEL DÍA (Monto Monetario)
+                if (ultimoDivisor && totalLastDivisorDay && ultimoDivisor !== 0) {
+                    puntoDelDiaValor = Math.round(totalLastDivisorDay / ultimoDivisor); 
+                } else {
+                    puntoDelDiaValor = 0; 
                 }
 
-                const formattedDateOnly = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`; // DD-MM-YYYY (Para mostrar)
+                // 5. Manejo del Desglose (AHORA ES OPCIONAL)
+                let desgloseEsperado = [];
+                if (data.desgloseEsperado && Array.isArray(data.desgloseEsperado)) {
+                    desgloseEsperado = data.desgloseEsperado.map(item => ({
+                        tipo: item.tipo,
+                        monto: Math.round((item.monto || 0) / 100) 
+                    }));
+                } 
 
-                // Obtener el nombre del día en español (ej: "lunes")
-                const dayName = dateObj.toLocaleDateString('es-CL', { weekday: 'long' });
-                const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+                // 6. Lógica de Fecha
+                let formattedDateWithDay = 'Fecha: N/A';
+                if (lastDivisorDateString && lastDivisorDateString !== 'N/A') {
+                    const dateParts = lastDivisorDateString.split('-'); 
+                    if (dateParts.length === 3) {
+                         const compatibleDateString = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; 
+                         const dateObj = new Date(compatibleDateString); 
+                         if (!isNaN(dateObj)) {
+                            const formattedDateOnly = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`; 
+                            const dayName = dateObj.toLocaleDateString('es-CL', { weekday: 'long' });
+                            const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+                            formattedDateWithDay = `Fecha: ${formattedDateOnly} **${capitalizedDayName}**`;
+                         } else {
+                            formattedDateWithDay = `Fecha: ${lastDivisorDateString} (Formato Inválido)`;
+                         }
+                    } else {
+                        formattedDateWithDay = `Fecha: ${lastDivisorDateString}`;
+                    }
+                }
 
-                // Combinar: DD-MM-YYYY Día
-                const formattedDateWithDay = `${formattedDateOnly} ${capitalizedDayName}`;
-                // =======================================================
-
-
-                // 4. ACTUALIZAR PANTALLA
-                esperadoDisplay.textContent = formatoMoneda(expectedValue); // Total Efectivo Esperado
+                // 7. ACTUALIZAR PANTALLA Y ESTADO LOCAL
+                esperadoDisplay.textContent = formatoMoneda(expectedValue); 
+                divisorDayTotalSpan.textContent = formatoMoneda(totalLastDivisorDay); 
+                // Usar el valor exacto del divisor para guardarlo y mostrarlo en formato factor
+                divisorValueSpan.textContent = formatoFactor(ultimoDivisor); 
+                divisorDateSpan.textContent = formattedDateWithDay; 
                 
-                divisorDayTotalSpan.textContent = formatoMoneda(totalLastDivisorDay); // Total Día del último registro
-                divisorValueSpan.textContent = lastDivisorValue.toFixed(2); // Valor del Divisor
-                divisorDateSpan.textContent = `Fecha: ${formattedDateWithDay}`; // Fecha + Día (Ej: 24-11-2025 Lunes)
+                puntoDelDiaSpan.textContent = formatoPunto(puntoDelDiaValor);
+                localStorage.setItem(STORAGE_KEY_PUNTO_DIA_VALOR, puntoDelDiaValor.toString());
+                localStorage.setItem(STORAGE_KEY_DIVISOR_VALOR, ultimoDivisor.toString()); 
                 
-                mostrarDesgloseEsperado(desgloseEsperado); // Mostrar el nuevo desglose
+                // 8. POBAR EL FILTRO DEL MODAL
+                populateDivisorFilter(); 
+
+                if (desgloseEsperado.length > 0) {
+                    mostrarDesgloseEsperado(desgloseEsperado);
+                } else {
+                    desgloseEsperadoDiv.innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">No se recibió desglose detallado del servidor.</p>';
+                }
 
                 const now = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 updateStatusSpan.innerHTML = `Última actualización: <strong>${now}</strong> (Manual)`;
@@ -773,36 +858,75 @@
                 realizarArqueo();
 
             } catch (error) {
-                clearTimeout(timeoutId); // Asegurarse de limpiar si el error ocurre antes del timeout
+                clearTimeout(timeoutId); 
 
                 let errorMessage;
                 if (error.name === 'AbortError') {
-                    errorMessage = "Tiempo de espera agotado (Timeout). Verifica si el script está ejecutándose lento o la conexión.";
-                } else if (error.message.includes('Failed to fetch') || error.message.includes('network error')) {
-                    errorMessage = "Error de red/CORS. Asegúrate que la URL es **correcta** y el Apps Script permite acceso a **'Cualquier persona'**.";
-                } else if (error instanceof SyntaxError) {
-                    errorMessage = `Error al procesar la respuesta (JSON inválido). Revise que su Apps Script devuelve JSON. Detalles: ${error.message}`;
-                } else if (error.message.includes('Fecha inválida') || error.message.includes('Fecha no válida')) {
-                    errorMessage = `Error de fecha: El servidor devolvió un valor de fecha inválido. Detalles: ${error.message}`;
+                    errorMessage = "Tiempo de espera agotado (Timeout).";
+                } else if (error.message.includes('Failed to fetch')) {
+                    errorMessage = "Error de red/CORS. Asegúrate que la URL es correcta y el Apps Script permite acceso a 'Cualquier persona'.";
                 } else {
-                    errorMessage = `Fallo interno del script: ${error.message}`;
+                    errorMessage = `Fallo al procesar datos: ${error.message}`;
                 }
 
                 console.error("Error al obtener el Efectivo Esperado desde el Apps Script:", error);
                 
-                // Muestra el error en la interfaz y resetea los valores
                 esperadoDisplay.textContent = formatoMoneda(0); 
                 divisorDayTotalSpan.textContent = formatoMoneda(0);
-                divisorValueSpan.textContent = '1.00';
+                divisorValueSpan.textContent = '1'; 
                 divisorDateSpan.textContent = 'Fecha: N/A';
-                desgloseEsperadoDiv.innerHTML = '<p style="text-align: center; color: #d9534f; font-weight: bold;">Error al cargar el desglose.</p>';
+                puntoDelDiaValor = 0; 
+                ultimoDivisor = 1.0;
+                puntoDelDiaSpan.textContent = formatoMoneda(0);
+                desgloseEsperadoDiv.innerHTML = '<p style="text-align: center; color: #d9534f; font-weight: bold;">🚨 Error al cargar datos.</p>';
                 updateStatusSpan.innerHTML = `<span style="color:#d9534f;">Error de conexión: ${errorMessage}</span>`;
-                mensajeArqueoP.textContent = "🚨 ERROR AL CARGAR DATOS DEL SERVIDOR. Revisa la consola para más detalles.";
+                mensajeArqueoP.textContent = "🚨 ERROR AL CARGAR DATOS ESPERADOS.";
                 mensajeArqueoP.classList.add('error-fetch');
+                
+                realizarArqueo(); 
             }
         }
         
-        // --- FUNCIÓN PARA MOSTRAR EL NUEVO DESGLOSE ESPERADO ---
+        function populateDivisorFilter() {
+            // Limpiar opciones anteriores
+            divisorFilterSelect.innerHTML = '<option value="">-- Ver Todo (Total General) --</option>';
+            
+            // Recoger los divisores relevantes para el FILTRO
+            const divisores = new Set();
+            
+            // 1. Ultimo Divisor de Apps Script
+            const ultimoDivisorValue = parseFloat(localStorage.getItem(STORAGE_KEY_DIVISOR_VALOR)) || 1.0;
+            if (ultimoDivisorValue !== 1.0) divisores.add(ultimoDivisorValue);
+            
+            // 2. Divisor Part-Time (del input local) - ESTE ES EL DIVISOR CLAVE PARA FILTRAR
+            const divisorPartTimeValue = parseFloat(divisorPartTimeInput.value) || 1.0;
+            if (divisorPartTimeValue !== 1.0) divisores.add(divisorPartTimeValue);
+            
+            // El Divisor Planta (divisorPlantaInput.value) NO se añade aquí, 
+            // ya que solo es un dato de referencia en la interfaz principal.
+
+            // 3. Añadir el divisor '1.0' si no está (para ver el divisor por defecto)
+            divisores.add(1.0); 
+
+            // Ordenar y crear opciones
+            const sortedDivisores = Array.from(divisores).sort((a, b) => b - a);
+            
+            sortedDivisores.forEach(divisor => {
+                const formattedDivisor = formatoFactor(divisor); // Ej. 1,00
+                const value = divisor.toFixed(2); // Usar el valor fijo de 2 decimales para la coincidencia de 'value'
+                
+                let label = `Divisor ${formattedDivisor}`;
+                // Etiquetar claramente los divisores que se usan
+                if (divisor === divisorPartTimeValue) label = `Divisor ${formattedDivisor} (Part-Time)`;
+                if (divisor === ultimoDivisorValue && divisor !== divisorPartTimeValue) label = `Divisor ${formattedDivisor} (Último Reg)`;
+
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = label;
+                divisorFilterSelect.appendChild(option);
+            });
+        }
+        
         function mostrarDesgloseEsperado(data) {
             if (!data || data.length === 0) {
                 desgloseEsperadoDiv.innerHTML = '<p style="text-align: center; color: #666;">No hay desglose disponible.</p>';
@@ -810,7 +934,6 @@
             }
             
             let totalDesglose = 0;
-            // Inicializar variable para la suma específica (Máquinas y Mesas)
             let totalMaquinasMesas = 0; 
             
             let html = '<table>';
@@ -818,25 +941,24 @@
             html += '<tbody>';
             
             data.forEach(item => {
+                const monto = item.monto || 0;
                 html += `
                     <tr>
                         <td>${item.tipo}</td>
-                        <td>${formatoMoneda(item.monto)}</td>
+                        <td>${formatoMoneda(monto)}</td>
                     </tr>
                 `;
-                totalDesglose += item.monto;
+                totalDesglose += monto;
                 
-                // Sumar si el tipo es 'Máquinas' o 'Mesas'
                 const tipoLower = item.tipo.toLowerCase();
                 if (tipoLower.includes('máquina') || tipoLower.includes('maquina') || tipoLower.includes('mesa')) {
-                    totalMaquinasMesas += item.monto;
+                    totalMaquinasMesas += monto;
                 }
             });
             
             html += '</tbody>';
             html += '<tfoot>';
             
-            // Fila con el total de Máquinas y Mesas
             html += `
                 <tr style="border-top: 1px dashed #007bff;">
                     <td style="font-weight: bold; color: #6c757d;">TOTAL MÁQUINAS Y MESAS</td>
@@ -854,32 +976,31 @@
             
             desgloseEsperadoDiv.innerHTML = html;
         }
-        
-        // ----------------------------------------------------------------------------------
-        // --- FUNCIONES PARA EL HISTORIAL DETALLADO (action=get) ---
-        // ----------------------------------------------------------------------------------
 
-        /**
-         * Abre el modal y carga el historial detallado.
-         */
         async function openHistoryModal() {
             historyModal.style.display = 'block';
-            await fetchHistorialDetallado();
+            populateDivisorFilter(); 
+            // Cargar con el valor de filtro actual (que puede ser vacío al abrir)
+            await fetchHistorialDetallado(true); 
         }
 
-        /**
-         * Cierra el modal de historial.
-         */
         function closeHistoryModal() {
             historyModal.style.display = 'none';
         }
 
-        /**
-         * Solicita el historial completo de recaudaciones (fecha, tipo, monto) del Apps Script.
-         */
-        async function fetchHistorialDetallado() {
+        async function fetchHistorialDetallado(isModal = false) {
             const HISTORIAL_URL = `${ESPERADO_URL}?action=get`;
-            historyContainer.innerHTML = '<p style="text-align: center; color: #666;"><i class="fas fa-spinner fa-spin"></i> Solicitando datos al servidor...</p>';
+            
+            const selectedDivisor = isModal ? divisorFilterSelect.value : null; 
+            
+            if (isModal) {
+                historyContainer.innerHTML = '<p style="text-align: center; color: #666;"><i class="fas fa-spinner fa-spin"></i> Solicitando tabla...</p>';
+                historySummaryDiv.innerHTML = '<p style="text-align: center; color: #666;"><i class="fas fa-spinner fa-spin"></i> Solicitando resumen...</p>';
+            }
+            // Si no estamos en el modal, actualizamos el resumen en el panel principal
+            if (!isModal) {
+                 sumaTotalPuntosHistorialSpan.textContent = 'Calculando...';
+            }
             
             try {
                 const response = await fetch(HISTORIAL_URL);
@@ -888,136 +1009,223 @@
                 const result = await response.json();
                 
                 if (result.status === 'success' && Array.isArray(result.data)) {
-                    renderHistoryTable(result.data, historyContainer);
+                    // Pasamos el historial, el contenedor, si es un modal, y el valor del filtro
+                    renderHistoryTable(result.data, historyContainer, isModal, selectedDivisor); 
                 } else {
-                    historyContainer.innerHTML = `<p class="error-fetch">Error: ${result.message || 'Respuesta no exitosa o formato incorrecto.'}</p>`;
+                    const message = `Error: ${result.message || 'Respuesta no exitosa o formato incorrecto.'}`;
+                    if (isModal) {
+                       historyContainer.innerHTML = `<p class="error-fetch">${message}</p>`;
+                       historySummaryDiv.innerHTML = '';
+                    } else {
+                        console.error(message);
+                    }
+                    sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(0);
+                    divisionResultSpan.textContent = formatoMoneda(0);
+                    localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, '0');
                 }
             } catch (error) {
-                historyContainer.innerHTML = `<p class="error-fetch">Error al obtener el historial detallado: ${error.message}</p>`;
+                const message = `Error al obtener el historial detallado: ${error.message}`;
+                if (isModal) {
+                    historyContainer.innerHTML = `<p class="error-fetch">${message}</p>`;
+                    historySummaryDiv.innerHTML = '';
+                } else {
+                    console.error(message);
+                }
+                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(0);
+                divisionResultSpan.textContent = formatoMoneda(0);
+                localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, '0');
                 console.error("Error al obtener el historial detallado:", error);
             }
         }
 
-        /**
-         * Renderiza la tabla de historial en el contenedor, agrupando por fecha y mostrando el total y desglose por tipo.
-         * @param {Array} historial Array de registros.
-         * @param {HTMLElement} container Elemento donde insertar la tabla.
-         */
-        function renderHistoryTable(historial, container) {
+        function renderHistoryTable(historial, container, isModal, divisorFilterValue = null) {
+            
             if (historial.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #666;">No hay registros de recaudaciones detallados en la hoja "Datos".</p>';
+                if (isModal) {
+                    container.innerHTML = '<p style="text-align: center; color: #666;">No hay registros de recaudaciones detallados en la hoja "Datos".</p>';
+                    historySummaryDiv.innerHTML = '';
+                }
+                sumaTotalPuntos = 0;
+                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(0);
+                divisionResultSpan.textContent = formatoMoneda(0);
+                localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, '0');
                 return;
             }
 
-            // 1. Agrupar y sumar por fecha y tipo
             const dailySummary = {};
-
+            
+            // 1. Agrupar por fecha y calcular el total de recaudación diario, y guardar el divisor
             historial.forEach(registro => {
-                // Extraer solo la fecha (YYYY-MM-DD)
                 const dateKey = registro.fecha.split(' ')[0];
-                
-                // CORRECCIÓN CLAVE: No dividir por 100 si los datos del historial ya están correctos
-                // Se asume que el servidor devuelve el monto ya corregido para el historial.
-                const monto = parseFloat(registro.monto); 
+                const monto = Math.round(parseFloat(registro.monto || 0)); 
                 const tipo = registro.tipo || 'Sin Tipo';
+                const divisor = parseFloat(registro.divisor) || 1.0; 
 
                 if (!dailySummary[dateKey]) {
                     dailySummary[dateKey] = {
                         date: dateKey,
                         total: 0,
-                        types: {}
+                        types: {},
+                        divisor: divisor 
                     };
                 }
 
                 dailySummary[dateKey].total += monto;
-
-                // Sumar por tipo
                 if (!dailySummary[dateKey].types[tipo]) {
                     dailySummary[dateKey].types[tipo] = 0;
                 }
                 dailySummary[dateKey].types[tipo] += monto;
             });
 
-            // 2. Convertir a array y ordenar por fecha (más reciente a más antigua)
             const summaryArray = Object.values(dailySummary).sort((a, b) => {
-                // Ordenar por la clave de fecha (YYYY-MM-DD) para asegurar un orden cronológico correcto.
                 return b.date.localeCompare(a.date);
             });
-
-            // 3. Renderizar la tabla resumida
-            let html = '<table class="history-table">';
-            html += '<thead><tr><th>Fecha</th><th>TOTAL RECAUDADO DEL DÍA</th><th>Desglose por Tipo de Entrada</th></tr></thead>';
-            html += '<tbody>';
-
-            let currentColorClass = 'date-group-odd';
-
-            summaryArray.forEach((dayData, index) => {
-                // Alternar color de fondo por día
-                currentColorClass = (index % 2 === 0) ? 'date-group-odd' : 'date-group-even';
-
-                // ====================================================================
-                // LÓGICA DE FECHA MEJORADA (Se espera YYYY-MM-DD desde el dateKey)
-                const parts = dayData.date.split('-'); // [YYYY, MM, DD]
-
-                let formattedDate;
-                if (parts.length === 3) {
-                    const YYYY = parts[0];
-                    const MM = parts[1];
-                    const DD = parts[2];
-                    
-                    // Usar YYYY/MM/DD para construir el objeto Date de manera consistente
-                    const compatibleDateString = `${YYYY}/${MM}/${DD}`; 
-                    const dateObj = new Date(compatibleDateString); 
-                    const formattedDateOnly = `${DD}-${MM}-${YYYY}`; // DD-MM-YYYY (Para mostrar)
-
-                    if (!isNaN(dateObj)) {
-                         // Obtener el nombre del día en español (ej: "lunes")
-                        const dayName = dateObj.toLocaleDateString('es-CL', { weekday: 'long' });
-                        // Capitalizar la primera letra del día (Lunes)
-                        const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
-                        // Combinar: DD-MM-YYYY Día
-                        formattedDate = `${formattedDateOnly} **${capitalizedDayName}**`; 
-                    } else {
-                         formattedDate = formattedDateOnly; // Fallback si la conversión falla
-                    }
-                } else {
-                    formattedDate = dayData.date; // Fallback si el formato no es el esperado
+            
+            let sumaTotalPuntosAcumulada = 0; 
+            let totalMontoRecaudado = 0; 
+            let filteredDaysCount = 0; 
+            
+            // 2. Filtrar y generar HTML/calcular totales
+            
+            const filteredSummaryArray = summaryArray.filter(dayData => {
+                 // Si no hay filtro o si el divisor del día coincide con el valor del filtro (comparando con 2 decimales fijos)
+                if (!divisorFilterValue || divisorFilterValue === "") {
+                    return true;
                 }
-                // ====================================================================
-
-                // Construir el desglose de tipos (muestra cada tipo y su subtotal)
-                let typeBreakdown = '';
-                // Ordenar los tipos alfabéticamente para consistencia
-                const sortedTypes = Object.entries(dayData.types).sort(([tipoA], [tipoB]) => tipoA.localeCompare(tipoB));
-                
-                sortedTypes.forEach(([tipo, monto]) => {
-                    typeBreakdown += `<p style="margin: 0; font-size: 0.9em;"><strong>${tipo}:</strong> ${formatoMoneda(monto)}</p>`;
-                });
-                
-                // Si no hay desglose 
-                if (typeBreakdown === '') {
-                    typeBreakdown = '<p style="margin: 0; font-style: italic; color: #666;">Sin desglose disponible.</p>';
-                }
-
-                html += `
-                    <tr class="${currentColorClass}">
-                        <td style="font-weight: bold; font-size: 1.1em;">${formattedDate}</td>
-                        <td style="font-weight: bold; color: #007bff; font-size: 1.1em; text-align: right;">${formatoMoneda(dayData.total)}</td>
-                        <td style="font-size: 0.9em;">${typeBreakdown}</td>
-                    </tr>
-                `;
+                // Convertir el divisor del día a string con 2 decimales fijos para la comparación
+                const dayDivisorFixed = dayData.divisor.toFixed(2);
+                return dayDivisorFixed === divisorFilterValue;
             });
+            
+            if (filteredSummaryArray.length === 0 && isModal && divisorFilterValue && divisorFilterValue !== "") {
+                container.innerHTML = `<p style="text-align: center; color: #d9534f; font-weight: bold;">🚨 No se encontraron registros con el Divisor: ${formatoFactor(parseFloat(divisorFilterValue))}.</p>`;
+                historySummaryDiv.innerHTML = '';
+                sumaTotalPuntos = 0;
+                localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, '0');
+                return;
+            }
 
-            html += '</tbody></table>';
-            container.innerHTML = html;
+
+            // Solo renderizar la tabla si estamos en el modal
+            if (isModal) {
+                let html = '<table class="history-table">';
+                html += '<thead><tr><th>Fecha</th><th>Divisor Diario</th><th>PUNTO DIARIO</th><th>TOTAL RECAUDADO DEL DÍA</th><th>Desglose por Tipo de Entrada</th></tr></thead>';
+                html += '<tbody>';
+
+                let currentColorClass = 'date-group-odd';
+
+                filteredSummaryArray.forEach((dayData, index) => {
+                    currentColorClass = (index % 2 === 0) ? 'date-group-odd' : 'date-group-even';
+
+                    let puntoDiario = 0;
+                    let puntoDiarioFormatted = 'N/A';
+                    
+                    if (dayData.divisor && dayData.divisor !== 0) {
+                        puntoDiario = Math.round(dayData.total / dayData.divisor);
+                        puntoDiarioFormatted = formatoPunto(puntoDiario);
+                    } else {
+                         puntoDiarioFormatted = 'Divisor es 0';
+                    }
+                    
+                    // Acumular el punto diario y el monto recaudado para el total general/filtrado
+                    sumaTotalPuntosAcumulada += puntoDiario; 
+                    totalMontoRecaudado += dayData.total;
+                    filteredDaysCount++;
+                    
+                    const parts = dayData.date.split('-'); 
+                    let formattedDate;
+                    if (parts.length === 3) {
+                        const YYYY = parts[0];
+                        const MM = parts[1];
+                        const DD = parts[2];
+                        
+                        const compatibleDateString = `${YYYY}/${MM}/${DD}`; 
+                        const dateObj = new Date(compatibleDateString); 
+                        const formattedDateOnly = `${DD}-${MM}-${YYYY}`; 
+
+                        if (!isNaN(dateObj)) {
+                            const dayName = dateObj.toLocaleDateString('es-CL', { weekday: 'long' });
+                            const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+                            formattedDate = `${formattedDateOnly} **${capitalizedDayName}**`; 
+                        } else {
+                             formattedDate = formattedDateOnly; 
+                        }
+                    } else {
+                        formattedDate = dayData.date; 
+                    }
+
+                    let typeBreakdown = '';
+                    const sortedTypes = Object.entries(dayData.types).sort(([tipoA], [tipoB]) => tipoA.localeCompare(tipoB));
+                    
+                    sortedTypes.forEach(([tipo, monto]) => {
+                        typeBreakdown += `<p style="margin: 0; font-size: 0.9em;"><strong>${tipo}:</strong> ${formatoMoneda(monto)}</p>`;
+                    });
+                    
+                    if (typeBreakdown === '') {
+                        typeBreakdown = '<p style="margin: 0; font-style: italic; color: #666;">Sin desglose disponible.</p>';
+                    }
+
+                    html += `
+                        <tr class="${currentColorClass}">
+                            <td style="font-weight: bold; font-size: 1.1em;">${formattedDate}</td>
+                            <td style="text-align: center; font-weight: bold; color: #17a2b8; font-size: 1.1em;">
+                                ${formatoFactor(dayData.divisor)}
+                            </td>
+                            <td style="font-weight: bold; color: #28a745; font-size: 1.1em; text-align: right;">
+                                ${puntoDiarioFormatted}
+                            </td>
+                            <td style="font-weight: bold; color: #007bff; font-size: 1.1em; text-align: right;">
+                                ${formatoMoneda(dayData.total)}
+                            </td>
+                            <td style="font-size: 0.9em;">${typeBreakdown}</td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+                
+                // INYECTAR RESUMEN DE TOTALES EN EL MODAL
+                const filterTitle = divisorFilterValue && divisorFilterValue !== "" ? 
+                    ` (Filtrado por Divisor ${formatoFactor(parseFloat(divisorFilterValue))} - ${filteredDaysCount} días)` : 
+                    " (Total General)";
+
+                historySummaryDiv.innerHTML = `
+                    <p style="margin: 0; font-size: 1.2em;">
+                        <strong>📊 Total Acumulado de Puntos Diarios ${filterTitle}:</strong> 
+                        <span style="color:#28a745; font-weight: bold;">${formatoMoneda(sumaTotalPuntosAcumulada)}</span>
+                    </p>
+                    <p style="margin: 5px 0 0 0; font-size: 1.2em;">
+                        <strong>💰 Total Recaudado (Suma Mes/Periodo ${filterTitle}):</strong> 
+                        <span style="color:#007bff; font-weight: bold;">${formatoMoneda(totalMontoRecaudado)}</span>
+                    </p>
+                `;
+
+            } else {
+                // Si no es el modal, solo necesitamos el cálculo de la suma total de puntos (siempre SIN filtro)
+                let tempSuma = 0;
+                 summaryArray.forEach((dayData) => {
+                    let puntoDiario = 0;
+                    if (dayData.divisor && dayData.divisor !== 0) {
+                        puntoDiario = Math.round(dayData.total / dayData.divisor);
+                    }
+                    tempSuma += puntoDiario; 
+                });
+                sumaTotalPuntosAcumulada = tempSuma;
+            }
+            
+            // 3. Actualizar la variable global, el localStorage y el span en la pantalla principal (SIN FILTRO)
+            // Solo actualizamos la suma total en la pantalla principal si NO estamos en el modal.
+            if (!isModal || (isModal && !divisorFilterValue)) {
+                sumaTotalPuntos = sumaTotalPuntosAcumulada;
+                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(sumaTotalPuntosAcumulada);
+                divisionResultSpan.textContent = formatoMoneda(sumaTotalPuntosAcumulada); 
+                localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, sumaTotalPuntosAcumulada.toString());
+            }
         }
 
-        // ----------------------------------------------------------------------------------
-        // --- FIN NUEVAS FUNCIONES DE HISTORIAL DETALLADO ---
-        // ----------------------------------------------------------------------------------
-
-
-        // --- Funciones de Historial (Deshacer/Rehacer) ---
+        // --- MÉTODOS DE ESTADO Y ALMACENAMIENTO (Sin cambios significativos en lógica, solo llamadas) ---
+        
         function guardarEstado(nuevoConteo, nuevoDetalle, nuevoTotalRetirado, nuevoMovimientoDisplay) {
             if (historyIndex < history.length - 1) {
                 history = history.slice(0, historyIndex + 1);
@@ -1077,17 +1285,29 @@
             redoBtn.disabled = historyIndex >= history.length - 1;
         }
 
-        // --- Funciones de Guardado/Cargado ---
         function cargarEstado() {
             try {
                 const storedConteo = localStorage.getItem(STORAGE_KEY_CONTEO);
                 const storedDetalle = localStorage.getItem(STORAGE_KEY_DETALLE);
                 const storedRetiros = localStorage.getItem(STORAGE_KEY_RETIROS); 
                 const storedHistory = localStorage.getItem(STORAGE_KEY_HISTORY);
+                const storedPuntoDiaValor = localStorage.getItem(STORAGE_KEY_PUNTO_DIA_VALOR);
+                const storedDivisorValor = localStorage.getItem(STORAGE_KEY_DIVISOR_VALOR);
+                const storedSumaPuntos = localStorage.getItem(STORAGE_KEY_SUMA_PUNTOS); 
+                const storedDivisorPlanta = localStorage.getItem(STORAGE_KEY_DIVISOR_PLANTA);
+                const storedDivisorPartTime = localStorage.getItem(STORAGE_KEY_DIVISOR_PARTTIME);
                 
                 conteoActual = storedConteo ? JSON.parse(storedConteo) : {};
                 detalleMovimientos = storedDetalle ? JSON.parse(storedDetalle) : [];
                 totalRetirado = storedRetiros ? parseInt(storedRetiros) : 0; 
+                
+                puntoDelDiaValor = storedPuntoDiaValor ? parseInt(storedPuntoDiaValor) : 0;
+                ultimoDivisor = storedDivisorValor ? parseFloat(storedDivisorValor) : 1.0; 
+                sumaTotalPuntos = storedSumaPuntos ? parseInt(storedSumaPuntos) : 0; 
+                
+                if (storedDivisorPlanta) divisorPlantaInput.value = storedDivisorPlanta;
+                if (storedDivisorPartTime) divisorPartTimeInput.value = storedDivisorPartTime;
+                
                 movimientoDisplay = {}; 
 
                 if (storedHistory) {
@@ -1101,10 +1321,19 @@
                     guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
                 }
                 
+                puntoDelDiaSpan.textContent = formatoPunto(puntoDelDiaValor);
+                divisorValueSpan.textContent = formatoFactor(ultimoDivisor);
+                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(sumaTotalPuntos);
+                divisionResultSpan.textContent = formatoMoneda(sumaTotalPuntos);
+
             } catch (e) {
                 console.error("Error cargando localStorage:", e);
-                conteoActual = {}; detalleMovimientos = []; totalRetirado = 0; movimientoDisplay = {}; history = []; historyIndex = -1;
+                conteoActual = {}; detalleMovimientos = []; totalRetirado = 0; movimientoDisplay = {}; history = []; historyIndex = -1; puntoDelDiaValor = 0; ultimoDivisor = 1.0; sumaTotalPuntos = 0;
                 guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
+                puntoDelDiaSpan.textContent = formatoMoneda(0);
+                divisorValueSpan.textContent = '1';
+                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(0);
+                divisionResultSpan.textContent = formatoMoneda(0); 
             }
         }
         
@@ -1113,7 +1342,8 @@
         function guardarDetalle() { localStorage.setItem(STORAGE_KEY_DETALLE, JSON.stringify(detalleMovimientos)); }
         function guardarRetiros() { localStorage.setItem(STORAGE_KEY_RETIROS, totalRetirado.toString()); }
         
-        // --- Generación de Interfaz y Conteo (Modal) ---
+        // --- MÉTODOS DE INTERFAZ Y ARQUEO (Sin cambios significativos en lógica) ---
+
         function generarCampos() {
             contenedorForm.innerHTML = '';
             let totalGeneral = calcularTotalGeneral();
@@ -1131,7 +1361,6 @@
                 const group = document.createElement('div');
                 group.className = 'denominacion-row';
                 
-                // Formato del detalle incremental
                 let detalleText = movimientoDisplay[valor].length > 0 ? 
                                   `(${movimientoDisplay[valor]})` : 
                                   '(0 movimientos)'; 
@@ -1161,7 +1390,7 @@
                 contenedorForm.appendChild(group);
             });
             
-            totalContadoFinalSpan.textContent = formatoMoneda(totalGeneral);
+            totalContadoFinalSpan.textContent = formatoMoneda(calcularTotalGeneral());
             totalRetirosFinalSpan.textContent = formatoMoneda(totalRetirado); 
         }
 
@@ -1173,7 +1402,6 @@
             return total;
         }
         
-        // --- FUNCIÓN PARA MODIFICAR DIRECTAMENTE EL TOTAL (MODAL) ---
         function guardarCambioDirecto(valorDenominacion) {
             const inputId = `current-qty-${valorDenominacion}`;
             const input = document.getElementById(inputId);
@@ -1188,6 +1416,12 @@
 
             if (nuevaCantidad === cantidadAnterior) {
                 return; 
+            }
+            
+            // 🚨 ADVERTENCIA PARA AJUSTE MANUAL 🚨
+            if (!confirm(`⚠️ ¡ADVERTENCIA! Estás ajustando la cantidad TOTAL de ${formatoMoneda(valorDenominacion)} de ${cantidadAnterior} a ${nuevaCantidad}.\n\nEste cambio sobrescribirá el conteo actual.\n\n¿Deseas aplicar el ajuste manual?`)) {
+                input.value = cantidadAnterior;
+                return;
             }
             
             let nuevoConteo = JSON.parse(JSON.stringify(conteoActual));
@@ -1211,7 +1445,6 @@
             aplicarEstado(historyIndex);
         }
 
-        // --- FUNCIÓN PARA MOVIMIENTOS INCREMENTALES (+ / -) (MODAL) ---
         function actualizarCantidad(valorDenominacion, tipo) {
             const inputId = `input-qty-${valorDenominacion}`;
             const input = document.getElementById(inputId);
@@ -1231,9 +1464,16 @@
             
             if (tipo === -1) {
                 if ((nuevoConteo[valorDenominacion] || 0) < cantidad) {
-                    alert(`No se puede retirar ${cantidad} unidades de ${formatoMoneda(valorDenominacion)}. Solo hay ${nuevoConteo[valorDenominacion] || 0} en caja.`);
+                    alert(`No se puede retirar ${cantidad} uds de ${formatoMoneda(valorDenominacion)}. Solo hay ${nuevoConteo[valorDenominacion] || 0} en caja.`);
                     return;
                 }
+                
+                // 🚨 ADVERTENCIA PARA RETIROS/RESTAR 🚨
+                const montoRetiro = formatoMoneda(valorDenominacion * cantidad);
+                if (!confirm(`⚠️ ¡ADVERTENCIA! Estás a punto de registrar un RETIRO de ${cantidad} unidades de ${formatoMoneda(valorDenominacion)} (Total: ${montoRetiro}).\n\n¿Confirmas este retiro/egreso de efectivo?`)) {
+                    return; 
+                }
+                
                 nuevoTotalRetirado += (valorDenominacion * cantidad); 
             }
 
@@ -1241,7 +1481,6 @@
             
             const signo = tipo === 1 ? '+' : '';
             
-            // Si hubo un ajuste manual de total, lo limpiamos para empezar el conteo incremental
             if (nuevoMovimientoDisplay[valorDenominacion] === 'Ajuste Manual de Total') {
                 nuevoMovimientoDisplay[valorDenominacion] = '';
             }
@@ -1263,13 +1502,11 @@
             input.value = '';
         }
         
-        // --- FUNCIÓN DE EDICIÓN DETALLADA (Modal Edición) ---
-        
-        // Función auxiliar para parsear la cadena de movimientos (ej: "+1-3+5")
         function parsearMovimientos(cadena) {
-            if (cadena === 'Ajuste Manual de Total' || !cadena || cadena.length === 0) return [];
+            if (cadena === 'Ajuste Manual de Total') return [];
             
-            // Busca patrones de +o- seguido de uno o más dígitos.
+            if (!cadena || cadena.length === 0) return [];
+
             const matches = cadena.match(/[\+\-]\d+/g);
             return matches || [];
         }
@@ -1285,18 +1522,22 @@
             const movimientos = parsearMovimientos(movimientoDisplay[valorDenominacion] || '');
             
             if (movimientos.length === 0) {
-                movimientosUl.innerHTML = '<li style="justify-content: center; color: #d9534f;">No hay movimientos incrementales para editar.</li>';
+                movimientosUl.innerHTML = '<li style="justify-content: center; color: #d9534f; font-style: italic;">No hay movimientos incrementales para editar.</li>';
             } else {
                 movimientos.forEach((movimiento, index) => {
                     const signo = movimiento[0];
                     const cantidad = movimiento.substring(1);
                     
                     const li = document.createElement('li');
+                    
+                    const isPlus = signo === '+';
+                    const signValue = isPlus ? '+' : '-';
+
                     li.innerHTML = `
-                        <select id="signo-${index}">
-                            <option value="+" ${signo === '+' ? 'selected' : ''}>+</option>
-                            <option value="-" ${signo === '-' ? 'selected' : ''}>-</option>
-                        </select>
+                        <div class="sign-control" data-index="${index}" data-sign="${signValue}">
+                            <button class="sign-btn ${isPlus ? 'active-sign' : ''}" data-value="+" onclick="toggleSign(${index}, '+')">+</button>
+                            <button class="sign-btn ${!isPlus ? 'active-sign' : ''}" data-value="-" onclick="toggleSign(${index}, '-')">-</button>
+                        </div>
                         <input type="number" id="qty-${index}" value="${cantidad}" min="1" required>
                     `;
                     movimientosUl.appendChild(li);
@@ -1304,6 +1545,21 @@
             }
             
             modalEdicionDetalle.style.display = 'block';
+        }
+        
+        function toggleSign(index, newSign) {
+            const signControlDiv = document.querySelector(`.sign-control[data-index="${index}"]`);
+            if (!signControlDiv) return;
+            
+            signControlDiv.setAttribute('data-sign', newSign);
+            
+            signControlDiv.querySelectorAll('.sign-btn').forEach(button => {
+                if (button.getAttribute('data-value') === newSign) {
+                    button.classList.add('active-sign');
+                } else {
+                    button.classList.remove('active-sign');
+                }
+            });
         }
 
         function guardarEdicionDetalle() {
@@ -1314,12 +1570,16 @@
             let nuevoTotalDenominacion = 0;
             const valorDenominacion = denominacionEnEdicion;
             
+            const nombreDenominacion = formatoMoneda(valorDenominacion); 
             const listItems = movimientosUl.querySelectorAll('li');
 
-            if (listItems.length > 0 && listItems[0].querySelector('select')) {
-                // 1. Recorrer los movimientos editados y construir la nueva cadena
+            if (listItems.length > 0 && listItems[0].querySelector('.sign-control')) {
                 listItems.forEach((li, index) => {
-                    const signo = document.getElementById(`signo-${index}`).value;
+                    
+                    const signControlDiv = li.querySelector(`.sign-control[data-index="${index}"]`);
+                    if (!signControlDiv) return;
+                    
+                    const signo = signControlDiv.getAttribute('data-sign');
                     const cantidad = parseInt(document.getElementById(`qty-${index}`).value) || 0;
                     
                     if (cantidad > 0) {
@@ -1328,19 +1588,20 @@
                     }
                 });
             } else {
-                // Caso: No había movimientos incrementales.
                 nuevaCadenaMovimientos = '';
             }
+            
+            // 🚨 ADVERTENCIA PARA CORRECCIÓN DETALLADA 🚨
+            if (!confirm(`⚠️ ¡ADVERTENCIA! La edición de movimientos detallados de ${nombreDenominacion} está a punto de sobrescribir el historial de esta denominación.\n\nNuevo Total de Unidades: ${nuevoTotalDenominacion}.\n\n¿Deseas guardar estas correcciones?`)) {
+                return;
+            }
 
-            // 2. Calcular el nuevo total de la denominación
             let nuevoConteo = JSON.parse(JSON.stringify(conteoActual));
             let nuevoDetalle = JSON.parse(JSON.stringify(detalleMovimientos));
             let nuevoMovimientoDisplay = JSON.parse(JSON.stringify(movimientoDisplay));
 
-            const cantidadAnterior = nuevoConteo[valorDenominacion] || 0;
-            const totalRetiradoAnterior = totalRetirado;
+            const totalRetiradoAnterior = totalRetirado; 
 
-            // Establecer la nueva cantidad total de la denominación
             nuevoConteo[valorDenominacion] = nuevoTotalDenominacion; 
             
             const fecha = new Date().toLocaleTimeString('es-CL');
@@ -1379,19 +1640,17 @@
             });
         }
 
-        // --- Comparación y Resultados (Pantalla Principal) ---
         function realizarArqueo() {
             const totalContado = calcularTotalGeneral();
             
             const esperadoDisplayText = esperadoDisplay.textContent;
             
-            // Si hay error de fetch, no comparamos.
+            // 1. Cálculo de Diferencia (Contado - Esperado)
             if (mensajeArqueoP.classList.contains('error-fetch')) {
-                 diferenciaSpan.textContent = "$0";
+                 diferenciaSpan.textContent = formatoMoneda(0);
                  diferenciaSpan.style.color = '#333';
             } else {
-                 // Limpia el valor esperado formateado (ej. "$ 5.000.000") para obtener el número puro
-                 const efectivoEsperadoRaw = esperadoDisplayText.replace(/[^0-9-]/g, '');
+                 const efectivoEsperadoRaw = esperadoDisplayText.replace(/[^0-9-]/g, ''); 
                  const efectivoEsperado = parseInt(efectivoEsperadoRaw) || 0; 
                  const diferencia = totalContado - efectivoEsperado;
                  
@@ -1399,7 +1658,7 @@
                  diferenciaSpan.className = '';
                  mensajeArqueoP.className = 'mensaje';
 
-                 if (Math.round(diferencia) === 0) {
+                 if (Math.round(diferencia) === 0) { 
                      mensajeArqueoP.textContent = "¡ARQUEO CUADRADO! 🎉";
                      mensajeArqueoP.classList.add('cuadrado');
                      diferenciaSpan.style.color = '#28a745';
@@ -1413,8 +1672,12 @@
                      diferenciaSpan.style.color = '#d9534f';
                  }
             }
+            
+            // 2. MOSTRAR LA SUMA TOTAL DE PUNTOS
+            divisionResultSpan.textContent = formatoMoneda(sumaTotalPuntos);
+            divisionResultSpan.style.color = '#28a745'; 
+            
 
-            // Generar y mostrar el desglose de la tabla
             desgloseContadoDiv.innerHTML = generarDesgloseFinal();
         }
 
@@ -1444,7 +1707,11 @@
         }
 
         function limpiarRegistros() {
-            if (!confirm("¿Estás seguro de que quieres REINICIAR el CONTEO, DETALLE y RETIROS? Esta acción es irreversible.")) {
+            // 🚨 ADVERTENCIA CRÍTICA: DOBLE CONFIRMACIÓN 🚨
+            if (!confirm("⚠️ ¡ADVERTENCIA CRÍTICA! ⚠️\n\n¿Estás seguro de que quieres ELIMINAR y REINICIAR TODO el CONTEO, DETALLE y RETIROS?\n\nPRESIONA ACEPTAR SOLO SI DESEAS BORRAR COMPLETAMENTE LOS DATOS LOCALES.")) {
+                return;
+            }
+            if (!confirm("🚨 CONFIRMACIÓN FINAL: ¿REALMENTE deseas borrar el historial y conteo completo?")) {
                 return;
             }
             
@@ -1452,6 +1719,12 @@
             localStorage.removeItem(STORAGE_KEY_DETALLE);
             localStorage.removeItem(STORAGE_KEY_RETIROS);
             localStorage.removeItem(STORAGE_KEY_HISTORY);
+            localStorage.removeItem(STORAGE_KEY_PUNTO_DIA_VALOR);
+            localStorage.removeItem(STORAGE_KEY_DIVISOR_VALOR);
+            localStorage.removeItem(STORAGE_KEY_SUMA_PUNTOS); 
+            localStorage.removeItem(STORAGE_KEY_DIVISOR_PLANTA);
+            localStorage.removeItem(STORAGE_KEY_DIVISOR_PARTTIME);
+
             
             conteoActual = {};
             detalleMovimientos = [];
@@ -1459,38 +1732,51 @@
             movimientoDisplay = {}; 
             history = [];
             historyIndex = -1;
+            puntoDelDiaValor = 0;
+            ultimoDivisor = 1.0;
+            sumaTotalPuntos = 0;
             
             guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
+            
+            divisorPlantaInput.value = '1.0';
+            divisorPartTimeInput.value = '1.0';
 
             generarCampos(); 
             fetchEsperadoData(); 
+            fetchHistorialDetallado(false); 
+            
             totalContadoFinalSpan.textContent = formatoMoneda(0);
             totalRetirosFinalSpan.textContent = formatoMoneda(0);
             diferenciaSpan.textContent = formatoMoneda(0);
             mensajeArqueoP.textContent = "";
             desgloseContadoDiv.innerHTML = "";
+            puntoDelDiaSpan.textContent = formatoMoneda(0);
+            divisorValueSpan.textContent = '1';
+            divisionResultSpan.textContent = formatoMoneda(0);
+            sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(0);
             
             cerrarModalConteo();
             cerrarModalDetalle();
             cerrarModalEdicionDetalle();
         }
         
-        // --- FUNCIONES DE EXPORTACIÓN / IMPORTACIÓN JSON ---
-
         function exportarDataToJson() {
-            // Recolectar todos los datos almacenados localmente
             const dataToExport = {
                 conteoActual: conteoActual,
                 detalleMovimientos: detalleMovimientos,
                 totalRetirado: totalRetirado,
                 history: history,
-                historyIndex: historyIndex
+                historyIndex: historyIndex,
+                puntoDelDiaValor: puntoDelDiaValor,
+                ultimoDivisor: ultimoDivisor,
+                sumaTotalPuntos: sumaTotalPuntos,
+                divisorPlanta: localStorage.getItem(STORAGE_KEY_DIVISOR_PLANTA) || '1.0', 
+                divisorPartTime: localStorage.getItem(STORAGE_KEY_DIVISOR_PARTTIME) || '1.0'
             };
 
             const jsonString = JSON.stringify(dataToExport, null, 2);
             const blob = new Blob([jsonString], { type: 'application/json' });
             
-            // Crear un enlace temporal para la descarga
             const a = document.createElement('a');
             const date = new Date().toISOString().split('T')[0];
             a.download = `respaldo_arqueo_${date}.json`;
@@ -1502,8 +1788,9 @@
         }
 
         function importarDataFromJson(event) {
-            if (!confirm("⚠️ ¿Está seguro que desea importar datos? Esto SOBREESCRIBIRÁ todos los registros de conteo, movimientos e historial actuales.")) {
-                event.target.value = ''; // Limpiar el input para permitir re-seleccionar
+            // 🚨 ADVERTENCIA PARA IMPORTAR 🚨
+            if (!confirm("⚠️ ¡ADVERTENCIA! Importar Datos JSON sobreescribirá ABSOLUTAMENTE todo el estado actual del arqueo (conteo, retiros, historial). \n\n¿Desea continuar con la importación y reemplazar los datos?")) {
+                event.target.value = ''; 
                 return;
             }
 
@@ -1521,14 +1808,21 @@
                         throw new Error("Estructura de archivo JSON no válida. Faltan claves principales.");
                     }
 
-                    // 1. Aplicar los datos al estado global
                     conteoActual = importedData.conteoActual || {};
                     detalleMovimientos = importedData.detalleMovimientos || [];
                     totalRetirado = importedData.totalRetirado || 0;
                     history = importedData.history || [];
                     historyIndex = importedData.historyIndex !== undefined ? importedData.historyIndex : -1;
                     
-                    // Asegurar que el estado actual del historial se aplique al inicio
+                    // Importar punto, divisor y suma total, asegurando el tipo de dato
+                    puntoDelDiaValor = importedData.puntoDelDiaValor !== undefined ? parseInt(importedData.puntoDelDiaValor) : 0;
+                    ultimoDivisor = importedData.ultimoDivisor !== undefined ? parseFloat(importedData.ultimoDivisor) : 1.0;
+                    sumaTotalPuntos = importedData.sumaTotalPuntos !== undefined ? parseInt(importedData.sumaTotalPuntos) : 0;
+                    
+                    // Importar divisores específicos
+                    const importedDivisorPlanta = importedData.divisorPlanta || '1.0';
+                    const importedDivisorPartTime = importedData.divisorPartTime || '1.0';
+
                     if (history.length > 0 && historyIndex >= 0) {
                         const currentState = history[historyIndex];
                         conteoActual = currentState.conteo;
@@ -1536,33 +1830,43 @@
                         totalRetirado = currentState.retiros;
                         movimientoDisplay = currentState.movimientoDisplay || {};
                     } else {
-                        // Si el historial está vacío o mal, guardar el estado inicial de la importación
                         guardarEstado(conteoActual, detalleMovimientos, totalRetirado, importedData.conteoActual || {});
                     }
                     
-                    // 2. Guardar los nuevos datos en localStorage
                     guardarConteo();
                     guardarDetalle();
                     guardarRetiros();
                     guardarEstadoLocal();
-                    
-                    // 3. Refrescar la interfaz
+                    localStorage.setItem(STORAGE_KEY_PUNTO_DIA_VALOR, puntoDelDiaValor.toString());
+                    localStorage.setItem(STORAGE_KEY_DIVISOR_VALOR, ultimoDivisor.toString());
+                    localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, sumaTotalPuntos.toString());
+                    localStorage.setItem(STORAGE_KEY_DIVISOR_PLANTA, importedDivisorPlanta);
+                    localStorage.setItem(STORAGE_KEY_DIVISOR_PARTTIME, importedDivisorPartTime);
+
+
                     generarCampos();
                     realizarArqueo();
+                    
+                    // Actualizar inputs de divisores y spans de resumen
+                    divisorPlantaInput.value = importedDivisorPlanta;
+                    divisorPartTimeInput.value = importedDivisorPartTime;
+                    puntoDelDiaSpan.textContent = formatoPunto(puntoDelDiaValor);
+                    divisorValueSpan.textContent = formatoFactor(ultimoDivisor);
+                    sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(sumaTotalPuntos);
+                    divisionResultSpan.textContent = formatoMoneda(sumaTotalPuntos);
                     
                     alert('🎉 Datos importados con éxito.');
                 } catch (error) {
                     alert('❌ Error al importar o leer el archivo JSON: ' + error.message);
                     console.error('Error de Importación:', error);
                 } finally {
-                    event.target.value = ''; // Limpiar el input de archivo
+                    event.target.value = ''; 
                 }
             };
 
             reader.readAsText(file);
         }
         
-        // --- Funciones de Modales ---
         function abrirModalConteo() {
             generarCampos(); 
             actualizarControlesHistoria();
@@ -1571,7 +1875,7 @@
         function cerrarModalConteo(shouldRerender = false) {
             modalConteo.style.display = 'none';
             if (shouldRerender) {
-                realizarArqueo(); // Realiza el cálculo final al cerrar
+                realizarArqueo(); 
             }
         }
         function abrirModalDetalle() {
@@ -1584,7 +1888,7 @@
         
         window.onclick = function(event) {
             if (event.target == modalConteo) {
-                cerrarModalConteo(true); // Guarda al hacer clic fuera
+                cerrarModalConteo(true); 
             }
             if (event.target == modalDetalle) {
                 cerrarModalDetalle();
@@ -1592,20 +1896,34 @@
             if (event.target == modalEdicionDetalle) {
                 cerrarModalEdicionDetalle();
             }
-            if (event.target == historyModal) { // CERRAR NUEVO MODAL
+            if (event.target == historyModal) { 
                 closeHistoryModal();
             }
         }
 
-
-        // --- Inicialización (SIN INTERVALO DE ACTUALIZACIÓN AUTOMÁTICA) ---
         window.onload = function() {
             cargarEstado(); 
             generarCampos(); 
             actualizarControlesHistoria();
-            
-            // La actualización se realiza solo al cargar la página
             fetchEsperadoData(); 
+            // Llamada para cargar el historial (solo para el cálculo de la suma)
+            fetchHistorialDetallado(false); 
+            
+            // Event listeners para guardar los divisores específicos
+            divisorPlantaInput.addEventListener('change', function() {
+                localStorage.setItem(STORAGE_KEY_DIVISOR_PLANTA, this.value);
+                // Si el modal está abierto, actualizamos la lista de filtros
+                if (historyModal.style.display === 'block') {
+                    populateDivisorFilter();
+                }
+            });
+            divisorPartTimeInput.addEventListener('change', function() {
+                localStorage.setItem(STORAGE_KEY_DIVISOR_PARTTIME, this.value);
+                // Si el modal está abierto, actualizamos la lista de filtros
+                 if (historyModal.style.display === 'block') {
+                    populateDivisorFilter();
+                }
+            });
         };
     </script>
 </body>
