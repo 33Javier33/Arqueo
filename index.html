@@ -53,13 +53,14 @@
         .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
         .info-box { background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1rem; }
         
-        .btn { padding: 10px 16px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; width: 100%; }
+        .btn { padding: 10px 16px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; width: 100%; }
         .btn:hover { transform: translateY(-1px); filter: brightness(110%); }
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-success { background-color: var(--success); color: white; }
         .btn-danger { background-color: var(--danger); color: white; }
         .btn-warning { background-color: var(--warning); color: #fff; }
         .btn-secondary { background-color: var(--secondary); color: white; }
+        .btn-info { background-color: #0ea5e9; color: white; }
 
         input[type="number"], input[type="text"], select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; background: #fff; }
         #esperadoDisplay { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-align: right; padding: 10px; background: #f8fafc; border-radius: 8px; border: 1px solid var(--border); margin-top: 5px; }
@@ -73,14 +74,14 @@
         .modal-content { background-color: var(--surface); margin: 2% auto; padding: 25px; border-radius: var(--radius); width: 95%; max-width: 750px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .close { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: var(--text-light); }
         
-        #lista-movimientos { list-style: none; padding: 0; margin: 0; max-height: 60vh; overflow-y: auto; }
+        #lista-movimientos { list-style: none; padding: 0; margin: 0; }
         .mov-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 15px; }
         .mov-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
         .mov-content { flex-grow: 1; }
         .type-ingreso .mov-icon { background-color: #dcfce7; color: #16a34a; }
         .type-retiro .mov-icon { background-color: #fee2e2; color: #dc2626; }
-        .type-ajuste .mov-icon { background-color: #dbeafe; color: #2563eb; }
         
+        /* STATS ELEGANTES */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
         .chart-row { display: flex; align-items: center; margin-bottom: 12px; font-size: 0.9rem; }
@@ -92,14 +93,14 @@
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--border); }
         .calendar-day-header { background: #f8fafc; padding: 8px 0; text-align: center; font-size: 0.75rem; font-weight: bold; color: var(--text-light); }
         .calendar-day { background: #fff; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .calendar-day.selected { background: var(--primary); color: white; font-weight: bold; }
+        .calendar-day.selected { background: var(--primary); color: white; font-weight: bold; position: relative; }
 
         .denominacion-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); gap: 10px; }
         .denominacion-row label { flex: 1; }
         .button-group { display: flex; gap: 5px; }
         .button-group button { width: 36px; height: 36px; border: none; border-radius: 6px; color: white; font-size: 1.1rem; }
         .total-display { text-align: right; min-width: 100px; display: flex; flex-direction: column; align-items: flex-end; }
-        .cantidad-input { width: 75px !important; padding: 4px !important; text-align: center; font-weight: bold; color: var(--primary); border: 1px solid var(--primary) !important; }
+        .cantidad-input { width: 85px !important; padding: 4px !important; text-align: center; font-weight: bold; color: var(--primary); border: 1px solid var(--primary) !important; }
         
         .mensaje { padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: 600; text-align: center; }
         .mensaje.cuadrado { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
@@ -149,7 +150,7 @@
                             </div>
                             <div style="margin-top: 15px; border-top: 1px solid #bfdbfe; padding-top: 10px;">
                                 <label style="font-weight: 600; font-size: 0.85em;">Divisor Planta:</label> <input type="number" id="divisor-planta" value="1.0" step="0.01" style="text-align: right;">
-                                <label style="font-weight: 600; font-size: 0.85em; margin-top:10px; display:block;">Divisor Part-Time:</label> <input type="number" id="divisor-part-time" value="1.0" step="0.01" style="text-align: right;">
+                                <label style="font-weight: 600; font-size: 0.85em; margin-top:10px; display:block;">Divisor PT:</label> <input type="number" id="divisor-part-time" value="1.0" step="0.01" style="text-align: right;">
                             </div>
                         </div>
                         <div id="desglose-esperado" style="margin-top: 20px;"></div>
@@ -201,7 +202,7 @@
         <div class="modal-content">
             <span class="close" onclick="cerrarModalEdicionDetalle()">&times;</span>
             <h2 id="titulo-edicion">✏️ Editar Fórmula</h2>
-            <p class="text-muted">Corrige errores de signos o números en el rastro.</p>
+            <p class="text-muted">Corrige errores de signos o números.</p>
             <input type="text" id="formula-edit-input" style="font-size:1.2em; font-family:monospace; margin-top:10px;">
             <button onclick="guardarEdicionDetalle()" class="btn btn-success" style="width: 100%; margin-top: 20px;">Guardar Cambios</button>
         </div>
@@ -220,17 +221,15 @@
         <div class="modal-content" style="max-width: 900px;">
             <span class="close" onclick="closeHistoryModal()">&times;</span>
             <h2>📋 Historial Servidor</h2>
-            <div style="background:var(--background); padding:10px; border-radius:8px; margin-bottom:10px;">
-                <label class="font-bold">Filtrar por Divisor:</label>
-                <select id="divisorFilter" onchange="fetchHistorialDetallado(true)" style="width:100%; margin-top:5px;"><option value="">-- Todos --</option></select>
-            </div>
+            <select id="divisorFilter" onchange="fetchHistorialDetallado(true)" style="margin-bottom:10px;"><option value="">-- Todos los Divisores --</option></select>
             <div class="calendar-wrapper">
                 <div class="calendar-header">
                     <button onclick="prevMonth()"><i class="fas fa-chevron-left"></i></button>
                     <span id="calendar-month-year" class="font-bold"></span>
                     <button onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <div class="calendar-grid">
+                <!-- CABECERA DÍAS SEMANA -->
+                <div class="calendar-grid" style="margin-bottom:0; border-bottom:none;">
                     <div class="calendar-day-header">L</div><div class="calendar-day-header">M</div><div class="calendar-day-header">M</div>
                     <div class="calendar-day-header">J</div><div class="calendar-day-header">V</div><div class="calendar-day-header">S</div>
                     <div class="calendar-day-header">D</div>
@@ -255,9 +254,33 @@
     </div>
 
     <script>
+        // URLs
         const URL_GET_DATOS = 'https://script.google.com/macros/s/AKfycbz_kCb4aEe437zHGbRqnjCibw1NtAqfCbTNmsVPn9jaZOPBFaZ6-FwmiTLqVxq39X1P/exec'; 
         const URL_POST_GUARDAR = 'https://script.google.com/macros/s/AKfycbzr0_GPBfp1MuP0YzBUNbwwQAtwr7Nf3oPzX2855_6Fm36T3303_G6TB_7lmE6TnTHLrw/exec'; 
         
+        // ELEMENTOS DOM
+        const contenedorForm = document.getElementById('arqueo-form');
+        const totalContadoFinalSpan = document.getElementById('total-contado-final');
+        const totalRetirosFinalSpan = document.getElementById('total-retiros-final');
+        const desgloseContadoDiv = document.getElementById('desglose-contado');
+        const diferenciaSpan = document.getElementById('diferencia');
+        const mensajeArqueoP = document.getElementById('mensaje-arqueo');
+        const esperadoDisplay = document.getElementById('esperadoDisplay');
+        const updateStatusSpan = document.getElementById('update-status');
+        const divisorDayTotalSpan = document.getElementById('divisor-day-total');
+        const divisorValueSpan = document.getElementById('divisor-value');
+        const divisorDateSpan = document.getElementById('divisor-date');
+        const puntoDelDiaSpan = document.getElementById('punto-del-dia');
+        const divisionResultSpan = document.getElementById('division-result');
+        const sumaTotalPuntosHistorialSpan = document.getElementById('suma-total-puntos-historial');
+        const divisorPlantaInput = document.getElementById('divisor-planta');
+        const divisorPartTimeInput = document.getElementById('divisor-part-time');
+        const divisorFilterSelect = document.getElementById('divisorFilter');
+        const historyContainer = document.getElementById('historyContainer');
+        const historySummaryDiv = document.getElementById('history-summary');
+        const undoBtn = document.getElementById('undo-btn');
+        const redoBtn = document.getElementById('redo-btn');
+
         const DENOMINACIONES = [20000, 10000, 5000, 2000, 1000, 500, 100, 50, 10];
         const STORAGE_KEY_CONTEO = 'arqueoConteoCLP';
         const STORAGE_KEY_MOVI_DISPLAY = 'arqueoMoviDisplayCLP';
@@ -270,45 +293,29 @@
         let globalDesgloseEsperado = []; let calendarDate = new Date(); let selectedDates = new Set();
         let denomEditando = null;
 
-        // DOM ELEMENTS BLINDADOS
-        let contenedorForm, totalContadoFinalSpan, totalRetirosFinalSpan, desgloseContadoDiv, diferenciaSpan, mensajeArqueoP, esperadoDisplay, updateStatusSpan, divisorDayTotalSpan, divisorValueSpan, divisorDateSpan, puntoDelDiaSpan, divisionResultSpan, sumaTotalPuntosHistorialSpan, divisorPlantaInput, divisorPartTimeInput, divisorFilterSelect, historyContainer, historySummaryDiv, undoBtn, redoBtn;
-
-        function initDOM() {
-            contenedorForm = document.getElementById('arqueo-form');
-            totalContadoFinalSpan = document.getElementById('total-contado-final');
-            totalRetirosFinalSpan = document.getElementById('total-retiros-final');
-            desgloseContadoDiv = document.getElementById('desglose-contado');
-            diferenciaSpan = document.getElementById('diferencia');
-            mensajeArqueoP = document.getElementById('mensaje-arqueo');
-            esperadoDisplay = document.getElementById('esperadoDisplay');
-            updateStatusSpan = document.getElementById('update-status');
-            divisorDayTotalSpan = document.getElementById('divisor-day-total');
-            divisorValueSpan = document.getElementById('divisor-value');
-            divisorDateSpan = document.getElementById('divisor-date');
-            puntoDelDiaSpan = document.getElementById('punto-del-dia');
-            divisionResultSpan = document.getElementById('division-result');
-            sumaTotalPuntosHistorialSpan = document.getElementById('suma-total-puntos-historial');
-            divisorPlantaInput = document.getElementById('divisor-planta');
-            divisorPartTimeInput = document.getElementById('divisor-part-time');
-            divisorFilterSelect = document.getElementById('divisorFilter');
-            historyContainer = document.getElementById('historyContainer');
-            historySummaryDiv = document.getElementById('history-summary');
-            undoBtn = document.getElementById('undo-btn');
-            redoBtn = document.getElementById('redo-btn');
-        }
-
         function formatoMoneda(n) { return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(Math.round(n)); }
         function formatoFactor(n) { return parseFloat(n).toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        function evalMath(str) {
+        // --- PROCESADOR MATEMÁTICO AVANZADO ---
+        function evalMathAdvanced(str, valDenom) {
             let clean = str.toString().replace(/^=/, '').replace(/[^0-9+\-*/().]/g, '');
-            if(!clean) return 0;
-            try { return Function('"use strict"; return (' + clean + ')')(); } catch(e) { return 0; }
+            if(!clean) return { neto: 0, retiros: 0 };
+            try {
+                let neto = Function('"use strict"; return (' + clean + ')')();
+                let terms = clean.split(/(?=[+-])/); 
+                let retiroMonetario = 0;
+                terms.forEach(t => {
+                    let n = parseFloat(t);
+                    if(n < 0) retiroMonetario += (Math.abs(n) * valDenom);
+                });
+                return { neto: neto, retiros: retiroMonetario };
+            } catch(e) { return { neto: 0, retiros: 0 }; }
         }
 
+        // --- NUBE (SUBIDA / BAJADA) ---
         async function recuperarDeNube() {
-            if(!confirm("☁️ ¿Descargar último arqueo de la nube?")) return;
+            if(!confirm("☁️ ¿Descargar último arqueo guardado en la nube?")) return;
             try {
                 const res = await fetch(URL_POST_GUARDAR + '?action=getLast');
                 const json = await res.json();
@@ -316,8 +323,10 @@
                     conteoActual = json.data.conteoActual || {};
                     detalleMovimientos = json.data.detalleMovimientos || [];
                     totalRetirado = json.data.totalRetirado || 0;
-                    movimientoDisplay = {}; 
+                    movimientoDisplay = json.data.movimientoDisplay || {}; 
                     localStorage.setItem(STORAGE_KEY_CONTEO, JSON.stringify(conteoActual));
+                    localStorage.setItem(STORAGE_KEY_MOVI_DISPLAY, JSON.stringify(movimientoDisplay));
+                    localStorage.setItem(STORAGE_KEY_RETIROS, totalRetirado.toString());
                     generarCampos(); realizarArqueo();
                     alert("✅ Sincronizado.");
                 } else { alert("❌ " + json.message); }
@@ -325,31 +334,31 @@
         }
 
         async function guardarEnNube() {
-            if(!confirm("☁️ ¿Subir arqueo a la nube?")) return;
+            if(!confirm("☁️ ¿Subir arqueo actual a la nube?")) return;
             const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
             const payload = {
-                conteoActual, detalleMovimientos, totalRetirado,
+                conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay,
                 totalContado: calcularTotalGeneral(), totalEsperado: espVal, diferencia: calcularTotalGeneral() - espVal,
                 divisorPlanta: divisorPlantaInput.value, divisorPartTime: divisorPartTimeInput.value
             };
             try {
-                const btn = document.querySelector('.btn-cloud-save');
-                btn.innerHTML = 'Subiendo...';
+                const btn = document.querySelector('.btn-cloud-save'); btn.innerHTML = 'Subiendo...';
                 await fetch(URL_POST_GUARDAR, { method: 'POST', body: JSON.stringify(payload) });
                 alert("✅ Guardado."); btn.innerHTML = 'GUARDAR';
-            } catch (e) { alert("Error conexión."); }
+            } catch (e) { alert("Error."); }
         }
 
         async function archivarEnNube() {
-            if(!confirm("🚀 ¿Archivar informe?")) return;
+            if(!confirm("🚀 ¿Archivar este día?")) return;
             const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
-            const payload = { conteoActual, detalleMovimientos, totalRetirado, totalContado: calcularTotalGeneral(), diferencia: calcularTotalGeneral() - espVal };
+            const payload = { conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay, totalContado: calcularTotalGeneral(), diferencia: calcularTotalGeneral() - espVal };
             try {
                 await fetch(URL_POST_GUARDAR + '?action=archive', { method: 'POST', body: JSON.stringify(payload) });
                 localStorage.clear(); location.reload();
             } catch (e) { alert("Error."); }
         }
 
+        // --- RECAUDACIONES ---
         async function fetchEsperadoData() {
             try {
                 const res = await fetch(URL_GET_DATOS);
@@ -374,6 +383,7 @@
             document.getElementById('desglose-esperado').innerHTML = h + '</tbody></table>';
         }
 
+        // --- CONTEO ---
         function generarCampos() {
             if(!contenedorForm) return;
             contenedorForm.innerHTML = '';
@@ -386,83 +396,91 @@
                     <label>${formatoMoneda(val)}</label>
                     <div class="button-group">
                         <button class="btn btn-danger" onclick="actCant(${val}, -1)">-</button>
-                        <input type="text" id="inp-${val}" placeholder="1+2..." style="width:80px; text-align:center;">
+                        <input type="text" id="inp-${val}" placeholder="Excel/Manual" style="width:75px; text-align:center;">
                         <button class="btn btn-success" onclick="actCant(${val}, 1)">+</button>
+                        <button class="btn btn-info" onclick="aplicarFormulaExcel(${val})" title="Fórmula"><i class="fas fa-bolt"></i></button>
                     </div>
                     <div class="total-display">
                         <div style="display:flex; gap:5px; align-items:center;">
                            <input type="number" class="cantidad-input" id="cur-${val}" value="${conteoActual[val]}" onchange="manualEdit(${val})">
-                           <button onclick="abrirModalEdicion(${val})" style="background:var(--secondary); border:none; color:white; width:24px; border-radius:4px;"><i class="fas fa-pen" style="font-size:0.7em;"></i></button>
+                           <button onclick="abrirModalEdicion(${val})" style="background:var(--secondary); border:none; color:white; width:24px; border-radius:4px; cursor:pointer;"><i class="fas fa-pen" style="font-size:0.7em;"></i></button>
                         </div>
                         <div style="font-weight:bold; font-size:0.85em;">${formatoMoneda(val * conteoActual[val])}</div>
-                        <div class="text-muted" style="font-size:0.7em; max-width:120px; overflow-wrap:break-word;">${movimientoDisplay[val]}</div>
-                    </div>
-                `;
+                        <div class="text-muted" style="font-size:0.7em; max-width:140px; overflow-wrap:break-word;">${movimientoDisplay[val]}</div>
+                    </div>`;
                 contenedorForm.appendChild(row);
             });
             realizarArqueo();
         }
 
+        function aplicarFormulaExcel(val) {
+            const inp = document.getElementById(`inp-${val}`);
+            const formula = inp.value.trim(); if(!formula) return;
+            const res = evalMathAdvanced(formula, val);
+            saveState();
+            totalRetirado += res.retiros;
+            conteoActual[val] += res.neto;
+            let fClean = formula.startsWith('=') ? formula.substring(1) : formula;
+            movimientoDisplay[val] += (movimientoDisplay[val] ? '+' : '') + "(" + fClean + ")";
+            detalleMovimientos.unshift(`[${new Date().toLocaleTimeString('es-CL')}] EXCEL ${formula} x ${val}`);
+            inp.value = ''; generarCampos();
+        }
+
         function actCant(val, sign) {
             const inp = document.getElementById(`inp-${val}`);
-            const formula = inp.value.trim();
-            if(!formula) return;
-            const res = evalMath(formula);
-            if(res <= 0) return;
-            if(sign === -1 && (conteoActual[val]||0) < res) { alert("Faltan fondos."); return; }
+            const formula = inp.value.trim(); if(!formula) return;
+            const res = evalMathAdvanced(formula, val);
+            if(sign === 1 && (conteoActual[val] + res.neto) < 0) { alert("Saldo insuficiente."); return; }
             saveState();
-            if(sign === -1) { if(!confirm(`Retirar ${res} uds?`)) return; totalRetirado += (val * res); }
-            conteoActual[val] += (res * sign);
+            if(sign === -1) {
+                if(!confirm(`Retirar ${res.neto} uds?`)) return;
+                totalRetirado += (Math.abs(res.neto) * val);
+                conteoActual[val] -= res.neto;
+            } else {
+                totalRetirado += res.retiros;
+                conteoActual[val] += res.neto;
+            }
             let fClean = formula.startsWith('=') ? formula.substring(1) : formula;
             movimientoDisplay[val] += (sign === 1 ? '+' : '-') + "(" + fClean + ")";
-            detalleMovimientos.unshift(`[${new Date().toLocaleTimeString('es-CL')}] ${sign===1?'ING':'RET'} ${formula} (${res}) x ${val}`);
+            detalleMovimientos.unshift(`[${new Date().toLocaleTimeString('es-CL')}] ${sign===1?'ING':'RET'} ${formula} x ${val}`);
             inp.value = ''; generarCampos();
         }
 
         function manualEdit(val) {
             const inp = document.getElementById(`cur-${val}`);
+            const nc = parseInt(inp.value) || 0;
             saveState();
-            conteoActual[val] = parseInt(inp.value) || 0;
-            movimientoDisplay[val] = "Manual";
-            generarCampos();
+            if(nc < conteoActual[val]) totalRetirado += (conteoActual[val] - nc) * val;
+            conteoActual[val] = nc; movimientoDisplay[val] = "Manual"; generarCampos();
         }
 
-        function abrirModalEdicion(val) {
-            denomEditando = val;
-            document.getElementById('titulo-edicion').textContent = `✏️ Editar ${formatoMoneda(val)}`;
-            document.getElementById('formula-edit-input').value = movimientoDisplay[val];
-            document.getElementById('modalEdicionDetalle').style.display = 'block';
-        }
+        function abrirModalEdicion(val) { denomEditando = val; document.getElementById('titulo-edicion').textContent = `✏️ Editar ${formatoMoneda(val)}`; document.getElementById('formula-edit-input').value = movimientoDisplay[val]; document.getElementById('modalEdicionDetalle').style.display = 'block'; }
         function cerrarModalEdicionDetalle() { document.getElementById('modalEdicionDetalle').style.display = 'none'; }
         function guardarEdicionDetalle() {
-            const nuevaFormula = document.getElementById('formula-edit-input').value;
+            const fAntigua = movimientoDisplay[denomEditando];
+            const fNueva = document.getElementById('formula-edit-input').value;
             saveState();
-            movimientoDisplay[denomEditando] = nuevaFormula;
-            conteoActual[denomEditando] = evalMath(nuevaFormula);
-            detalleMovimientos.unshift(`[${new Date().toLocaleTimeString('es-CL')}] CORRECCIÓN RASTRO ${formatoMoneda(denomEditando)}`);
+            const resAntiguo = evalMathAdvanced(fAntigua, denomEditando);
+            const resNuevo = evalMathAdvanced(fNueva, denomEditando);
+            totalRetirado = (totalRetirado - resAntiguo.retiros) + resNuevo.retiros;
+            movimientoDisplay[denomEditando] = fNueva;
+            conteoActual[denomEditando] = resNuevo.neto;
             generarCampos(); cerrarModalEdicionDetalle();
         }
 
         function realizarArqueo() {
             const total = calcularTotalGeneral();
-            if(totalContadoFinalSpan) totalContadoFinalSpan.textContent = formatoMoneda(total);
-            if(totalRetirosFinalSpan) totalRetirosFinalSpan.textContent = formatoMoneda(totalRetirado);
+            totalContadoFinalSpan.textContent = formatoMoneda(total);
+            totalRetirosFinalSpan.textContent = formatoMoneda(totalRetirado);
             const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
             const dif = total - espVal;
-            if(diferenciaSpan) {
-                diferenciaSpan.textContent = formatoMoneda(dif);
-                diferenciaSpan.style.color = dif === 0 ? 'var(--success)' : (dif > 0 ? 'var(--warning)' : 'var(--danger)');
-            }
-            if(mensajeArqueoP) {
-                mensajeArqueoP.className = 'mensaje ' + (dif === 0 ? 'cuadrado' : (dif > 0 ? 'sobrante' : 'faltante'));
-                mensajeArqueoP.textContent = dif === 0 ? "CUADRADO 🎉" : (dif > 0 ? "SOBRA ⚠️" : "FALTA 🚨");
-            }
-            let html = '<table><thead><tr><th>Denom.</th><th>Cant.</th><th>Subtotal</th></tr></thead><tbody>';
-            let hayDatos = false;
-            DENOMINACIONES.forEach(v => {
-                if(conteoActual[v] > 0) { hayDatos = true; html += `<tr><td>${formatoMoneda(v)}</td><td>${conteoActual[v]}</td><td>${formatoMoneda(v*conteoActual[v])}</td></tr>`; }
-            });
-            if(desgloseContadoDiv) desgloseContadoDiv.innerHTML = hayDatos ? html + '</tbody></table>' : '<p class="text-muted text-center">Sin ingresos.</p>';
+            diferenciaSpan.textContent = formatoMoneda(dif);
+            diferenciaSpan.style.color = dif === 0 ? 'var(--success)' : (dif > 0 ? 'var(--warning)' : 'var(--danger)');
+            mensajeArqueoP.className = 'mensaje ' + (dif === 0 ? 'cuadrado' : (dif > 0 ? 'sobrante' : 'faltante'));
+            mensajeArqueoP.textContent = dif === 0 ? "CUADRADO 🎉" : (dif > 0 ? "SOBRA ⚠️" : "FALTA 🚨");
+            let h = '<table><thead><tr><th>Denom.</th><th>Cant.</th><th>Subtotal</th></tr></thead><tbody>';
+            let any = false; DENOMINACIONES.forEach(v => { if(conteoActual[v] > 0) { any = true; h += `<tr><td>${formatoMoneda(v)}</td><td>${conteoActual[v]}</td><td>${formatoMoneda(v*conteoActual[v])}</td></tr>`; } });
+            desgloseContadoDiv.innerHTML = any ? h + '</tbody></table>' : '<p class="text-muted text-center">Sin ingresos.</p>';
         }
 
         function calcularTotalGeneral() { let t = 0; DENOMINACIONES.forEach(v => t += v * (conteoActual[v] || 0)); return t; }
@@ -471,9 +489,10 @@
             if(historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
             history.push({ c: JSON.parse(JSON.stringify(conteoActual)), d: [...detalleMovimientos], r: totalRetirado, m: JSON.parse(JSON.stringify(movimientoDisplay)) });
             historyIndex = history.length - 1; if(history.length > 20) { history.shift(); historyIndex--; }
-            if(undoBtn) undoBtn.disabled = false;
+            undoBtn.disabled = false;
             localStorage.setItem(STORAGE_KEY_CONTEO, JSON.stringify(conteoActual));
             localStorage.setItem(STORAGE_KEY_MOVI_DISPLAY, JSON.stringify(movimientoDisplay));
+            localStorage.setItem(STORAGE_KEY_RETIROS, totalRetirado.toString());
         }
 
         function undoAction() { if(historyIndex > 0) { historyIndex--; const s = history[historyIndex]; conteoActual = s.c; detalleMovimientos = s.d; totalRetirado = s.r; movimientoDisplay = s.m; generarCampos(); if(redoBtn) redoBtn.disabled = false; } }
@@ -496,19 +515,18 @@
                     html += `<tr><td>${d}</td><td>${grouped[d].div}</td><td class="text-success font-bold">${pts.toLocaleString('es-CL')}</td><td>${formatoMoneda(grouped[d].total)}</td></tr>`;
                 });
                 if(isModal) {
-                    if(historyContainer) historyContainer.innerHTML = html + '</tbody></table>';
-                    if(historySummaryDiv) historySummaryDiv.innerHTML = `<strong>Total Puntos: ${totalPts.toLocaleString('es-CL')}</strong>`;
+                    historyContainer.innerHTML = html + '</tbody></table>';
+                    historySummaryDiv.innerHTML = `<strong>Total Puntos: ${totalPts.toLocaleString('es-CL')}</strong>`;
                 } else {
-                    if(sumaTotalPuntosHistorialSpan) sumaTotalPuntosHistorialSpan.textContent = totalPts.toLocaleString('es-CL');
-                    if(divisionResultSpan) divisionResultSpan.textContent = totalPts.toLocaleString('es-CL');
+                    sumaTotalPuntosHistorialSpan.textContent = totalPts.toLocaleString('es-CL');
+                    divisionResultSpan.textContent = totalPts.toLocaleString('es-CL');
                 }
             } catch (e) { }
         }
 
         function renderCustomCalendar() {
             const y = calendarDate.getFullYear(), m = calendarDate.getMonth();
-            const names = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-            document.getElementById('calendar-month-year').textContent = `${names[m]} ${y}`;
+            document.getElementById('calendar-month-year').textContent = `${m+1} - ${y}`;
             const firstDay = new Date(y, m, 1).getDay(); const startIdx = firstDay === 0 ? 6 : firstDay - 1;
             const daysInMonth = new Date(y, m + 1, 0).getDate();
             const container = document.getElementById('calendar-days'); container.innerHTML = '';
@@ -528,40 +546,32 @@
         function openStatsModal() { document.getElementById('modalStats').style.display='block'; renderStats(); }
         function closeStatsModal() { document.getElementById('modalStats').style.display='none'; }
         function renderStats() {
-            const container = document.getElementById('stats-content');
-            if(!globalDesgloseEsperado.length) return;
+            const container = document.getElementById('stats-content'); if(!globalDesgloseEsperado.length) return;
             let total = 0; globalDesgloseEsperado.forEach(i => total += i.monto);
-            let h = '<div class="stats-grid"><div class="stat-card"><h4>💰 Total</h4>' + formatoMoneda(total/100) + '</div><div class="stat-card"><h4>📉 Promedio</h4>' + formatoMoneda((total/globalDesgloseEsperado.length)/100) + '</div></div>';
+            let h = '<div class="stats-grid"><div class="stat-card"><h4>💰 Total Bruto</h4>' + formatoMoneda(total/100) + '</div><div class="stat-card"><h4>📈 Promedio</h4>' + formatoMoneda((total/globalDesgloseEsperado.length)/100) + '</div></div>';
             globalDesgloseEsperado.forEach(item => {
                 const p = ((item.monto/total)*100).toFixed(1);
-                h += `<div class="chart-row">
-                        <div style="width:100px; font-size:0.8em">${item.tipo}</div>
-                        <div class="chart-bar-area"><div class="chart-bar" style="width:${p}%">${p}%</div></div>
-                        <div style="width:100px; text-align:right;">${formatoMoneda(item.monto/100)}</div>
-                      </div>`;
+                h += `<div class="chart-row"><div style="width:100px; font-size:0.8em">${item.tipo}</div><div class="chart-bar-area"><div class="chart-bar" style="width:${p}%">${p}%</div></div><div style="width:100px; text-align:right;">${formatoMoneda(item.monto/100)}</div></div>`;
             });
             container.innerHTML = h;
         }
 
         function abrirModalConteo() { generarCampos(); document.getElementById('modalConteo').style.display='block'; }
         function cerrarModalConteo() { document.getElementById('modalConteo').style.display='none'; }
-        function abrirModalDetalle() { 
-            const ul = document.getElementById('lista-movimientos'); ul.innerHTML = '';
-            detalleMovimientos.forEach(m => { ul.innerHTML += `<li class="mov-card">${m}</li>`; });
-            document.getElementById('modalDetalle').style.display='block'; 
-        }
+        function abrirModalDetalle() { const ul = document.getElementById('lista-movimientos'); ul.innerHTML = ''; detalleMovimientos.forEach(m => { ul.innerHTML += `<li class="mov-card">${m}</li>`; }); document.getElementById('modalDetalle').style.display='block'; }
         function cerrarModalDetalle() { document.getElementById('modalDetalle').style.display='none'; }
         function openHistoryModal() { document.getElementById('historyModal').style.display='block'; renderCustomCalendar(); fetchHistorialDetallado(true); }
         function closeHistoryModal() { document.getElementById('historyModal').style.display='none'; }
-        function exportarDataToJson() { const d = { conteoActual, detalleMovimientos, totalRetirado }; const b = new Blob([JSON.stringify(d)], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'arqueo.json'; a.click(); }
-        function importarDataFromJson(e) { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = (ex) => { const d = JSON.parse(ex.target.result); conteoActual = d.conteoActual; generarCampos(); }; r.readAsText(f); }
+        function exportarDataToJson() { const d = { conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay }; const b = new Blob([JSON.stringify(d)], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'arqueo.json'; a.click(); }
+        function importarDataFromJson(e) { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = (ex) => { const d = JSON.parse(ex.target.result); conteoActual = d.conteoActual; movimientoDisplay = d.movimientoDisplay || {}; generarCampos(); }; r.readAsText(f); }
 
         window.onload = function() {
-            initDOM();
             const sc = localStorage.getItem(STORAGE_KEY_CONTEO); 
             const sm = localStorage.getItem(STORAGE_KEY_MOVI_DISPLAY);
+            const sr = localStorage.getItem(STORAGE_KEY_RETIROS);
             conteoActual = sc ? JSON.parse(sc) : {};
             movimientoDisplay = sm ? JSON.parse(sm) : {};
+            totalRetirado = sr ? parseInt(sr) : 0;
             fetchEsperadoData(); fetchHistorialDetallado(false); generarCampos();
         };
     </script>
