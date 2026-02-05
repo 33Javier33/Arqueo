@@ -9,260 +9,70 @@
     
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --purple: #8b5cf6;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text-main: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            
-            /* Dimensiones Navegación */
-            --nav-width-desktop: 250px;
-            --nav-height-mobile: 70px;
+            --primary: #2563eb; --primary-dark: #1e40af; --secondary: #64748b;
+            --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --purple: #8b5cf6;
+            --background: #f8fafc; --surface: #ffffff; --text-main: #1e293b; --text-light: #64748b;
+            --border: #e2e8f0; --radius: 12px; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --nav-width-desktop: 250px; --nav-height-mobile: 70px;
         }
 
         * { box-sizing: border-box; outline: none; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--background); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; display: flex; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-        }
+        /* NAVEGACIÓN */
+        .app-nav { background: var(--surface); z-index: 1000; box-shadow: var(--shadow); transition: all 0.3s ease; }
+        .nav-brand { font-size: 1.5rem; font-weight: 800; color: var(--primary); padding: 20px; display: flex; align-items: center; gap: 10px; }
+        .nav-list { list-style: none; padding: 0; margin: 0; display: flex; }
+        .nav-item { width: 100%; }
+        .nav-link { display: flex; align-items: center; padding: 15px 20px; color: var(--text-light); text-decoration: none; font-weight: 600; transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%; font-family: inherit; }
+        .nav-link:hover, .nav-link:active { color: var(--primary); background-color: #eff6ff; }
+        .nav-icon { font-size: 1.25rem; width: 30px; text-align: center; }
 
-        /* --- NAVEGACIÓN (Sidebar & Bottom Bar) --- */
-        .app-nav {
-            background: var(--surface);
-            z-index: 1000;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .nav-brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-
-        .nav-item {
-            width: 100%;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-            background: none;
-            width: 100%;
-            font-family: inherit;
-        }
-
-        .nav-link:hover, .nav-link:active {
-            color: var(--primary);
-            background-color: #eff6ff;
-        }
-
-        .nav-icon {
-            font-size: 1.25rem;
-            width: 30px;
-            text-align: center;
-        }
-
-        /* --- ESTILOS DESKTOP (Sidebar Lateral) --- */
         @media (min-width: 769px) {
-            .app-nav {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                width: var(--nav-width-desktop);
-                display: flex;
-                flex-direction: column;
-                border-right: 1px solid var(--border);
-            }
-
-            .nav-list {
-                flex-direction: column;
-                gap: 5px;
-                padding: 10px;
-            }
-
-            .nav-link {
-                border-radius: 8px;
-                gap: 12px;
-            }
-
-            .main-content-wrapper {
-                margin-left: var(--nav-width-desktop);
-                width: calc(100% - var(--nav-width-desktop));
-                padding: 2rem;
-            }
+            .app-nav { position: fixed; top: 0; left: 0; height: 100vh; width: var(--nav-width-desktop); display: flex; flex-direction: column; border-right: 1px solid var(--border); }
+            .nav-list { flex-direction: column; gap: 5px; padding: 10px; }
+            .main-content-wrapper { margin-left: var(--nav-width-desktop); width: calc(100% - var(--nav-width-desktop)); padding: 2rem; }
         }
-
-        /* --- ESTILOS MOBILE (Bottom Bar) --- */
         @media (max-width: 768px) {
-            body {
-                display: block; /* Reset flex */
-            }
-
-            .nav-brand {
-                display: none; /* Ocultar logo en navbar móvil para ahorrar espacio */
-            }
-
-            .app-nav {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: var(--nav-height-mobile);
-                border-top: 1px solid var(--border);
-                display: flex;
-                justify-content: center;
-            }
-
-            .nav-list {
-                width: 100%;
-                justify-content: space-around;
-                align-items: center;
-            }
-
-            .nav-item {
-                width: auto;
-                flex: 1;
-            }
-
-            .nav-link {
-                flex-direction: column;
-                padding: 8px 5px;
-                gap: 4px;
-                font-size: 0.75rem;
-                justify-content: center;
-                height: 100%;
-            }
-
-            .nav-icon {
-                font-size: 1.4rem;
-                width: auto;
-                margin-bottom: 2px;
-            }
-
-            .main-content-wrapper {
-                margin-left: 0;
-                padding: 1rem 1rem 80px 1rem; /* Padding bottom extra para no tapar contenido */
-                width: 100%;
-            }
+            body { display: block; } .nav-brand { display: none; }
+            .app-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height-mobile); border-top: 1px solid var(--border); display: flex; justify-content: center; }
+            .nav-list { width: 100%; justify-content: space-around; align-items: center; }
+            .nav-link { flex-direction: column; padding: 8px 5px; gap: 4px; font-size: 0.75rem; justify-content: center; height: 100%; }
+            .nav-icon { font-size: 1.4rem; width: auto; margin-bottom: 2px; }
+            .main-content-wrapper { margin-left: 0; padding: 1rem 1rem 80px 1rem; width: 100%; }
         }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Header de la página (Título) */
-        .page-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
+        .container { max-width: 1200px; margin: 0 auto; }
+        .page-header { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .mobile-logo { display: none; color: var(--primary); font-size: 1.5rem; font-weight: 800; }
-        @media (max-width: 768px) {
-            .mobile-logo { display: block; }
-            .page-header h1 { display: none; } /* Ocultar titulo texto en movil si se usa logo */
-        }
+        @media (max-width: 768px) { .mobile-logo { display: block; } .page-header h1 { display: none; } }
 
-        /* Grid del Dashboard */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 1.5rem;
-        }
+        .main-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem; }
+        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
 
-        @media (max-width: 900px) {
-            .main-layout { grid-template-columns: 1fr; }
-        }
-
-        /* --- Componentes UI Generales --- */
-        .card {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
+        .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
         .info-box { background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1rem; }
         
-        .btn {
-            padding: 10px 16px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
-            transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center;
-            gap: 8px; font-size: 0.95rem; text-decoration: none; width: 100%;
-        }
+        .btn { padding: 10px 16px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; width: 100%; }
         .btn:hover { transform: translateY(-1px); filter: brightness(110%); }
-        .btn:active { transform: translateY(0); }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .btn-primary { background-color: var(--primary); color: white; }
-        .btn-secondary { background-color: var(--secondary); color: white; }
         .btn-success { background-color: var(--success); color: white; }
         .btn-danger { background-color: var(--danger); color: white; }
         .btn-warning { background-color: var(--warning); color: #fff; }
-        .btn-info { background-color: #0ea5e9; color: white; }
-        .btn-purple { background-color: var(--purple); color: white; }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); width: auto; }
-        
-        input[type="number"], input[type="date"], select {
-            width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; background: #fff;
-        }
-        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .btn-secondary { background-color: var(--secondary); color: white; }
 
+        input[type="number"], input[type="text"], select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; background: #fff; }
         #esperadoDisplay { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-align: right; padding: 10px; background: #f8fafc; border-radius: 8px; border: 1px solid var(--border); margin-top: 5px; }
 
-        /* Tablas */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
         th, td { padding: 10px; border-bottom: 1px solid var(--border); text-align: left; }
         th { background-color: #f8fafc; font-weight: 600; color: var(--text-light); }
         td:last-child, th:last-child { text-align: right; }
 
-        /* --- Modales --- */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
-        .modal-content { background-color: var(--surface); margin: 2% auto; padding: 25px; border-radius: var(--radius); width: 95%; max-width: 650px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-content { background-color: var(--surface); margin: 2% auto; padding: 25px; border-radius: var(--radius); width: 95%; max-width: 750px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .close { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: var(--text-light); }
         
-        /* Estilos Timeline y Stats */
         #lista-movimientos { list-style: none; padding: 0; margin: 0; max-height: 60vh; overflow-y: auto; }
         .mov-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 15px; }
         .mov-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
@@ -274,180 +84,98 @@
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
         .chart-row { display: flex; align-items: center; margin-bottom: 12px; font-size: 0.9rem; }
-        .chart-bar-area { flex-grow: 1; height: 24px; background: #e2e8f0; border-radius: 6px; overflow: hidden; }
+        .chart-bar-area { flex-grow: 1; height: 24px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin: 0 10px; }
         .chart-bar { height: 100%; background: var(--primary); border-radius: 6px; display: flex; align-items: center; padding-left: 8px; color: white; font-size: 0.75rem; font-weight: bold; }
 
-        /* Estilos Calendario */
         .calendar-wrapper { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; margin-top: 10px; }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8fafc; border-bottom: 1px solid var(--border); }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--border); }
-        .calendar-day-header { background: #f8fafc; padding: 8px 0; text-align: center; font-size: 0.75rem; }
+        .calendar-day-header { background: #f8fafc; padding: 8px 0; text-align: center; font-size: 0.75rem; font-weight: bold; color: var(--text-light); }
         .calendar-day { background: #fff; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .calendar-day.selected { background: var(--primary); color: white; font-weight: bold; position: relative; }
-        .calendar-day.selected::after { content: '✓'; position: absolute; font-size: 0.6em; top: 2px; right: 2px; }
+        .calendar-day.selected { background: var(--primary); color: white; font-weight: bold; }
 
-        /* Utilidades */
         .denominacion-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); gap: 10px; }
         .denominacion-row label { flex: 1; }
-        .denominacion-row input { width: 60px; text-align: center; }
         .button-group { display: flex; gap: 5px; }
-        .button-group button { width: 36px; height: 36px; border: none; border-radius: 6px; color: white; font-size: 1.1rem; cursor: pointer; }
+        .button-group button { width: 36px; height: 36px; border: none; border-radius: 6px; color: white; font-size: 1.1rem; }
         .total-display { text-align: right; min-width: 100px; display: flex; flex-direction: column; align-items: flex-end; }
-        .cantidad-input { width: 60px !important; padding: 4px !important; text-align: center; font-weight: bold; color: var(--primary); border: 1px solid var(--primary) !important; }
+        .cantidad-input { width: 75px !important; padding: 4px !important; text-align: center; font-weight: bold; color: var(--primary); border: 1px solid var(--primary) !important; }
         
         .mensaje { padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: 600; text-align: center; }
         .mensaje.cuadrado { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
         .mensaje.sobrante { background-color: #fef3c7; color: #92400e; border: 1px solid #fbbf24; }
         .mensaje.faltante { background-color: #fee2e2; color: #b91c1c; border: 1px solid #f87171; }
         
-        .backup-controls { display: flex; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
-        #import-file { display: none; }
-        .file-upload-label { background-color: var(--warning); color: white; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; flex: 1; font-weight: 600; display: block; }
-        
         .text-primary { color: var(--primary); } .text-success { color: var(--success); } .text-muted { color: var(--text-light); font-size: 0.85em; }
-        .font-bold { font-weight: 700; } .text-center { text-align: center; }
-
-        /* Edición Modal */
-        #movimientos-edicion li { background: #f8fafc; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .sign-control button { width: 30px; height: 30px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-weight: bold; }
-        .sign-control button.active-sign { background: var(--primary); color: white; border-color: var(--primary); }
+        .font-bold { font-weight: 700; }
     </style>
 </head>
 <body>
 
-    <!-- MENÚ DE NAVEGACIÓN RESPONSIVE -->
     <nav class="app-nav">
-        <div class="nav-brand">
-            <i class="fas fa-coins"></i>
-            <span>ArqueoPro</span>
-        </div>
+        <div class="nav-brand"> <i class="fas fa-coins"></i> <span>ArqueoPro</span> </div>
         <ul class="nav-list">
-            <li class="nav-item">
-                <button onclick="scrollToTop()" class="nav-link">
-                    <i class="fas fa-home nav-icon"></i>
-                    <span>Inicio</span>
-                </button>
-            </li>
-            <li class="nav-item">
-                <button onclick="abrirModalConteo()" class="nav-link">
-                    <i class="fas fa-money-bill-wave nav-icon"></i>
-                    <span>Conteo</span>
-                </button>
-            </li>
-            <li class="nav-item">
-                <button onclick="abrirModalDetalle()" class="nav-link">
-                    <i class="fas fa-list-ol nav-icon"></i>
-                    <span>Detalle</span>
-                </button>
-            </li>
-            <li class="nav-item">
-                <button onclick="openStatsModal()" class="nav-link">
-                    <i class="fas fa-chart-pie nav-icon"></i>
-                    <span>Stats</span>
-                </button>
-            </li>
-            <li class="nav-item">
-                <button onclick="openHistoryModal()" class="nav-link">
-                    <i class="fas fa-history nav-icon"></i>
-                    <span>Historial</span>
-                </button>
-            </li>
+            <li class="nav-item"> <button onclick="scrollToTop()" class="nav-link"> <i class="fas fa-home nav-icon"></i> <span>Inicio</span> </button> </li>
+            <li class="nav-item"> <button onclick="abrirModalConteo()" class="nav-link"> <i class="fas fa-money-bill-wave nav-icon"></i> <span>Conteo</span> </button> </li>
+            <li class="nav-item"> <button onclick="recuperarDeNube()" class="nav-link" style="color: var(--warning); font-weight: 800;"> <i class="fas fa-cloud-download-alt nav-icon"></i> <span>CARGAR</span> </button> </li>
+            <li class="nav-item"> <button onclick="abrirModalDetalle()" class="nav-link"> <i class="fas fa-list-ol nav-icon"></i> <span>Detalle</span> </button> </li>
+            <li class="nav-item"> <button onclick="openStatsModal()" class="nav-link"> <i class="fas fa-chart-pie nav-icon"></i> <span>Stats</span> </button> </li>
+            <li class="nav-item"> <button onclick="openHistoryModal()" class="nav-link"> <i class="fas fa-history nav-icon"></i> <span>Historial</span> </button> </li>
+            <li class="nav-item" style="margin-top: auto;"> <button onclick="guardarEnNube()" class="nav-link btn-cloud-save" style="color: var(--success); font-weight: 800;"> <i class="fas fa-cloud-upload-alt nav-icon"></i> <span>GUARDAR</span> </button> </li>
         </ul>
     </nav>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <div class="main-content-wrapper">
         <div class="container">
             <div class="page-header">
                 <h1 style="color: var(--primary); margin: 0;">💰 Arqueo de Caja Pro</h1>
                 <div class="mobile-logo"><i class="fas fa-coins"></i> ArqueoPro</div>
-                <div style="font-size: 0.9em; color: var(--text-light);">
-                    <i class="far fa-calendar-alt"></i> Hoy
-                </div>
+                <div style="font-size: 0.9em; color: var(--text-light);"> <i class="far fa-calendar-alt"></i> Hoy </div>
             </div>
             
             <div class="main-layout">
-                <!-- COLUMNA IZQUIERDA -->
                 <div class="left-column">
                     <div class="card">
                         <h2><i class="fas fa-bullseye"></i> Datos Esperados</h2>
-                        <div style="margin-bottom: 15px;">
-                            <label class="text-muted font-bold">Total Recaudado Esperado:</label>
-                            <div id="esperadoDisplay">Cargando...</div>
-                        </div>
-                        <div class="info-box" id="divisor-info">
-                            <p style="margin: 0; display: flex; justify-content: space-between;">
-                                <span>Total Día (Último Reg.):</span> <span id="divisor-day-total" class="font-bold text-primary">$0</span>
-                            </p>
+                        <div id="esperadoDisplay">Cargando...</div>
+                        <div class="info-box" id="divisor-info" style="margin-top:15px;">
+                            <p style="margin: 0; display: flex; justify-content: space-between;"> <span>Total Día:</span> <span id="divisor-day-total" class="font-bold text-primary">$0</span> </p>
                             <small id="divisor-date" class="text-muted" style="display: block; margin-bottom: 8px;">Fecha: N/A</small>
                             <div style="border-top: 1px dashed #bfdbfe; margin: 5px 0;"></div>
-                            <p style="margin: 5px 0; display: flex; justify-content: space-between;">
-                                <span>Último Divisor:</span> <span id="divisor-value" class="font-bold text-primary">1</span>
-                            </p>
-                            <p style="margin: 5px 0; display: flex; justify-content: space-between;">
-                                <span>💰 Punto del Día:</span> <span id="punto-del-dia" class="font-bold text-success">N/A</span>
-                            </p>
+                            <p style="margin: 5px 0; display: flex; justify-content: space-between;"> <span>Divisor:</span> <span id="divisor-value" class="font-bold text-primary">1</span> </p>
+                            <p style="margin: 5px 0; display: flex; justify-content: space-between;"> <span>💰 Punto Día:</span> <span id="punto-del-dia" class="font-bold text-success">N/A</span> </p>
                             <div style="background-color: #dcfce7; padding: 8px; border-radius: 6px; margin-top: 10px;">
-                                <p style="margin: 0; font-size: 0.9em; display: flex; justify-content: space-between;">
-                                    <span>📊 TOTAL Puntos (Historial):</span>
-                                    <span id="suma-total-puntos-historial" class="font-bold text-success">N/A</span>
-                                </p>
+                                <p style="margin: 0; font-size: 0.9em; display: flex; justify-content: space-between;"> <span>📊 TOTAL Puntos:</span> <span id="suma-total-puntos-historial" class="font-bold text-success">N/A</span> </p>
                             </div>
                             <div style="margin-top: 15px; border-top: 1px solid #bfdbfe; padding-top: 10px;">
-                                <label for="divisor-planta" style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Divisor Planta (Ref):</label>
-                                <input type="number" id="divisor-planta" value="1.0" step="0.01" style="text-align: right;">
-                            </div>
-                            <div style="margin-top: 10px;">
-                                <label for="divisor-part-time" style="font-weight: 600; font-size: 0.85em; display: block; margin-bottom: 5px;">Divisor Part-Time (Filtro):</label>
-                                <input type="number" id="divisor-part-time" value="1.0" step="0.01" style="text-align: right;">
+                                <label style="font-weight: 600; font-size: 0.85em;">Divisor Planta:</label> <input type="number" id="divisor-planta" value="1.0" step="0.01" style="text-align: right;">
+                                <label style="font-weight: 600; font-size: 0.85em; margin-top:10px; display:block;">Divisor Part-Time:</label> <input type="number" id="divisor-part-time" value="1.0" step="0.01" style="text-align: right;">
                             </div>
                         </div>
-                        <div id="desglose-esperado-container" style="margin-top: 20px;">
-                            <h3 style="font-size: 1rem; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 5px;">Detalle Recaudación</h3>
-                            <div id="desglose-esperado"><p class="text-muted text-center"><small>Esperando datos...</small></p></div>
-                        </div>
+                        <div id="desglose-esperado" style="margin-top: 20px;"></div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
                             <small id="update-status" class="text-primary" style="font-size: 0.75rem;">Sincronizando...</small>
                             <button onclick="fetchEsperadoData()" class="btn btn-secondary" style="padding: 5px 10px;"><i class="fas fa-sync-alt"></i></button>
                         </div>
                     </div>
-                    
-                    <!-- Boton de accion principal (movil/desktop) -->
-                    <button class="btn btn-success" style="width: 100%; font-size: 1.1em; margin-bottom: 1.5rem;" onclick="realizarArqueo()"><i class="fas fa-check-double"></i> Realizar Arqueo y Comparar</button>
-                    
-                    <div class="card">
-                        <h3>⚙️ Datos Locales</h3>
-                        <div class="backup-controls" style="border:none; margin:0; padding:0;">
-                            <button onclick="exportarDataToJson()" class="btn btn-primary" style="flex: 1;"><i class="fas fa-download"></i> Exportar</button>
-                            <label for="import-file" class="file-upload-label"><i class="fas fa-upload"></i> Importar</label>
-                            <input type="file" id="import-file" accept=".json" onchange="importarDataFromJson(event)">
-                        </div>
-                    </div>
+                    <button class="btn btn-success" style="width: 100%; font-size: 1.1em; margin-bottom: 1.5rem;" onclick="realizarArqueo()"><i class="fas fa-check-double"></i> Realizar Arqueo</button>
                 </div>
                 
-                <!-- COLUMNA DERECHA -->
                 <div class="right-column">
                     <div class="card" id="resultados">
                         <h2><i class="fas fa-cash-register"></i> Resultados Conteo</h2>
-                        <div id="desglose-contado"><p class="text-muted text-center">Realiza un ingreso de efectivo para ver el detalle.</p></div>
+                        <div id="desglose-contado"><p class="text-muted text-center">Sin ingresos.</p></div>
                         <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid var(--primary);">
-                            <div style="display: flex; justify-content: space-between; font-size: 1.2em; margin-bottom: 10px;">
-                                <strong>TOTAL EN CAJA:</strong> <span id="total-contado-final" class="text-success font-bold">$0</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; color: var(--danger);">
-                                <strong>TOTAL RETIRADO:</strong> <span id="total-retiros-final" class="font-bold">$0</span>
-                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 1.2em; margin-bottom: 10px;"> <strong>TOTAL CAJA:</strong> <span id="total-contado-final" class="text-success font-bold">$0</span> </div>
+                            <div style="display: flex; justify-content: space-between; color: var(--danger);"> <strong>RETIRADO:</strong> <span id="total-retiros-final" class="font-bold">$0</span> </div>
                         </div>
                     </div>
                     <div class="card" id="comparacion">
                         <h2><i class="fas fa-chart-pie"></i> Análisis</h2>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em;">
-                            <strong>Diferencia (Contado - Esperado):</strong> <span id="diferencia" class="font-bold">$0</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                            <strong>📊 Puntos Totales (Historial):</strong> <span id="division-result" class="text-muted">N/A</span>
-                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em;"> <strong>Diferencia:</strong> <span id="diferencia" class="font-bold">$0</span> </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;"> <strong>📊 Puntos Totales:</strong> <span id="division-result" class="text-muted">N/A</span> </div>
                         <p id="mensaje-arqueo" class="mensaje"></p>
+                        <button onclick="archivarEnNube()" class="btn btn-danger" style="margin-top:10px;"><i class="fas fa-archive"></i> Archivar Informe Final</button>
                     </div>
                 </div>
             </div>
@@ -459,73 +187,62 @@
         <div class="modal-content">
             <span class="close" onclick="cerrarModalConteo()">&times;</span>
             <h2>💸 Gestión de Efectivo</h2>
-            <div class="info-box" style="margin-bottom: 15px;"><small>Usa <b>+</b> / <b>-</b> para ajustes rápidos.</small></div>
-            <div id="history-controls">
+            <div id="history-controls" style="margin-bottom: 15px; display:flex; gap:10px;">
                 <button id="undo-btn" onclick="undoAction()" class="btn btn-warning" disabled><i class="fas fa-undo"></i> Deshacer</button>
                 <button id="redo-btn" onclick="redoAction()" class="btn btn-info" disabled><i class="fas fa-redo"></i> Rehacer</button>
             </div>
             <div id="arqueo-form"></div>
-            <button onclick="cerrarModalConteo(true)" class="btn btn-primary" style="width: 100%; margin-top: 20px;"><i class="fas fa-save"></i> Guardar y Cerrar</button>
+            <button onclick="cerrarModalConteo(true)" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Listo</button>
         </div>
     </div>
 
+    <!-- MODAL EDICIÓN RASTRO MATEMÁTICO -->
     <div id="modalEdicionDetalle" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModalEdicionDetalle()">&times;</span>
-            <h2 id="edicion-detalle-titulo">✏️ Editar Movimientos</h2>
-            <p class="text-muted">Corrige errores en el historial.</p>
-            <ul id="movimientos-edicion" style="list-style: none; padding: 0;"></ul>
-            <button onclick="guardarEdicionDetalle()" class="btn btn-success" style="width: 100%; margin-top: 20px;">Confirmar Correcciones</button>
+            <h2 id="titulo-edicion">✏️ Editar Fórmula</h2>
+            <p class="text-muted">Corrige errores de signos o números en el rastro.</p>
+            <input type="text" id="formula-edit-input" style="font-size:1.2em; font-family:monospace; margin-top:10px;">
+            <button onclick="guardarEdicionDetalle()" class="btn btn-success" style="width: 100%; margin-top: 20px;">Guardar Cambios</button>
         </div>
     </div>
-    
+
     <div id="modalDetalle" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModalDetalle()">&times;</span>
             <h2>📜 Log de Operaciones</h2>
-            <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-                <ul id="lista-movimientos"></ul>
-            </div>
-            <button onclick="limpiarRegistros()" class="btn btn-danger" style="width: 100%; margin-top: 20px;"><i class="fas fa-trash"></i> Reiniciar Todo (Borrar Datos)</button>
+            <ul id="lista-movimientos"></ul>
+            <button onclick="if(confirm('Reiniciar?')){localStorage.clear();location.reload();}" class="btn btn-danger" style="margin-top:20px;">Borrar Todo</button>
         </div>
     </div>
     
-    <!-- MODAL HISTORIAL -->
     <div id="historyModal" class="modal">
         <div class="modal-content" style="max-width: 900px;">
             <span class="close" onclick="closeHistoryModal()">&times;</span>
-            <h2>📋 Historial Servidor (Apps Script)</h2>
+            <h2>📋 Historial Servidor</h2>
             <div style="background:var(--background); padding:10px; border-radius:8px; margin-bottom:10px;">
-                <label for="divisorFilter" class="font-bold">Filtrar por Turno/Divisor:</label>
-                <select id="divisorFilter" onchange="fetchHistorialDetallado(true)" style="width:100%; margin-top:5px;">
-                    <option value="">-- Ver Todo --</option>
-                </select>
+                <label class="font-bold">Filtrar por Divisor:</label>
+                <select id="divisorFilter" onchange="fetchHistorialDetallado(true)" style="width:100%; margin-top:5px;"><option value="">-- Todos --</option></select>
             </div>
             <div class="calendar-wrapper">
                 <div class="calendar-header">
                     <button onclick="prevMonth()"><i class="fas fa-chevron-left"></i></button>
-                    <span id="calendar-month-year" class="calendar-title"></span>
+                    <span id="calendar-month-year" class="font-bold"></span>
                     <button onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 <div class="calendar-grid">
-                    <div class="calendar-day-header">Lun</div><div class="calendar-day-header">Mar</div><div class="calendar-day-header">Mié</div>
-                    <div class="calendar-day-header">Jue</div><div class="calendar-day-header">Vie</div><div class="calendar-day-header">Sáb</div>
-                    <div class="calendar-day-header">Dom</div>
+                    <div class="calendar-day-header">L</div><div class="calendar-day-header">M</div><div class="calendar-day-header">M</div>
+                    <div class="calendar-day-header">J</div><div class="calendar-day-header">V</div><div class="calendar-day-header">S</div>
+                    <div class="calendar-day-header">D</div>
                 </div>
                 <div id="calendar-days" class="calendar-grid"></div>
-                <div class="calendar-footer">
-                    <span class="selected-count" id="selected-dates-count">0 días seleccionados</span>
-                    <button onclick="clearCalendar()" class="btn btn-outline" style="padding: 5px 10px; font-size:0.8rem;">
-                        <i class="fas fa-eraser"></i> Limpiar Fechas
-                    </button>
+                <div style="padding:10px; display:flex; justify-content:space-between; background:#f8fafc; border-top:1px solid var(--border);">
+                    <span id="selected-dates-count">0 días seleccionados</span>
+                    <button onclick="clearCalendar()" class="btn btn-outline" style="font-size:0.8em;">Limpiar</button>
                 </div>
             </div>
-            <div id="history-summary" class="mensaje cuadrado" style="text-align: left;">
-                <p class="text-center"><i class="fas fa-spinner fa-spin"></i> Cargando resumen...</p>
-            </div>
-            <div id="historyContainer">
-                <p class="text-center text-muted"><i class="fas fa-spinner fa-spin"></i> Obteniendo datos...</p>
-            </div>
+            <div id="history-summary" class="mensaje cuadrado" style="text-align: left; margin-top:10px;"></div>
+            <div id="historyContainer" style="margin-top:10px;"></div>
         </div>
     </div>
 
@@ -533,502 +250,319 @@
         <div class="modal-content">
             <span class="close" onclick="closeStatsModal()">&times;</span>
             <h2>📊 Análisis por Tipo</h2>
-            <div id="stats-content"><p class="text-center text-muted">Cargando análisis...</p></div>
+            <div id="stats-content"></div>
         </div>
     </div>
 
-    <!-- SCRIPTS -->
     <script>
-        const ESPERADO_URL = 'https://script.google.com/macros/s/AKfycbz_kCb4aEe437zHGbRqnjCibw1NtAqfCbTNmsVPn9jaZOPBFaZ6-FwmiTLqVxq39X1P/exec'; 
-        const FETCH_TIMEOUT_MS = 10000; 
-        const DENOMINACIONES = [20000, 10000, 5000, 2000, 1000, 500, 100, 50, 10];
+        const URL_GET_DATOS = 'https://script.google.com/macros/s/AKfycbz_kCb4aEe437zHGbRqnjCibw1NtAqfCbTNmsVPn9jaZOPBFaZ6-FwmiTLqVxq39X1P/exec'; 
+        const URL_POST_GUARDAR = 'https://script.google.com/macros/s/AKfycbzr0_GPBfp1MuP0YzBUNbwwQAtwr7Nf3oPzX2855_6Fm36T3303_G6TB_7lmE6TnTHLrw/exec'; 
         
-        // Storage Keys
+        const DENOMINACIONES = [20000, 10000, 5000, 2000, 1000, 500, 100, 50, 10];
         const STORAGE_KEY_CONTEO = 'arqueoConteoCLP';
+        const STORAGE_KEY_MOVI_DISPLAY = 'arqueoMoviDisplayCLP';
         const STORAGE_KEY_DETALLE = 'arqueoDetalleCLP';
         const STORAGE_KEY_RETIROS = 'arqueoRetirosCLP'; 
-        const STORAGE_KEY_HISTORY = 'arqueoHistoryCLP';
-        const STORAGE_KEY_PUNTO_DIA_VALOR = 'arqueoPuntoDiaValorCLP';
-        const STORAGE_KEY_DIVISOR_VALOR = 'arqueoDivisorValorCLP'; 
-        const STORAGE_KEY_SUMA_PUNTOS = 'arqueoSumaPuntosCLP'; 
-        const STORAGE_KEY_DIVISOR_PLANTA = 'arqueoDivisorPlantaCLP'; 
-        const STORAGE_KEY_DIVISOR_PARTTIME = 'arqueoDivisorPartTimeCLP'; 
 
-        // DOM
-        const contenedorForm = document.getElementById('arqueo-form');
-        const totalContadoFinalSpan = document.getElementById('total-contado-final');
-        const totalRetirosFinalSpan = document.getElementById('total-retiros-final');
-        const desgloseContadoDiv = document.getElementById('desglose-contado');
-        const diferenciaSpan = document.getElementById('diferencia');
-        const mensajeArqueoP = document.getElementById('mensaje-arqueo');
-        const listaMovimientosUl = document.getElementById('lista-movimientos');
-        const esperadoDisplay = document.getElementById('esperadoDisplay'); 
-        const updateStatusSpan = document.getElementById('update-status'); 
-        const desgloseEsperadoDiv = document.getElementById('desglose-esperado'); 
-        const divisorDayTotalSpan = document.getElementById('divisor-day-total');
-        const divisorValueSpan = document.getElementById('divisor-value');
-        const divisorDateSpan = document.getElementById('divisor-date');
-        const puntoDelDiaSpan = document.getElementById('punto-del-dia'); 
-        const divisionResultSpan = document.getElementById('division-result');
-        const sumaTotalPuntosHistorialSpan = document.getElementById('suma-total-puntos-historial');
-        
-        const modalConteo = document.getElementById('modalConteo'); 
-        const modalDetalle = document.getElementById('modalDetalle'); 
-        const modalEdicionDetalle = document.getElementById('modalEdicionDetalle'); 
-        const historyModal = document.getElementById('historyModal'); 
-        const modalStats = document.getElementById('modalStats');
-        const historyContainer = document.getElementById('historyContainer'); 
-        const historySummaryDiv = document.getElementById('history-summary');
-        const undoBtn = document.getElementById('undo-btn');
-        const redoBtn = document.getElementById('redo-btn');
-        const divisorPlantaInput = document.getElementById('divisor-planta');
-        const divisorPartTimeInput = document.getElementById('divisor-part-time');
-        const divisorFilterSelect = document.getElementById('divisorFilter');
-
-        // Estado Global
         let conteoActual = {}; let detalleMovimientos = []; let totalRetirado = 0; 
         let movimientoDisplay = {}; let puntoDelDiaValor = 0; let ultimoDivisor = 1.0; 
         let sumaTotalPuntos = 0; let history = []; let historyIndex = -1;
-        let denominacionEnEdicion = null; let globalDesgloseEsperado = [];
+        let globalDesgloseEsperado = []; let calendarDate = new Date(); let selectedDates = new Set();
+        let denomEditando = null;
 
-        // Estado Calendario
-        let calendarDate = new Date(); // Mes actual visualizado
-        let selectedDates = new Set(); // Fechas seleccionadas 'YYYY-MM-DD'
+        // DOM ELEMENTS BLINDADOS
+        let contenedorForm, totalContadoFinalSpan, totalRetirosFinalSpan, desgloseContadoDiv, diferenciaSpan, mensajeArqueoP, esperadoDisplay, updateStatusSpan, divisorDayTotalSpan, divisorValueSpan, divisorDateSpan, puntoDelDiaSpan, divisionResultSpan, sumaTotalPuntosHistorialSpan, divisorPlantaInput, divisorPartTimeInput, divisorFilterSelect, historyContainer, historySummaryDiv, undoBtn, redoBtn;
 
-        // Utilidades
+        function initDOM() {
+            contenedorForm = document.getElementById('arqueo-form');
+            totalContadoFinalSpan = document.getElementById('total-contado-final');
+            totalRetirosFinalSpan = document.getElementById('total-retiros-final');
+            desgloseContadoDiv = document.getElementById('desglose-contado');
+            diferenciaSpan = document.getElementById('diferencia');
+            mensajeArqueoP = document.getElementById('mensaje-arqueo');
+            esperadoDisplay = document.getElementById('esperadoDisplay');
+            updateStatusSpan = document.getElementById('update-status');
+            divisorDayTotalSpan = document.getElementById('divisor-day-total');
+            divisorValueSpan = document.getElementById('divisor-value');
+            divisorDateSpan = document.getElementById('divisor-date');
+            puntoDelDiaSpan = document.getElementById('punto-del-dia');
+            divisionResultSpan = document.getElementById('division-result');
+            sumaTotalPuntosHistorialSpan = document.getElementById('suma-total-puntos-historial');
+            divisorPlantaInput = document.getElementById('divisor-planta');
+            divisorPartTimeInput = document.getElementById('divisor-part-time');
+            divisorFilterSelect = document.getElementById('divisorFilter');
+            historyContainer = document.getElementById('historyContainer');
+            historySummaryDiv = document.getElementById('history-summary');
+            undoBtn = document.getElementById('undo-btn');
+            redoBtn = document.getElementById('redo-btn');
+        }
+
         function formatoMoneda(n) { return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(Math.round(n)); }
-        function formatoFactor(n) { if (isNaN(n) || !isFinite(n)) return "N/A"; return parseFloat(n).toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-        function formatoPunto(n) { return formatoMoneda(n); }
+        function formatoFactor(n) { return parseFloat(n).toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        // --- APPS SCRIPT ---
+        function evalMath(str) {
+            let clean = str.toString().replace(/^=/, '').replace(/[^0-9+\-*/().]/g, '');
+            if(!clean) return 0;
+            try { return Function('"use strict"; return (' + clean + ')')(); } catch(e) { return 0; }
+        }
+
+        async function recuperarDeNube() {
+            if(!confirm("☁️ ¿Descargar último arqueo de la nube?")) return;
+            try {
+                const res = await fetch(URL_POST_GUARDAR + '?action=getLast');
+                const json = await res.json();
+                if(json.status === 'success') {
+                    conteoActual = json.data.conteoActual || {};
+                    detalleMovimientos = json.data.detalleMovimientos || [];
+                    totalRetirado = json.data.totalRetirado || 0;
+                    movimientoDisplay = {}; 
+                    localStorage.setItem(STORAGE_KEY_CONTEO, JSON.stringify(conteoActual));
+                    generarCampos(); realizarArqueo();
+                    alert("✅ Sincronizado.");
+                } else { alert("❌ " + json.message); }
+            } catch (e) { alert("Error de red."); }
+        }
+
+        async function guardarEnNube() {
+            if(!confirm("☁️ ¿Subir arqueo a la nube?")) return;
+            const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
+            const payload = {
+                conteoActual, detalleMovimientos, totalRetirado,
+                totalContado: calcularTotalGeneral(), totalEsperado: espVal, diferencia: calcularTotalGeneral() - espVal,
+                divisorPlanta: divisorPlantaInput.value, divisorPartTime: divisorPartTimeInput.value
+            };
+            try {
+                const btn = document.querySelector('.btn-cloud-save');
+                btn.innerHTML = 'Subiendo...';
+                await fetch(URL_POST_GUARDAR, { method: 'POST', body: JSON.stringify(payload) });
+                alert("✅ Guardado."); btn.innerHTML = 'GUARDAR';
+            } catch (e) { alert("Error conexión."); }
+        }
+
+        async function archivarEnNube() {
+            if(!confirm("🚀 ¿Archivar informe?")) return;
+            const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
+            const payload = { conteoActual, detalleMovimientos, totalRetirado, totalContado: calcularTotalGeneral(), diferencia: calcularTotalGeneral() - espVal };
+            try {
+                await fetch(URL_POST_GUARDAR + '?action=archive', { method: 'POST', body: JSON.stringify(payload) });
+                localStorage.clear(); location.reload();
+            } catch (e) { alert("Error."); }
+        }
+
         async function fetchEsperadoData() {
-            mensajeArqueoP.classList.remove('error-fetch'); mensajeArqueoP.textContent = '';
-            esperadoDisplay.textContent = 'Actualizando...'; desgloseEsperadoDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando...'; 
-            updateStatusSpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando...';
-            
-            const controller = new AbortController(); const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
             try {
-                const response = await fetch(ESPERADO_URL, { signal: controller.signal });
-                clearTimeout(timeoutId); 
-                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-                const data = await response.json(); 
-                if (data.totalAcumulado === undefined) throw new Error(`Datos faltantes.`);
-                
-                const expectedValue = Math.round(data.totalAcumulado / 100); 
-                const totalLastDivisorDay = Math.round(data.totalLastDivisorDay / 100); 
-                const lastDivisorValue = parseFloat(data.lastDivisor); 
-                const lastDivisorDateString = data.lastDivisorDate || 'N/A'; 
-                ultimoDivisor = lastDivisorValue || 1.0;
-                puntoDelDiaValor = (ultimoDivisor && totalLastDivisorDay) ? Math.round(totalLastDivisorDay / ultimoDivisor) : 0;
-                globalDesgloseEsperado = [];
-                if (data.desgloseEsperado && Array.isArray(data.desgloseEsperado)) {
-                    globalDesgloseEsperado = data.desgloseEsperado.map(item => ({ tipo: item.tipo, monto: Math.round((item.monto || 0) / 100) }));
-                } 
-                let formattedDateWithDay = 'Fecha: N/A';
-                if (lastDivisorDateString && lastDivisorDateString !== 'N/A') {
-                    const dateParts = lastDivisorDateString.split('-'); 
-                    if (dateParts.length === 3) formattedDateWithDay = `Fecha: ${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
-                    else formattedDateWithDay = `Fecha: ${lastDivisorDateString}`;
-                }
-
-                esperadoDisplay.textContent = formatoMoneda(expectedValue); 
-                divisorDayTotalSpan.textContent = formatoMoneda(totalLastDivisorDay); 
-                divisorValueSpan.textContent = formatoFactor(ultimoDivisor); 
-                divisorDateSpan.textContent = formattedDateWithDay; 
-                puntoDelDiaSpan.textContent = formatoPunto(puntoDelDiaValor);
-
-                localStorage.setItem(STORAGE_KEY_PUNTO_DIA_VALOR, puntoDelDiaValor.toString());
-                localStorage.setItem(STORAGE_KEY_DIVISOR_VALOR, ultimoDivisor.toString()); 
-                populateDivisorFilter(); 
-                if (globalDesgloseEsperado.length > 0) mostrarDesgloseEsperado(globalDesgloseEsperado);
-                else desgloseEsperadoDiv.innerHTML = '<p class="text-center text-muted">No se recibió desglose.</p>';
-                
-                updateStatusSpan.innerHTML = `Actualizado: <strong>${new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}</strong>`;
+                const res = await fetch(URL_GET_DATOS);
+                const data = await res.json();
+                const espVal = Math.round(data.totalAcumulado / 100);
+                ultimoDivisor = parseFloat(data.lastDivisor) || 1.0;
+                const totDay = Math.round(data.totalLastDivisorDay / 100);
+                esperadoDisplay.textContent = formatoMoneda(espVal);
+                divisorDayTotalSpan.textContent = formatoMoneda(totDay);
+                divisorValueSpan.textContent = formatoFactor(ultimoDivisor);
+                puntoDelDiaSpan.textContent = formatoMoneda(totDay / ultimoDivisor);
+                divisorDateSpan.textContent = "Fecha: " + data.lastDivisorDate;
+                globalDesgloseEsperado = data.desgloseEsperado || [];
+                mostrarDesgloseEsperado(globalDesgloseEsperado);
                 realizarArqueo();
-            } catch (error) {
-                clearTimeout(timeoutId); console.error("Error Fetch:", error);
-                esperadoDisplay.textContent = formatoMoneda(0); 
-                desgloseEsperadoDiv.innerHTML = '<p class="error-fetch">🚨 Error al cargar datos.</p>';
-                updateStatusSpan.innerHTML = `<span style="color:var(--danger);">Error: ${error.message}</span>`;
-                mensajeArqueoP.textContent = "🚨 ERROR DE CONEXIÓN"; mensajeArqueoP.classList.add('error-fetch');
-                realizarArqueo(); 
-            }
+            } catch (e) { }
         }
-        
-        function populateDivisorFilter() {
-            divisorFilterSelect.innerHTML = '<option value="">-- Ver Todo (Total General) --</option>';
-            const divisores = new Set();
-            const ultimoDivisorValue = parseFloat(localStorage.getItem(STORAGE_KEY_DIVISOR_VALOR)) || 1.0;
-            if (ultimoDivisorValue !== 1.0) divisores.add(ultimoDivisorValue);
-            const divisorPartTimeValue = parseFloat(divisorPartTimeInput.value) || 1.0;
-            if (divisorPartTimeValue !== 1.0) divisores.add(divisorPartTimeValue);
-            divisores.add(1.0); 
-            
-            Array.from(divisores).sort((a, b) => b - a).forEach(divisor => {
-                const label = divisor === divisorPartTimeValue ? `Divisor ${formatoFactor(divisor)} (Part-Time)` : 
-                              (divisor === ultimoDivisorValue ? `Divisor ${formatoFactor(divisor)} (Último Reg)` : `Divisor ${formatoFactor(divisor)}`);
-                const option = document.createElement('option');
-                option.value = divisor.toFixed(2); option.textContent = label;
-                divisorFilterSelect.appendChild(option);
-            });
-        }
-        
+
         function mostrarDesgloseEsperado(data) {
-            let totalDesglose = 0, totalMaquinasMesas = 0; 
-            let html = '<table><thead><tr><th>Tipo</th><th>Monto</th></tr></thead><tbody>';
-            data.forEach(item => {
-                html += `<tr><td>${item.tipo}</td><td>${formatoMoneda(item.monto)}</td></tr>`;
-                totalDesglose += item.monto;
-                if (item.tipo.toLowerCase().match(/máquina|maquina|mesa/)) totalMaquinasMesas += item.monto;
-            });
-            html += `</tbody><tfoot><tr><td class="text-muted font-bold">Total Maq/Mesas</td><td class="text-muted font-bold">${formatoMoneda(totalMaquinasMesas)}</td></tr>`;
-            html += `<tr><td class="font-bold text-primary">TOTAL ESPERADO</td><td class="font-bold text-primary">${formatoMoneda(totalDesglose)}</td></tr></tfoot></table>`;
-            desgloseEsperadoDiv.innerHTML = html;
+            let h = '<table><thead><tr><th>Tipo</th><th>Monto</th></tr></thead><tbody>';
+            data.forEach(i => { h += `<tr><td>${i.tipo}</td><td>${formatoMoneda(i.monto/100)}</td></tr>`; });
+            document.getElementById('desglose-esperado').innerHTML = h + '</tbody></table>';
         }
 
-        // --- LÓGICA DEL CALENDARIO ---
-        function renderCustomCalendar() {
-            const year = calendarDate.getFullYear();
-            const month = calendarDate.getMonth();
-            const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-            
-            document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
-            
-            const firstDay = new Date(year, month, 1).getDay(); // 0 = Domingo
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const startDayIndex = (firstDay === 0 ? 6 : firstDay - 1);
-            
-            const daysContainer = document.getElementById('calendar-days');
-            daysContainer.innerHTML = '';
-            
-            for (let i = 0; i < startDayIndex; i++) {
-                const empty = document.createElement('div');
-                empty.className = 'calendar-day empty';
-                daysContainer.appendChild(empty);
-            }
-            
-            for (let d = 1; d <= daysInMonth; d++) {
-                const dayEl = document.createElement('div');
-                dayEl.className = 'calendar-day';
-                dayEl.textContent = d;
-                
-                const mStr = (month + 1).toString().padStart(2, '0');
-                const dStr = d.toString().padStart(2, '0');
-                const dateStr = `${year}-${mStr}-${dStr}`;
-                
-                if (selectedDates.has(dateStr)) dayEl.classList.add('selected');
-                dayEl.onclick = () => toggleDate(dateStr);
-                daysContainer.appendChild(dayEl);
-            }
-            
-            const count = selectedDates.size;
-            document.getElementById('selected-dates-count').textContent = count === 0 ? '0 días seleccionados' : (count === 1 ? '1 día seleccionado' : `${count} días seleccionados`);
-        }
-        
-        function toggleDate(dateStr) {
-            if (selectedDates.has(dateStr)) selectedDates.delete(dateStr);
-            else selectedDates.add(dateStr);
-            renderCustomCalendar();
-            fetchHistorialDetallado(true); 
-        }
-        
-        function prevMonth() { calendarDate.setMonth(calendarDate.getMonth() - 1); renderCustomCalendar(); }
-        function nextMonth() { calendarDate.setMonth(calendarDate.getMonth() + 1); renderCustomCalendar(); }
-        function clearCalendar() { selectedDates.clear(); renderCustomCalendar(); fetchHistorialDetallado(true); }
-
-        async function openHistoryModal() {
-            historyModal.style.display = 'block';
-            populateDivisorFilter(); 
-            renderCustomCalendar(); 
-            await fetchHistorialDetallado(true); 
-        }
-        function closeHistoryModal() { historyModal.style.display = 'none'; }
-
-        // --- ESTADÍSTICAS ---
-        function openStatsModal() { modalStats.style.display = 'block'; renderStats(); }
-        function closeStatsModal() { modalStats.style.display = 'none'; }
-        function renderStats() {
-            const container = document.getElementById('stats-content');
-            if (!globalDesgloseEsperado || globalDesgloseEsperado.length === 0) {
-                container.innerHTML = '<div class="text-center text-muted"><i class="fas fa-chart-bar" style="font-size:3em; margin-bottom:10px;"></i><br>No hay datos disponibles.<br><small>Sincroniza los datos esperados primero.</small></div>';
-                return;
-            }
-            let total = 0; globalDesgloseEsperado.forEach(item => total += item.monto);
-            const sortedData = [...globalDesgloseEsperado].sort((a, b) => b.monto - a.monto);
-            const topItem = sortedData[0]; const avg = total / sortedData.length;
-
-            let html = `<div class="stats-grid">
-                    <div class="stat-card"><h4>🏆 Top Fuente</h4><div class="value" style="color:var(--primary); font-size:1.1rem;">${topItem.tipo}</div><div class="sub-label">${formatoMoneda(topItem.monto)}</div></div>
-                    <div class="stat-card"><h4>📈 Promedio/Tipo</h4><div class="value">${formatoMoneda(avg)}</div><div class="sub-label">Total: ${formatoMoneda(total)}</div></div>
-                </div><h3 style="font-size:1.1rem; border-bottom:1px solid var(--border); padding-bottom:5px; margin-top:20px;">Distribución Porcentual</h3><div class="chart-container">`;
-            sortedData.forEach(item => {
-                const percent = total > 0 ? (item.monto / total) * 100 : 0;
-                html += `<div class="chart-row"><div class="chart-label">${item.tipo}</div><div class="chart-bar-area"><div class="chart-bar" style="width: ${percent}%;">${percent > 10 ? percent.toFixed(1) + '%' : ''}</div></div><div class="chart-value">${formatoMoneda(item.monto)}</div></div>`;
-            });
-            html += '</div>'; container.innerHTML = html;
-        }
-
-        // --- LÓGICA FILTRADO MEJORADA CON SET DE FECHAS ---
-        async function fetchHistorialDetallado(isModal = false) {
-            const HISTORIAL_URL = `${ESPERADO_URL}?action=get`;
-            const selectedDivisor = isModal ? divisorFilterSelect.value : null; 
-            
-            if (isModal) {
-                historyContainer.innerHTML = '<p class="text-center text-muted"><i class="fas fa-spinner fa-spin"></i> Solicitando datos...</p>';
-                historySummaryDiv.innerHTML = '<p class="text-center text-muted"><i class="fas fa-spinner fa-spin"></i> Calculando...</p>';
-            }
-            if (!isModal) sumaTotalPuntosHistorialSpan.textContent = 'Calculando...';
-            
-            try {
-                const response = await fetch(HISTORIAL_URL);
-                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-                const result = await response.json();
-                if (result.status === 'success' && Array.isArray(result.data)) {
-                    renderHistoryTable(result.data, historyContainer, isModal, selectedDivisor); 
-                } else {
-                    if (isModal) historyContainer.innerHTML = `<p class="error-fetch">${result.message || 'Error desconocido'}</p>`;
-                    sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(0);
-                    localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, '0');
-                }
-            } catch (error) {
-                if (isModal) historyContainer.innerHTML = `<p class="error-fetch">Error: ${error.message}</p>`;
-                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(0);
-                localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, '0');
-            }
-        }
-
-        function renderHistoryTable(historial, container, isModal, divisorFilterValue = null) {
-            if (historial.length === 0) {
-                if (isModal) container.innerHTML = '<p class="text-center text-muted">No hay registros.</p>';
-                sumaTotalPuntos = 0;
-                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(0);
-                divisionResultSpan.textContent = formatoMoneda(0);
-                localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, '0');
-                return;
-            }
-
-            const dailySummary = {};
-            historial.forEach(registro => {
-                const dateKey = registro.fecha.split(' ')[0]; // YYYY-MM-DD
-                const monto = Math.round(parseFloat(registro.monto || 0)); 
-                const tipo = registro.tipo || 'Sin Tipo';
-                const divisor = parseFloat(registro.divisor) || 1.0; 
-
-                if (!dailySummary[dateKey]) dailySummary[dateKey] = { date: dateKey, total: 0, types: {}, divisor: divisor };
-                dailySummary[dateKey].total += monto;
-                if (!dailySummary[dateKey].types[tipo]) dailySummary[dateKey].types[tipo] = 0;
-                dailySummary[dateKey].types[tipo] += monto;
-            });
-
-            const summaryArray = Object.values(dailySummary).sort((a, b) => b.date.localeCompare(a.date));
-            let sumaTotalPuntosAcumulada = 0; 
-            let totalMontoRecaudado = 0; 
-            
-            const filteredSummaryArray = summaryArray.filter(dayData => {
-                const passDivisor = (!divisorFilterValue || divisorFilterValue === "") ? true : (dayData.divisor.toFixed(2) === divisorFilterValue);
-                let passDate = true;
-                if (selectedDates.size > 0) passDate = selectedDates.has(dayData.date);
-                return passDivisor && passDate;
-            });
-            
-            if (filteredSummaryArray.length === 0 && isModal) {
-                container.innerHTML = `<p class="mensaje faltante">🚨 Sin registros para los filtros aplicados.</p>`;
-                historySummaryDiv.innerHTML = '';
-                if(divisorFilterValue || selectedDates.size > 0) return; 
-            }
-
-            if (isModal) {
-                let html = '<table class="history-table"><thead><tr><th>Fecha</th><th>Divisor</th><th>Punto Diario</th><th>Total Recaudado</th><th>Desglose</th></tr></thead><tbody>';
-                
-                filteredSummaryArray.forEach((dayData) => {
-                    let puntoDiario = 0;
-                    if (dayData.divisor && dayData.divisor !== 0) puntoDiario = Math.round(dayData.total / dayData.divisor);
-                    
-                    sumaTotalPuntosAcumulada += puntoDiario; 
-                    totalMontoRecaudado += dayData.total;
-                    
-                    let typeBreakdown = '';
-                    Object.entries(dayData.types).sort().forEach(([tipo, monto]) => {
-                        typeBreakdown += `<div style="font-size:0.85em;"><b>${tipo}:</b> ${formatoMoneda(monto)}</div>`;
-                    });
-                    
-                    html += `<tr><td>${dayData.date}</td><td class="text-center text-primary font-bold">${formatoFactor(dayData.divisor)}</td><td class="text-right text-success font-bold">${formatoPunto(puntoDiario)}</td><td class="text-right text-primary font-bold">${formatoMoneda(dayData.total)}</td><td>${typeBreakdown}</td></tr>`;
-                });
-                html += '</tbody></table>';
-                container.innerHTML = html;
-                
-                const countMsg = selectedDates.size > 0 ? `(${selectedDates.size} días marcados)` : '';
-                historySummaryDiv.innerHTML = `<div style="display:flex; justify-content:space-around; align-items:center; flex-wrap:wrap;"><div><strong>📊 Puntos Acumulados ${countMsg}:</strong><br><span style="color:var(--success); font-weight: bold; font-size:1.2em;">${formatoMoneda(sumaTotalPuntosAcumulada)}</span></div><div><strong>💰 Recaudación Total:</strong><br><span style="color:var(--primary); font-weight: bold; font-size:1.2em;">${formatoMoneda(totalMontoRecaudado)}</span></div></div>`;
-            } else {
-                summaryArray.forEach((dayData) => {
-                    if (dayData.divisor) sumaTotalPuntosAcumulada += Math.round(dayData.total / dayData.divisor);
-                });
-            }
-            
-            if (!isModal || (isModal && !divisorFilterValue && selectedDates.size === 0)) {
-                sumaTotalPuntos = sumaTotalPuntosAcumulada;
-                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(sumaTotalPuntosAcumulada);
-                divisionResultSpan.textContent = formatoMoneda(sumaTotalPuntosAcumulada); 
-                localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, sumaTotalPuntosAcumulada.toString());
-            }
-        }
-
-        // --- GESTIÓN DE ESTADO ---
-        function guardarEstado(c, d, r, m) {
-            if (historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
-            history.push({ conteo: JSON.parse(JSON.stringify(c)), detalle: JSON.parse(JSON.stringify(d)), retiros: r, movimientoDisplay: JSON.parse(JSON.stringify(m)) });
-            historyIndex = history.length - 1; if (history.length > 20) { history.shift(); historyIndex--; }
-            actualizarControlesHistoria(); guardarEstadoLocal();
-        }
-        function aplicarEstado(i) {
-            if (i >= 0 && i < history.length) {
-                const s = history[i]; conteoActual = s.conteo; detalleMovimientos = s.detalle; totalRetirado = s.retiros; movimientoDisplay = s.movimientoDisplay || {};
-                historyIndex = i; guardarConteo(); guardarDetalle(); guardarRetiros(); generarCampos(); actualizarControlesHistoria(); realizarArqueo();
-            }
-        }
-        function undoAction() { if (historyIndex > 0) aplicarEstado(historyIndex - 1); }
-        function redoAction() { if (historyIndex < history.length - 1) aplicarEstado(historyIndex + 1); }
-        function actualizarControlesHistoria() { undoBtn.disabled = historyIndex <= 0; redoBtn.disabled = historyIndex >= history.length - 1; }
-        
-        function cargarEstado() {
-            try {
-                const sc = localStorage.getItem(STORAGE_KEY_CONTEO), sd = localStorage.getItem(STORAGE_KEY_DETALLE), sr = localStorage.getItem(STORAGE_KEY_RETIROS), sh = localStorage.getItem(STORAGE_KEY_HISTORY);
-                conteoActual = sc ? JSON.parse(sc) : {}; detalleMovimientos = sd ? JSON.parse(sd) : []; totalRetirado = sr ? parseInt(sr) : 0;
-                puntoDelDiaValor = parseInt(localStorage.getItem(STORAGE_KEY_PUNTO_DIA_VALOR)) || 0;
-                ultimoDivisor = parseFloat(localStorage.getItem(STORAGE_KEY_DIVISOR_VALOR)) || 1.0; 
-                sumaTotalPuntos = parseInt(localStorage.getItem(STORAGE_KEY_SUMA_PUNTOS)) || 0; 
-                divisorPlantaInput.value = localStorage.getItem(STORAGE_KEY_DIVISOR_PLANTA) || '1.0';
-                divisorPartTimeInput.value = localStorage.getItem(STORAGE_KEY_DIVISOR_PARTTIME) || '1.0';
-                movimientoDisplay = {}; 
-                if (sh) { const h = JSON.parse(sh); history = h.history; historyIndex = h.index; if (history.length > 0) movimientoDisplay = history[historyIndex].movimientoDisplay || {}; }
-                else guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
-                puntoDelDiaSpan.textContent = formatoPunto(puntoDelDiaValor); divisorValueSpan.textContent = formatoFactor(ultimoDivisor);
-                sumaTotalPuntosHistorialSpan.textContent = formatoMoneda(sumaTotalPuntos); divisionResultSpan.textContent = formatoMoneda(sumaTotalPuntos);
-            } catch (e) {
-                console.error("Error localStorage:", e); conteoActual = {}; detalleMovimientos = []; totalRetirado = 0; movimientoDisplay = {}; history = []; historyIndex = -1;
-                guardarEstado(conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay);
-            }
-        }
-        function guardarEstadoLocal() { localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify({ history, index: historyIndex })); }
-        function guardarConteo() { localStorage.setItem(STORAGE_KEY_CONTEO, JSON.stringify(conteoActual)); }
-        function guardarDetalle() { localStorage.setItem(STORAGE_KEY_DETALLE, JSON.stringify(detalleMovimientos)); }
-        function guardarRetiros() { localStorage.setItem(STORAGE_KEY_RETIROS, totalRetirado.toString()); }
-
-        // --- UI & LOGIC ---
         function generarCampos() {
+            if(!contenedorForm) return;
             contenedorForm.innerHTML = '';
-            DENOMINACIONES.forEach(valor => {
-                const n = valor >= 1000 ? "Billetes" : "Monedas";
-                if (conteoActual[valor] === undefined) conteoActual[valor] = 0;
-                if (movimientoDisplay[valor] === undefined) movimientoDisplay[valor] = "";
-                const total = valor * conteoActual[valor];
-                const grp = document.createElement('div'); grp.className = 'denominacion-row';
-                let det = movimientoDisplay[valor].length > 0 ? `(${movimientoDisplay[valor]})` : ''; 
-                grp.innerHTML = `<label>${n} ${formatoMoneda(valor)}</label><div class="button-group"><button class="btn-retire" onclick="actualizarCantidad(${valor}, -1)"><i class="fas fa-minus"></i></button><input type="number" id="input-qty-${valor}" placeholder="0" min="0" onfocus="this.value=''"><button class="btn-add" onclick="actualizarCantidad(${valor}, 1)"><i class="fas fa-plus"></i></button></div><div class="total-display" id="total-val-${valor}"><div style="display:flex; align-items:center; gap:5px;"><input type="number" class="cantidad-input" value="${conteoActual[valor]}" min="0" id="current-qty-${valor}" onchange="guardarCambioDirecto(${valor})" onblur="this.value=${conteoActual[valor]}"><button onclick="abrirModalEdicion(${valor})" style="background:var(--secondary); width:24px; height:24px; padding:0; border-radius:4px;"><i class="fas fa-pen" style="font-size:0.7em;"></i></button></div><span style="font-size:0.8em; color:var(--text-light); margin-top:2px;">${formatoMoneda(total)}</span><span style="font-size:0.7em; color:var(--text-light);">${det}</span></div>`;
-                contenedorForm.appendChild(grp);
+            DENOMINACIONES.forEach(val => {
+                if(!conteoActual[val]) conteoActual[val] = 0;
+                if(!movimientoDisplay[val]) movimientoDisplay[val] = "";
+                const row = document.createElement('div');
+                row.className = 'denominacion-row';
+                row.innerHTML = `
+                    <label>${formatoMoneda(val)}</label>
+                    <div class="button-group">
+                        <button class="btn btn-danger" onclick="actCant(${val}, -1)">-</button>
+                        <input type="text" id="inp-${val}" placeholder="1+2..." style="width:80px; text-align:center;">
+                        <button class="btn btn-success" onclick="actCant(${val}, 1)">+</button>
+                    </div>
+                    <div class="total-display">
+                        <div style="display:flex; gap:5px; align-items:center;">
+                           <input type="number" class="cantidad-input" id="cur-${val}" value="${conteoActual[val]}" onchange="manualEdit(${val})">
+                           <button onclick="abrirModalEdicion(${val})" style="background:var(--secondary); border:none; color:white; width:24px; border-radius:4px;"><i class="fas fa-pen" style="font-size:0.7em;"></i></button>
+                        </div>
+                        <div style="font-weight:bold; font-size:0.85em;">${formatoMoneda(val * conteoActual[val])}</div>
+                        <div class="text-muted" style="font-size:0.7em; max-width:120px; overflow-wrap:break-word;">${movimientoDisplay[val]}</div>
+                    </div>
+                `;
+                contenedorForm.appendChild(row);
             });
-            totalContadoFinalSpan.textContent = formatoMoneda(calcularTotalGeneral());
-            totalRetirosFinalSpan.textContent = formatoMoneda(totalRetirado); 
+            realizarArqueo();
+        }
+
+        function actCant(val, sign) {
+            const inp = document.getElementById(`inp-${val}`);
+            const formula = inp.value.trim();
+            if(!formula) return;
+            const res = evalMath(formula);
+            if(res <= 0) return;
+            if(sign === -1 && (conteoActual[val]||0) < res) { alert("Faltan fondos."); return; }
+            saveState();
+            if(sign === -1) { if(!confirm(`Retirar ${res} uds?`)) return; totalRetirado += (val * res); }
+            conteoActual[val] += (res * sign);
+            let fClean = formula.startsWith('=') ? formula.substring(1) : formula;
+            movimientoDisplay[val] += (sign === 1 ? '+' : '-') + "(" + fClean + ")";
+            detalleMovimientos.unshift(`[${new Date().toLocaleTimeString('es-CL')}] ${sign===1?'ING':'RET'} ${formula} (${res}) x ${val}`);
+            inp.value = ''; generarCampos();
+        }
+
+        function manualEdit(val) {
+            const inp = document.getElementById(`cur-${val}`);
+            saveState();
+            conteoActual[val] = parseInt(inp.value) || 0;
+            movimientoDisplay[val] = "Manual";
+            generarCampos();
+        }
+
+        function abrirModalEdicion(val) {
+            denomEditando = val;
+            document.getElementById('titulo-edicion').textContent = `✏️ Editar ${formatoMoneda(val)}`;
+            document.getElementById('formula-edit-input').value = movimientoDisplay[val];
+            document.getElementById('modalEdicionDetalle').style.display = 'block';
+        }
+        function cerrarModalEdicionDetalle() { document.getElementById('modalEdicionDetalle').style.display = 'none'; }
+        function guardarEdicionDetalle() {
+            const nuevaFormula = document.getElementById('formula-edit-input').value;
+            saveState();
+            movimientoDisplay[denomEditando] = nuevaFormula;
+            conteoActual[denomEditando] = evalMath(nuevaFormula);
+            detalleMovimientos.unshift(`[${new Date().toLocaleTimeString('es-CL')}] CORRECCIÓN RASTRO ${formatoMoneda(denomEditando)}`);
+            generarCampos(); cerrarModalEdicionDetalle();
+        }
+
+        function realizarArqueo() {
+            const total = calcularTotalGeneral();
+            if(totalContadoFinalSpan) totalContadoFinalSpan.textContent = formatoMoneda(total);
+            if(totalRetirosFinalSpan) totalRetirosFinalSpan.textContent = formatoMoneda(totalRetirado);
+            const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
+            const dif = total - espVal;
+            if(diferenciaSpan) {
+                diferenciaSpan.textContent = formatoMoneda(dif);
+                diferenciaSpan.style.color = dif === 0 ? 'var(--success)' : (dif > 0 ? 'var(--warning)' : 'var(--danger)');
+            }
+            if(mensajeArqueoP) {
+                mensajeArqueoP.className = 'mensaje ' + (dif === 0 ? 'cuadrado' : (dif > 0 ? 'sobrante' : 'faltante'));
+                mensajeArqueoP.textContent = dif === 0 ? "CUADRADO 🎉" : (dif > 0 ? "SOBRA ⚠️" : "FALTA 🚨");
+            }
+            let html = '<table><thead><tr><th>Denom.</th><th>Cant.</th><th>Subtotal</th></tr></thead><tbody>';
+            let hayDatos = false;
+            DENOMINACIONES.forEach(v => {
+                if(conteoActual[v] > 0) { hayDatos = true; html += `<tr><td>${formatoMoneda(v)}</td><td>${conteoActual[v]}</td><td>${formatoMoneda(v*conteoActual[v])}</td></tr>`; }
+            });
+            if(desgloseContadoDiv) desgloseContadoDiv.innerHTML = hayDatos ? html + '</tbody></table>' : '<p class="text-muted text-center">Sin ingresos.</p>';
         }
 
         function calcularTotalGeneral() { let t = 0; DENOMINACIONES.forEach(v => t += v * (conteoActual[v] || 0)); return t; }
-        
-        function guardarCambioDirecto(v) {
-            const inp = document.getElementById(`current-qty-${v}`); const nc = parseInt(inp.value) || 0; const ca = conteoActual[v] || 0;
-            if (nc < 0 || nc === ca) { if(nc < 0) alert("No negativo."); inp.value = ca; return; }
-            if (!confirm(`⚠️ AJUSTE MANUAL: ${formatoMoneda(v)}\nDe: ${ca} -> A: ${nc}`)) { inp.value = ca; return; }
-            let ncObj = JSON.parse(JSON.stringify(conteoActual)), nd = JSON.parse(JSON.stringify(detalleMovimientos)), nm = JSON.parse(JSON.stringify(movimientoDisplay));
-            ncObj[v] = nc; const dif = nc - ca; const s = dif > 0 ? '+' : '';
-            nm[v] = 'Ajuste Manual'; nd.unshift(`[${new Date().toLocaleTimeString('es-CL')}] AJUSTE MANUAL: ${formatoMoneda(v)} a ${nc}. (Dif: ${s}${dif})`);
-            guardarEstado(ncObj, nd, totalRetirado, nm); aplicarEstado(historyIndex);
+
+        function saveState() {
+            if(historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
+            history.push({ c: JSON.parse(JSON.stringify(conteoActual)), d: [...detalleMovimientos], r: totalRetirado, m: JSON.parse(JSON.stringify(movimientoDisplay)) });
+            historyIndex = history.length - 1; if(history.length > 20) { history.shift(); historyIndex--; }
+            if(undoBtn) undoBtn.disabled = false;
+            localStorage.setItem(STORAGE_KEY_CONTEO, JSON.stringify(conteoActual));
+            localStorage.setItem(STORAGE_KEY_MOVI_DISPLAY, JSON.stringify(movimientoDisplay));
         }
 
-        function actualizarCantidad(v, t) {
-            const inp = document.getElementById(`input-qty-${v}`); const c = parseInt(inp.value) || 0; if (c <= 0) return;
-            let nc = JSON.parse(JSON.stringify(conteoActual)), nd = JSON.parse(JSON.stringify(detalleMovimientos)), tr = totalRetirado, nm = JSON.parse(JSON.stringify(movimientoDisplay));
-            if (t === -1) { if ((nc[v] || 0) < c) { alert(`Fondos insuficientes.`); return; } if (!confirm(`⚠️ CONFIRMAR RETIRO:\n\n${c} x ${formatoMoneda(v)}`)) return; tr += (v * c); }
-            nc[v] = (nc[v] || 0) + (c * t); 
-            if (nm[v] === 'Ajuste Manual') nm[v] = ''; nm[v] += (t === 1 ? '+' : '-') + c;
-            nd.unshift(t === 1 ? `[${new Date().toLocaleTimeString('es-CL')}] INGRESO: +${c} de ${formatoMoneda(v)}` : `[${new Date().toLocaleTimeString('es-CL')}] RETIRO: -${c} de ${formatoMoneda(v)} (Total: ${formatoMoneda(v * c)})`);
-            guardarEstado(nc, nd, tr, nm); aplicarEstado(historyIndex); inp.value = ''; inp.focus();
+        function undoAction() { if(historyIndex > 0) { historyIndex--; const s = history[historyIndex]; conteoActual = s.c; detalleMovimientos = s.d; totalRetirado = s.r; movimientoDisplay = s.m; generarCampos(); if(redoBtn) redoBtn.disabled = false; } }
+        function redoAction() { if(historyIndex < history.length - 1) { historyIndex++; const s = history[historyIndex]; conteoActual = s.c; detalleMovimientos = s.d; totalRetirado = s.r; movimientoDisplay = s.m; generarCampos(); } }
+
+        async function fetchHistorialDetallado(isModal) {
+            try {
+                const res = await fetch(URL_GET_DATOS + '?action=get');
+                const json = await res.json();
+                let totalPts = 0, grouped = {};
+                json.data.forEach(r => {
+                    const d = r.fecha.split(' ')[0];
+                    if(!grouped[d]) grouped[d] = { total: 0, div: r.divisor||1 };
+                    grouped[d].total += r.monto;
+                });
+                let html = '<table><thead><tr><th>Fecha</th><th>Div</th><th>Pts</th><th>Total</th></tr></thead><tbody>';
+                Object.keys(grouped).sort().reverse().forEach(d => {
+                    if (selectedDates.size > 0 && !selectedDates.has(d)) return;
+                    const pts = Math.round(grouped[d].total / grouped[d].div); totalPts += pts;
+                    html += `<tr><td>${d}</td><td>${grouped[d].div}</td><td class="text-success font-bold">${pts.toLocaleString('es-CL')}</td><td>${formatoMoneda(grouped[d].total)}</td></tr>`;
+                });
+                if(isModal) {
+                    if(historyContainer) historyContainer.innerHTML = html + '</tbody></table>';
+                    if(historySummaryDiv) historySummaryDiv.innerHTML = `<strong>Total Puntos: ${totalPts.toLocaleString('es-CL')}</strong>`;
+                } else {
+                    if(sumaTotalPuntosHistorialSpan) sumaTotalPuntosHistorialSpan.textContent = totalPts.toLocaleString('es-CL');
+                    if(divisionResultSpan) divisionResultSpan.textContent = totalPts.toLocaleString('es-CL');
+                }
+            } catch (e) { }
         }
 
-        function actualizarListaMovimientos() {
-            listaMovimientosUl.innerHTML = '';
-            if (detalleMovimientos.length === 0) { listaMovimientosUl.innerHTML = `<div style="text-align: center; padding: 20px; color: var(--text-light);"><i class="fas fa-clipboard-list" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i><p>No hay movimientos.</p></div>`; return; }
-            detalleMovimientos.forEach(m => {
-                let h = '', t = 'GENERAL', msg = m, tc = 'type-ajuste', i = 'fa-info';
-                const mat = m.match(/^\[(.*?)\]\s*(.*?):\s*(.*)$/); if (mat) { h = mat[1]; t = mat[2].trim(); msg = mat[3]; }
-                if (t.includes("INGRESO")) { tc = 'type-ingreso'; i = 'fa-arrow-down'; } else if (t.includes("RETIRO")) { tc = 'type-retiro'; i = 'fa-arrow-up'; }
-                const mf = msg.replace(/(\$[\d\.]+)/g, '<strong>$1</strong>');
-                const li = document.createElement('li'); li.innerHTML = `<div class="mov-card ${tc}"><div class="mov-icon"><i class="fas ${i}"></i></div><div class="mov-content"><div class="mov-header"><span class="mov-type">${t}</span><span class="mov-time"><i class="far fa-clock"></i> ${h}</span></div><div class="mov-desc">${mf}</div></div></div>`;
-                listaMovimientosUl.appendChild(li);
+        function renderCustomCalendar() {
+            const y = calendarDate.getFullYear(), m = calendarDate.getMonth();
+            const names = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+            document.getElementById('calendar-month-year').textContent = `${names[m]} ${y}`;
+            const firstDay = new Date(y, m, 1).getDay(); const startIdx = firstDay === 0 ? 6 : firstDay - 1;
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+            const container = document.getElementById('calendar-days'); container.innerHTML = '';
+            for(let i=0; i<startIdx; i++) container.innerHTML += '<div class="calendar-day" style="cursor:default"></div>';
+            for(let d=1; d<=daysInMonth; d++) {
+                const div = document.createElement('div'); div.className = 'calendar-day'; div.textContent = d;
+                const dStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                if(selectedDates.has(dStr)) div.classList.add('selected');
+                div.onclick = () => { if(selectedDates.has(dStr)) selectedDates.delete(dStr); else selectedDates.add(dStr); renderCustomCalendar(); fetchHistorialDetallado(true); };
+                container.appendChild(div);
+            }
+        }
+        function prevMonth() { calendarDate.setMonth(calendarDate.getMonth()-1); renderCustomCalendar(); }
+        function nextMonth() { calendarDate.setMonth(calendarDate.getMonth()+1); renderCustomCalendar(); }
+        function clearCalendar() { selectedDates.clear(); renderCustomCalendar(); fetchHistorialDetallado(true); }
+
+        function openStatsModal() { document.getElementById('modalStats').style.display='block'; renderStats(); }
+        function closeStatsModal() { document.getElementById('modalStats').style.display='none'; }
+        function renderStats() {
+            const container = document.getElementById('stats-content');
+            if(!globalDesgloseEsperado.length) return;
+            let total = 0; globalDesgloseEsperado.forEach(i => total += i.monto);
+            let h = '<div class="stats-grid"><div class="stat-card"><h4>💰 Total</h4>' + formatoMoneda(total/100) + '</div><div class="stat-card"><h4>📉 Promedio</h4>' + formatoMoneda((total/globalDesgloseEsperado.length)/100) + '</div></div>';
+            globalDesgloseEsperado.forEach(item => {
+                const p = ((item.monto/total)*100).toFixed(1);
+                h += `<div class="chart-row">
+                        <div style="width:100px; font-size:0.8em">${item.tipo}</div>
+                        <div class="chart-bar-area"><div class="chart-bar" style="width:${p}%">${p}%</div></div>
+                        <div style="width:100px; text-align:right;">${formatoMoneda(item.monto/100)}</div>
+                      </div>`;
             });
+            container.innerHTML = h;
         }
 
-        function parsearMovimientos(c) { return (c === 'Ajuste Manual' || !c) ? [] : c.match(/[\+\-]\d+/g) || []; }
-        function abrirModalEdicion(v) {
-            denominacionEnEdicion = v; const ul = document.getElementById('movimientos-edicion'); ul.innerHTML = '';
-            document.getElementById('edicion-detalle-titulo').textContent = `✏️ Editar ${formatoMoneda(v)}`;
-            const movs = parsearMovimientos(movimientoDisplay[v] || '');
-            if (movs.length === 0) ul.innerHTML = '<li class="text-danger text-center">Sin historial editable.</li>';
-            else movs.forEach((m, i) => { const s = m[0], c = m.substring(1), p = s === '+'; const li = document.createElement('li'); li.innerHTML = `<div class="sign-control" data-index="${i}" data-sign="${s}"><button class="${p?'active-sign':''}" onclick="toggleSign(${i}, '+')">+</button><button class="${!p?'active-sign':''}" onclick="toggleSign(${i}, '-')">-</button></div><input type="number" id="qty-${i}" value="${c}" min="1" required>`; ul.appendChild(li); });
-            modalEdicionDetalle.style.display = 'block';
+        function abrirModalConteo() { generarCampos(); document.getElementById('modalConteo').style.display='block'; }
+        function cerrarModalConteo() { document.getElementById('modalConteo').style.display='none'; }
+        function abrirModalDetalle() { 
+            const ul = document.getElementById('lista-movimientos'); ul.innerHTML = '';
+            detalleMovimientos.forEach(m => { ul.innerHTML += `<li class="mov-card">${m}</li>`; });
+            document.getElementById('modalDetalle').style.display='block'; 
         }
-        function toggleSign(i, s) { const d = document.querySelector(`.sign-control[data-index="${i}"]`); if (!d) return; d.setAttribute('data-sign', s); const b = d.querySelectorAll('button'); b[0].className = s === '+' ? 'active-sign' : ''; b[1].className = s === '-' ? 'active-sign' : ''; }
-        function guardarEdicionDetalle() {
-            if (denominacionEnEdicion === null) return;
-            let nc = '', nt = 0, v = denominacionEnEdicion;
-            document.querySelectorAll('#movimientos-edicion li').forEach((li, i) => { const d = li.querySelector(`.sign-control`); if(d) { const s = d.getAttribute('data-sign'), c = parseInt(document.getElementById(`qty-${i}`).value)||0; if(c > 0) { nc += s + c; nt += (s === '+') ? c : -c; } } });
-            if (!confirm(`⚠️ Confirmar corrección para ${formatoMoneda(v)}?\nNuevo Total: ${nt}`)) return;
-            let nco = JSON.parse(JSON.stringify(conteoActual)), nd = JSON.parse(JSON.stringify(detalleMovimientos)), nm = JSON.parse(JSON.stringify(movimientoDisplay));
-            nco[v] = nt; nm[v] = nc; nd.unshift(`[${new Date().toLocaleTimeString('es-CL')}] CORRECCIÓN: ${formatoMoneda(v)} a ${nt} uds.`);
-            guardarEstado(nco, nd, totalRetirado, nm); aplicarEstado(historyIndex); cerrarModalEdicionDetalle();
-        }
-        function cerrarModalEdicionDetalle() { modalEdicionDetalle.style.display = 'none'; denominacionEnEdicion = null; }
-
-        function realizarArqueo() {
-            const tc = calcularTotalGeneral(), est = esperadoDisplay.textContent, esp = parseInt(est.replace(/[^0-9-]/g, '')) || 0, dif = tc - esp;
-            diferenciaSpan.textContent = formatoMoneda(dif);
-            diferenciaSpan.style.color = dif === 0 ? 'var(--success)' : (dif > 0 ? 'var(--warning)' : 'var(--danger)');
-            mensajeArqueoP.className = 'mensaje';
-            if (dif === 0) { mensajeArqueoP.textContent = "¡ARQUEO CUADRADO! 🎉"; mensajeArqueoP.classList.add('cuadrado'); }
-            else if (dif > 0) { mensajeArqueoP.textContent = `SOBRANTE: ${formatoMoneda(dif)} ⚠️`; mensajeArqueoP.classList.add('sobrante'); }
-            else { mensajeArqueoP.textContent = `FALTANTE: ${formatoMoneda(Math.abs(dif))} 🚨`; mensajeArqueoP.classList.add('faltante'); }
-            divisionResultSpan.textContent = formatoMoneda(sumaTotalPuntos);
-            let h = '<table><tr><th>Denominación</th><th>Cant.</th><th>Subtotal</th></tr>', td = false;
-            DENOMINACIONES.forEach(v => { const c = conteoActual[v] || 0; if (c > 0) { td = true; h += `<tr><td>${formatoMoneda(v)}</td><td>${c}</td><td>${formatoMoneda(v * c)}</td></tr>`; } });
-            desgloseContadoDiv.innerHTML = td ? h + '</table>' : '<p class="text-muted text-center">Sin efectivo registrado.</p>';
-        }
-
-        function limpiarRegistros() { if (!confirm("⚠️ ¿BORRAR TODO?")) return; localStorage.clear(); location.reload(); }
-        function exportarDataToJson() {
-            const d = { conteoActual, detalleMovimientos, totalRetirado, history, historyIndex, puntoDelDiaValor, ultimoDivisor, sumaTotalPuntos, divisorPlanta: localStorage.getItem(STORAGE_KEY_DIVISOR_PLANTA)||'1.0', divisorPartTime: localStorage.getItem(STORAGE_KEY_DIVISOR_PARTTIME)||'1.0' };
-            const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a'); a.download = `arqueo_${new Date().toISOString().split('T')[0]}.json`; a.href = URL.createObjectURL(b); a.click();
-        }
-        function importarDataFromJson(e) {
-            if (!confirm("⚠️ Sobrescribir datos?")) { e.target.value = ''; return; }
-            const f = e.target.files[0]; if (!f) return;
-            const r = new FileReader();
-            r.onload = function(ex) { try { const d = JSON.parse(ex.target.result); if (!d.conteoActual) throw new Error("JSON inválido"); conteoActual = d.conteoActual; detalleMovimientos = d.detalleMovimientos||[]; totalRetirado = d.totalRetirado||0; history = d.history||[]; historyIndex = d.historyIndex||-1; puntoDelDiaValor = d.puntoDelDiaValor||0; ultimoDivisor = d.ultimoDivisor||1.0; sumaTotalPuntos = d.sumaTotalPuntos||0; guardarConteo(); guardarDetalle(); guardarRetiros(); guardarEstadoLocal(); localStorage.setItem(STORAGE_KEY_PUNTO_DIA_VALOR, puntoDelDiaValor); localStorage.setItem(STORAGE_KEY_DIVISOR_VALOR, ultimoDivisor); localStorage.setItem(STORAGE_KEY_SUMA_PUNTOS, sumaTotalPuntos); if(d.divisorPlanta) localStorage.setItem(STORAGE_KEY_DIVISOR_PLANTA, d.divisorPlanta); if(d.divisorPartTime) localStorage.setItem(STORAGE_KEY_DIVISOR_PARTTIME, d.divisorPartTime); location.reload(); } catch (err) { alert('❌ Error: ' + err.message); } };
-            r.readAsText(f);
-        }
-        
-        function abrirModalConteo() { generarCampos(); actualizarControlesHistoria(); modalConteo.style.display = 'block'; }
-        function cerrarModalConteo(r = false) { modalConteo.style.display = 'none'; if(r) realizarArqueo(); }
-        function abrirModalDetalle() { actualizarListaMovimientos(); modalDetalle.style.display = 'block'; }
-        function cerrarModalDetalle() { modalDetalle.style.display = 'none'; }
-        
-        window.onclick = function(e) {
-            if (e.target == modalConteo) cerrarModalConteo(true); if (e.target == modalDetalle) cerrarModalDetalle(); if (e.target == modalEdicionDetalle) cerrarModalEdicionDetalle(); if (e.target == historyModal) closeHistoryModal(); if (e.target == modalStats) closeStatsModal();
-        }
+        function cerrarModalDetalle() { document.getElementById('modalDetalle').style.display='none'; }
+        function openHistoryModal() { document.getElementById('historyModal').style.display='block'; renderCustomCalendar(); fetchHistorialDetallado(true); }
+        function closeHistoryModal() { document.getElementById('historyModal').style.display='none'; }
+        function exportarDataToJson() { const d = { conteoActual, detalleMovimientos, totalRetirado }; const b = new Blob([JSON.stringify(d)], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'arqueo.json'; a.click(); }
+        function importarDataFromJson(e) { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = (ex) => { const d = JSON.parse(ex.target.result); conteoActual = d.conteoActual; generarCampos(); }; r.readAsText(f); }
 
         window.onload = function() {
-            cargarEstado(); generarCampos(); actualizarControlesHistoria(); fetchEsperadoData(); fetchHistorialDetallado(false); 
-            divisorPlantaInput.addEventListener('change', function() { localStorage.setItem(STORAGE_KEY_DIVISOR_PLANTA, this.value); if (historyModal.style.display === 'block') populateDivisorFilter(); });
-            divisorPartTimeInput.addEventListener('change', function() { localStorage.setItem(STORAGE_KEY_DIVISOR_PARTTIME, this.value); if (historyModal.style.display === 'block') populateDivisorFilter(); });
+            initDOM();
+            const sc = localStorage.getItem(STORAGE_KEY_CONTEO); 
+            const sm = localStorage.getItem(STORAGE_KEY_MOVI_DISPLAY);
+            conteoActual = sc ? JSON.parse(sc) : {};
+            movimientoDisplay = sm ? JSON.parse(sm) : {};
+            fetchEsperadoData(); fetchHistorialDetallado(false); generarCampos();
         };
     </script>
 </body>
