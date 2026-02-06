@@ -44,12 +44,6 @@
 
         .container { max-width: 1200px; margin: 0 auto; }
         .page-header { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .mobile-logo { display: none; color: var(--primary); font-size: 1.5rem; font-weight: 800; }
-        @media (max-width: 768px) { .mobile-logo { display: block; } .page-header h1 { display: none; } }
-
-        .main-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem; }
-        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
-
         .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
         .info-box { background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1rem; }
         
@@ -71,23 +65,17 @@
         td:last-child, th:last-child { text-align: right; }
 
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
-        .modal-content { background-color: var(--surface); margin: 2% auto; padding: 25px; border-radius: var(--radius); width: 95%; max-width: 750px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .modal-content { background-color: var(--surface); margin: 2% auto; padding: 25px; border-radius: var(--radius); width: 95%; max-width: 900px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .close { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: var(--text-light); }
         
-        #lista-movimientos { list-style: none; padding: 0; margin: 0; }
-        .mov-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 15px; }
-        .mov-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
-        .mov-content { flex-grow: 1; }
-        .type-ingreso .mov-icon { background-color: #dcfce7; color: #16a34a; }
-        .type-retiro .mov-icon { background-color: #fee2e2; color: #dc2626; }
-        
-        /* STATS ELEGANTES */
+        /* STATS */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
         .chart-row { display: flex; align-items: center; margin-bottom: 12px; font-size: 0.9rem; }
         .chart-bar-area { flex-grow: 1; height: 24px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin: 0 10px; }
         .chart-bar { height: 100%; background: var(--primary); border-radius: 6px; display: flex; align-items: center; padding-left: 8px; color: white; font-size: 0.75rem; font-weight: bold; }
 
+        /* CALENDARIO */
         .calendar-wrapper { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; margin-top: 10px; }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8fafc; border-bottom: 1px solid var(--border); }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--border); }
@@ -95,10 +83,15 @@
         .calendar-day { background: #fff; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .calendar-day.selected { background: var(--primary); color: white; font-weight: bold; position: relative; }
 
-        .denominacion-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); gap: 10px; }
-        .denominacion-row label { flex: 1; }
+        /* FILA CON DETALLE INTERNO */
+        .denominacion-row { display: flex; flex-direction: column; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+        .denom-main-controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .denom-main-controls label { flex: 1; font-weight: bold; }
+        .denom-trace-row { margin-top: 5px; padding: 5px 10px; background: #f1f5f9; border-radius: 6px; min-height: 25px; display: flex; align-items: center; }
+        .denom-trace-text { font-size: 0.85rem; font-family: 'Courier New', monospace; color: var(--primary); word-break: break-all; }
+
         .button-group { display: flex; gap: 5px; }
-        .button-group button { width: 36px; height: 36px; border: none; border-radius: 6px; color: white; font-size: 1.1rem; }
+        .button-group button { width: 36px; height: 36px; border: none; border-radius: 6px; color: white; font-size: 1.1rem; cursor: pointer; }
         .total-display { text-align: right; min-width: 100px; display: flex; flex-direction: column; align-items: flex-end; }
         .cantidad-input { width: 85px !important; padding: 4px !important; text-align: center; font-weight: bold; color: var(--primary); border: 1px solid var(--primary) !important; }
         
@@ -107,7 +100,6 @@
         .mensaje.sobrante { background-color: #fef3c7; color: #92400e; border: 1px solid #fbbf24; }
         .mensaje.faltante { background-color: #fee2e2; color: #b91c1c; border: 1px solid #f87171; }
         
-        .text-primary { color: var(--primary); } .text-success { color: var(--success); } .text-muted { color: var(--text-light); font-size: 0.85em; }
         .font-bold { font-weight: 700; }
     </style>
 </head>
@@ -119,7 +111,6 @@
             <li class="nav-item"> <button onclick="scrollToTop()" class="nav-link"> <i class="fas fa-home nav-icon"></i> <span>Inicio</span> </button> </li>
             <li class="nav-item"> <button onclick="abrirModalConteo()" class="nav-link"> <i class="fas fa-money-bill-wave nav-icon"></i> <span>Conteo</span> </button> </li>
             <li class="nav-item"> <button onclick="recuperarDeNube()" class="nav-link" style="color: var(--warning); font-weight: 800;"> <i class="fas fa-cloud-download-alt nav-icon"></i> <span>CARGAR</span> </button> </li>
-            <li class="nav-item"> <button onclick="abrirModalDetalle()" class="nav-link"> <i class="fas fa-list-ol nav-icon"></i> <span>Detalle</span> </button> </li>
             <li class="nav-item"> <button onclick="openStatsModal()" class="nav-link"> <i class="fas fa-chart-pie nav-icon"></i> <span>Stats</span> </button> </li>
             <li class="nav-item"> <button onclick="openHistoryModal()" class="nav-link"> <i class="fas fa-history nav-icon"></i> <span>Historial</span> </button> </li>
             <li class="nav-item" style="margin-top: auto;"> <button onclick="guardarEnNube()" class="nav-link btn-cloud-save" style="color: var(--success); font-weight: 800;"> <i class="fas fa-cloud-upload-alt nav-icon"></i> <span>GUARDAR</span> </button> </li>
@@ -130,7 +121,6 @@
         <div class="container">
             <div class="page-header">
                 <h1 style="color: var(--primary); margin: 0;">💰 Arqueo de Caja Pro</h1>
-                <div class="mobile-logo"><i class="fas fa-coins"></i> ArqueoPro</div>
                 <div style="font-size: 0.9em; color: var(--text-light);"> <i class="far fa-calendar-alt"></i> Hoy </div>
             </div>
             
@@ -140,17 +130,17 @@
                         <h2><i class="fas fa-bullseye"></i> Datos Esperados</h2>
                         <div id="esperadoDisplay">Cargando...</div>
                         <div class="info-box" id="divisor-info" style="margin-top:15px;">
-                            <p style="margin: 0; display: flex; justify-content: space-between;"> <span>Total Día:</span> <span id="divisor-day-total" class="font-bold text-primary">$0</span> </p>
+                            <p style="margin: 0; display: flex; justify-content: space-between;"> <span>Recaudación Nube:</span> <span id="divisor-day-total" class="font-bold text-primary">$0</span> </p>
                             <small id="divisor-date" class="text-muted" style="display: block; margin-bottom: 8px;">Fecha: N/A</small>
                             <div style="border-top: 1px dashed #bfdbfe; margin: 5px 0;"></div>
                             <p style="margin: 5px 0; display: flex; justify-content: space-between;"> <span>Divisor:</span> <span id="divisor-value" class="font-bold text-primary">1</span> </p>
-                            <p style="margin: 5px 0; display: flex; justify-content: space-between;"> <span>💰 Punto Día:</span> <span id="punto-del-dia" class="font-bold text-success">N/A</span> </p>
+                            <p style="margin: 5px 0; display: flex; justify-content: space-between;"> <span>💰 Punto Día:</span> <span id="punto-del-dia" class="font-bold text-success">$0</span> </p>
                             <div style="background-color: #dcfce7; padding: 8px; border-radius: 6px; margin-top: 10px;">
-                                <p style="margin: 0; font-size: 0.9em; display: flex; justify-content: space-between;"> <span>📊 TOTAL Puntos:</span> <span id="suma-total-puntos-historial" class="font-bold text-success">N/A</span> </p>
+                                <p style="margin: 0; font-size: 0.9em; display: flex; justify-content: space-between;"> <span>📊 TOTAL Puntos:</span> <span id="suma-total-puntos-historial" class="font-bold text-success">0</span> </p>
                             </div>
                             <div style="margin-top: 15px; border-top: 1px solid #bfdbfe; padding-top: 10px;">
                                 <label style="font-weight: 600; font-size: 0.85em;">Divisor Planta:</label> <input type="number" id="divisor-planta" value="1.0" step="0.01" style="text-align: right;">
-                                <label style="font-weight: 600; font-size: 0.85em; margin-top:10px; display:block;">Divisor PT:</label> <input type="number" id="divisor-part-time" value="1.0" step="0.01" style="text-align: right;">
+                                <label style="font-weight: 600; font-size: 0.85em; margin-top:10px; display:block;">Divisor Part-Time:</label> <input type="number" id="divisor-part-time" value="1.0" step="0.01" style="text-align: right;">
                             </div>
                         </div>
                         <div id="desglose-esperado" style="margin-top: 20px;"></div>
@@ -164,7 +154,7 @@
                 
                 <div class="right-column">
                     <div class="card" id="resultados">
-                        <h2><i class="fas fa-cash-register"></i> Resultados Conteo</h2>
+                        <h2><i class="fas fa-cash-register"></i> Resultados</h2>
                         <div id="desglose-contado"><p class="text-muted text-center">Sin ingresos.</p></div>
                         <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid var(--primary);">
                             <div style="display: flex; justify-content: space-between; font-size: 1.2em; margin-bottom: 10px;"> <strong>TOTAL CAJA:</strong> <span id="total-contado-final" class="text-success font-bold">$0</span> </div>
@@ -173,8 +163,8 @@
                     </div>
                     <div class="card" id="comparacion">
                         <h2><i class="fas fa-chart-pie"></i> Análisis</h2>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em;"> <strong>Diferencia:</strong> <span id="diferencia" class="font-bold">$0</span> </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;"> <strong>📊 Puntos Totales:</strong> <span id="division-result" class="text-muted">N/A</span> </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em;"> <strong>Diferencia Real:</strong> <span id="diferencia" class="font-bold">$0</span> </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;"> <strong>📊 Puntos Totales:</strong> <span id="division-result" class="text-muted">0</span> </div>
                         <p id="mensaje-arqueo" class="mensaje"></p>
                         <button onclick="archivarEnNube()" class="btn btn-danger" style="margin-top:10px;"><i class="fas fa-archive"></i> Archivar Informe Final</button>
                     </div>
@@ -197,7 +187,7 @@
         </div>
     </div>
 
-    <!-- MODAL EDICIÓN RASTRO MATEMÁTICO -->
+    <!-- MODAL EDICIÓN -->
     <div id="modalEdicionDetalle" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModalEdicionDetalle()">&times;</span>
@@ -207,29 +197,22 @@
             <button onclick="guardarEdicionDetalle()" class="btn btn-success" style="width: 100%; margin-top: 20px;">Guardar Cambios</button>
         </div>
     </div>
-
-    <div id="modalDetalle" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModalDetalle()">&times;</span>
-            <h2>📜 Log de Operaciones</h2>
-            <ul id="lista-movimientos"></ul>
-            <button onclick="if(confirm('Reiniciar?')){localStorage.clear();location.reload();}" class="btn btn-danger" style="margin-top:20px;">Borrar Todo</button>
-        </div>
-    </div>
     
     <div id="historyModal" class="modal">
         <div class="modal-content" style="max-width: 900px;">
             <span class="close" onclick="closeHistoryModal()">&times;</span>
             <h2>📋 Historial Servidor</h2>
-            <select id="divisorFilter" onchange="fetchHistorialDetallado(true)" style="margin-bottom:10px;"><option value="">-- Todos los Divisores --</option></select>
+            <div style="background:var(--background); padding:10px; border-radius:8px; margin-bottom:10px;">
+                <label class="font-bold">Filtrar por Divisor:</label>
+                <select id="divisorFilter" onchange="fetchHistorialDetallado(true)" style="width:100%; margin-top:5px;"><option value="">-- Todos --</option></select>
+            </div>
             <div class="calendar-wrapper">
                 <div class="calendar-header">
                     <button onclick="prevMonth()"><i class="fas fa-chevron-left"></i></button>
                     <span id="calendar-month-year" class="font-bold"></span>
                     <button onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <!-- CABECERA DÍAS SEMANA -->
-                <div class="calendar-grid" style="margin-bottom:0; border-bottom:none;">
+                <div class="calendar-grid">
                     <div class="calendar-day-header">L</div><div class="calendar-day-header">M</div><div class="calendar-day-header">M</div>
                     <div class="calendar-day-header">J</div><div class="calendar-day-header">V</div><div class="calendar-day-header">S</div>
                     <div class="calendar-day-header">D</div>
@@ -254,11 +237,16 @@
     </div>
 
     <script>
-        // URLs
         const URL_GET_DATOS = 'https://script.google.com/macros/s/AKfycbz_kCb4aEe437zHGbRqnjCibw1NtAqfCbTNmsVPn9jaZOPBFaZ6-FwmiTLqVxq39X1P/exec'; 
         const URL_POST_GUARDAR = 'https://script.google.com/macros/s/AKfycbzr0_GPBfp1MuP0YzBUNbwwQAtwr7Nf3oPzX2855_6Fm36T3303_G6TB_7lmE6TnTHLrw/exec'; 
         
-        // ELEMENTOS DOM
+        const STORAGE_KEY_CONTEO = 'arqueoConteoCLP';
+        const STORAGE_KEY_MOVI_DISPLAY = 'arqueoMoviDisplayCLP';
+        const STORAGE_KEY_RETIROS = 'arqueoRetirosCLP'; 
+
+        let conteoActual = {}, detalleMovimientos = [], totalRetirado = 0, movimientoDisplay = {}, puntoDelDiaValor = 0, ultimoDivisor = 1.0, sumaTotalPuntos = 0, history = [], historyIndex = -1, globalDesgloseEsperado = [], calendarDate = new Date(), selectedDates = new Set(), denomEditando = null;
+
+        // DOM ELEMENTS
         const contenedorForm = document.getElementById('arqueo-form');
         const totalContadoFinalSpan = document.getElementById('total-contado-final');
         const totalRetirosFinalSpan = document.getElementById('total-retiros-final');
@@ -266,56 +254,41 @@
         const diferenciaSpan = document.getElementById('diferencia');
         const mensajeArqueoP = document.getElementById('mensaje-arqueo');
         const esperadoDisplay = document.getElementById('esperadoDisplay');
-        const updateStatusSpan = document.getElementById('update-status');
         const divisorDayTotalSpan = document.getElementById('divisor-day-total');
         const divisorValueSpan = document.getElementById('divisor-value');
-        const divisorDateSpan = document.getElementById('divisor-date');
-        const puntoDelDiaSpan = document.getElementById('punto-del-dia');
         const divisionResultSpan = document.getElementById('division-result');
         const sumaTotalPuntosHistorialSpan = document.getElementById('suma-total-puntos-historial');
-        const divisorPlantaInput = document.getElementById('divisor-planta');
-        const divisorPartTimeInput = document.getElementById('divisor-part-time');
+        const undoBtn = document.getElementById('undo-btn');
+        const redoBtn = document.getElementById('redo-btn');
         const divisorFilterSelect = document.getElementById('divisorFilter');
         const historyContainer = document.getElementById('historyContainer');
         const historySummaryDiv = document.getElementById('history-summary');
-        const undoBtn = document.getElementById('undo-btn');
-        const redoBtn = document.getElementById('redo-btn');
 
         const DENOMINACIONES = [20000, 10000, 5000, 2000, 1000, 500, 100, 50, 10];
-        const STORAGE_KEY_CONTEO = 'arqueoConteoCLP';
-        const STORAGE_KEY_MOVI_DISPLAY = 'arqueoMoviDisplayCLP';
-        const STORAGE_KEY_DETALLE = 'arqueoDetalleCLP';
-        const STORAGE_KEY_RETIROS = 'arqueoRetirosCLP'; 
-
-        let conteoActual = {}; let detalleMovimientos = []; let totalRetirado = 0; 
-        let movimientoDisplay = {}; let puntoDelDiaValor = 0; let ultimoDivisor = 1.0; 
-        let sumaTotalPuntos = 0; let history = []; let historyIndex = -1;
-        let globalDesgloseEsperado = []; let calendarDate = new Date(); let selectedDates = new Set();
-        let denomEditando = null;
 
         function formatoMoneda(n) { return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(Math.round(n)); }
         function formatoFactor(n) { return parseFloat(n).toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        // --- PROCESADOR MATEMÁTICO AVANZADO ---
+        // --- PROCESADOR MATEMÁTICO ---
         function evalMathAdvanced(str, valDenom) {
             let clean = str.toString().replace(/^=/, '').replace(/[^0-9+\-*/().]/g, '');
-            if(!clean) return { neto: 0, retiros: 0 };
+            if(!clean) return { neto: 0, retirosUnits: 0 };
             try {
-                let neto = Function('"use strict"; return (' + clean + ')')();
+                let netoUnits = Function('"use strict"; return (' + clean + ')')();
                 let terms = clean.split(/(?=[+-])/); 
-                let retiroMonetario = 0;
+                let retiroUnits = 0;
                 terms.forEach(t => {
                     let n = parseFloat(t);
-                    if(n < 0) retiroMonetario += (Math.abs(n) * valDenom);
+                    if(n < 0) retiroUnits += Math.abs(n);
                 });
-                return { neto: neto, retiros: retiroMonetario };
-            } catch(e) { return { neto: 0, retiros: 0 }; }
+                return { neto: netoUnits, retirosUnits: retiroUnits };
+            } catch(e) { return { neto: 0, retirosUnits: 0 }; }
         }
 
-        // --- NUBE (SUBIDA / BAJADA) ---
+        // --- NUBE ---
         async function recuperarDeNube() {
-            if(!confirm("☁️ ¿Descargar último arqueo guardado en la nube?")) return;
+            if(!confirm("☁️ ¿Descargar último arqueo de la nube?")) return;
             try {
                 const res = await fetch(URL_POST_GUARDAR + '?action=getLast');
                 const json = await res.json();
@@ -327,20 +300,15 @@
                     localStorage.setItem(STORAGE_KEY_CONTEO, JSON.stringify(conteoActual));
                     localStorage.setItem(STORAGE_KEY_MOVI_DISPLAY, JSON.stringify(movimientoDisplay));
                     localStorage.setItem(STORAGE_KEY_RETIROS, totalRetirado.toString());
-                    generarCampos(); realizarArqueo();
-                    alert("✅ Sincronizado.");
+                    generarCampos(); alert("✅ Sincronizado.");
                 } else { alert("❌ " + json.message); }
-            } catch (e) { alert("Error de red."); }
+            } catch (e) { alert("Error red."); }
         }
 
         async function guardarEnNube() {
-            if(!confirm("☁️ ¿Subir arqueo actual a la nube?")) return;
+            if(!confirm("☁️ ¿Subir arqueo actual?")) return;
             const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
-            const payload = {
-                conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay,
-                totalContado: calcularTotalGeneral(), totalEsperado: espVal, diferencia: calcularTotalGeneral() - espVal,
-                divisorPlanta: divisorPlantaInput.value, divisorPartTime: divisorPartTimeInput.value
-            };
+            const payload = { conteoActual, totalRetirado, movimientoDisplay, totalContado: calcularTotalGeneral(), totalEsperado: espVal, diferencia: (calcularTotalGeneral() + totalRetirado) - espVal, divisorPlanta: document.getElementById('divisor-planta').value, divisorPartTime: document.getElementById('divisor-part-time').value, detalleMovimientos: detalleMovimientos };
             try {
                 const btn = document.querySelector('.btn-cloud-save'); btn.innerHTML = 'Subiendo...';
                 await fetch(URL_POST_GUARDAR, { method: 'POST', body: JSON.stringify(payload) });
@@ -349,16 +317,12 @@
         }
 
         async function archivarEnNube() {
-            if(!confirm("🚀 ¿Archivar este día?")) return;
+            if(!confirm("🚀 ¿Cerrar día?")) return;
             const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
-            const payload = { conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay, totalContado: calcularTotalGeneral(), diferencia: calcularTotalGeneral() - espVal };
-            try {
-                await fetch(URL_POST_GUARDAR + '?action=archive', { method: 'POST', body: JSON.stringify(payload) });
-                localStorage.clear(); location.reload();
-            } catch (e) { alert("Error."); }
+            const payload = { conteoActual, totalRetirado, movimientoDisplay, totalContado: calcularTotalGeneral(), diferencia: (calcularTotalGeneral() + totalRetirado) - espVal, action: 'archive', detalleMovimientos: detalleMovimientos };
+            try { await fetch(URL_POST_GUARDAR + '?action=archive', { method: 'POST', body: JSON.stringify(payload) }); localStorage.clear(); location.reload(); } catch (e) { alert("Error."); }
         }
 
-        // --- RECAUDACIONES ---
         async function fetchEsperadoData() {
             try {
                 const res = await fetch(URL_GET_DATOS);
@@ -369,21 +333,15 @@
                 esperadoDisplay.textContent = formatoMoneda(espVal);
                 divisorDayTotalSpan.textContent = formatoMoneda(totDay);
                 divisorValueSpan.textContent = formatoFactor(ultimoDivisor);
-                puntoDelDiaSpan.textContent = formatoMoneda(totDay / ultimoDivisor);
-                divisorDateSpan.textContent = "Fecha: " + data.lastDivisorDate;
+                document.getElementById('punto-del-dia').textContent = formatoMoneda(totDay / ultimoDivisor);
+                document.getElementById('divisor-date').textContent = "Fecha: " + data.lastDivisorDate;
                 globalDesgloseEsperado = data.desgloseEsperado || [];
-                mostrarDesgloseEsperado(globalDesgloseEsperado);
+                let h = '<table><thead><tr><th>Tipo</th><th>Monto</th></tr></thead><tbody>'; globalDesgloseEsperado.forEach(i => { h += `<tr><td>${i.tipo}</td><td>${formatoMoneda(i.monto/100)}</td></tr>`; });
+                document.getElementById('desglose-esperado').innerHTML = h + '</tbody></table>';
                 realizarArqueo();
             } catch (e) { }
         }
 
-        function mostrarDesgloseEsperado(data) {
-            let h = '<table><thead><tr><th>Tipo</th><th>Monto</th></tr></thead><tbody>';
-            data.forEach(i => { h += `<tr><td>${i.tipo}</td><td>${formatoMoneda(i.monto/100)}</td></tr>`; });
-            document.getElementById('desglose-esperado').innerHTML = h + '</tbody></table>';
-        }
-
-        // --- CONTEO ---
         function generarCampos() {
             if(!contenedorForm) return;
             contenedorForm.innerHTML = '';
@@ -393,32 +351,34 @@
                 const row = document.createElement('div');
                 row.className = 'denominacion-row';
                 row.innerHTML = `
-                    <label>${formatoMoneda(val)}</label>
-                    <div class="button-group">
-                        <button class="btn btn-danger" onclick="actCant(${val}, -1)">-</button>
-                        <input type="text" id="inp-${val}" placeholder="Excel/Manual" style="width:75px; text-align:center;">
-                        <button class="btn btn-success" onclick="actCant(${val}, 1)">+</button>
-                        <button class="btn btn-info" onclick="aplicarFormulaExcel(${val})" title="Fórmula"><i class="fas fa-bolt"></i></button>
-                    </div>
-                    <div class="total-display">
-                        <div style="display:flex; gap:5px; align-items:center;">
-                           <input type="number" class="cantidad-input" id="cur-${val}" value="${conteoActual[val]}" onchange="manualEdit(${val})">
-                           <button onclick="abrirModalEdicion(${val})" style="background:var(--secondary); border:none; color:white; width:24px; border-radius:4px; cursor:pointer;"><i class="fas fa-pen" style="font-size:0.7em;"></i></button>
+                    <div class="denom-main-controls">
+                        <label>${formatoMoneda(val)}</label>
+                        <div class="button-group">
+                            <button class="btn btn-danger" onclick="actCant(${val}, -1)">-</button>
+                            <input type="text" id="inp-${val}" placeholder="1+2..." style="width:75px; text-align:center;">
+                            <button class="btn btn-success" onclick="actCant(${val}, 1)">+</button>
+                            <button class="btn btn-info" onclick="aplicarExcel(${val})"><i class="fas fa-bolt"></i></button>
                         </div>
-                        <div style="font-weight:bold; font-size:0.85em;">${formatoMoneda(val * conteoActual[val])}</div>
-                        <div class="text-muted" style="font-size:0.7em; max-width:140px; overflow-wrap:break-word;">${movimientoDisplay[val]}</div>
-                    </div>`;
+                        <div class="total-display">
+                            <div style="display:flex; gap:5px; align-items:center;">
+                               <input type="number" class="cantidad-input" id="cur-${val}" value="${conteoActual[val]}" onchange="manualEdit(${val})">
+                               <button onclick="abrirModalEdicion(${val})" style="background:var(--secondary); border:none; color:white; width:24px; border-radius:4px; cursor:pointer;"><i class="fas fa-pen" style="font-size:0.7em;"></i></button>
+                            </div>
+                            <div style="font-weight:bold; font-size:0.85em;">${formatoMoneda(val * conteoActual[val])}</div>
+                        </div>
+                    </div>
+                    <div class="denom-trace-row"><span class="denom-trace-text">${movimientoDisplay[val] || 'Sin detalle'}</span></div>`;
                 contenedorForm.appendChild(row);
             });
             realizarArqueo();
         }
 
-        function aplicarFormulaExcel(val) {
+        function aplicarExcel(val) {
             const inp = document.getElementById(`inp-${val}`);
             const formula = inp.value.trim(); if(!formula) return;
             const res = evalMathAdvanced(formula, val);
             saveState();
-            totalRetirado += res.retiros;
+            totalRetirado += res.retirosMonetarios;
             conteoActual[val] += res.neto;
             let fClean = formula.startsWith('=') ? formula.substring(1) : formula;
             movimientoDisplay[val] += (movimientoDisplay[val] ? '+' : '') + "(" + fClean + ")";
@@ -430,14 +390,13 @@
             const inp = document.getElementById(`inp-${val}`);
             const formula = inp.value.trim(); if(!formula) return;
             const res = evalMathAdvanced(formula, val);
-            if(sign === 1 && (conteoActual[val] + res.neto) < 0) { alert("Saldo insuficiente."); return; }
             saveState();
             if(sign === -1) {
                 if(!confirm(`Retirar ${res.neto} uds?`)) return;
                 totalRetirado += (Math.abs(res.neto) * val);
                 conteoActual[val] -= res.neto;
             } else {
-                totalRetirado += res.retiros;
+                totalRetirado += res.retirosMonetarios;
                 conteoActual[val] += res.neto;
             }
             let fClean = formula.startsWith('=') ? formula.substring(1) : formula;
@@ -454,7 +413,7 @@
             conteoActual[val] = nc; movimientoDisplay[val] = "Manual"; generarCampos();
         }
 
-        function abrirModalEdicion(val) { denomEditando = val; document.getElementById('titulo-edicion').textContent = `✏️ Editar ${formatoMoneda(val)}`; document.getElementById('formula-edit-input').value = movimientoDisplay[val]; document.getElementById('modalEdicionDetalle').style.display = 'block'; }
+        function abrirModalEdicion(val) { denomEditando = val; document.getElementById('formula-edit-input').value = movimientoDisplay[val]; document.getElementById('modalEdicionDetalle').style.display = 'block'; }
         function cerrarModalEdicionDetalle() { document.getElementById('modalEdicionDetalle').style.display = 'none'; }
         function guardarEdicionDetalle() {
             const fAntigua = movimientoDisplay[denomEditando];
@@ -462,7 +421,7 @@
             saveState();
             const resAntiguo = evalMathAdvanced(fAntigua, denomEditando);
             const resNuevo = evalMathAdvanced(fNueva, denomEditando);
-            totalRetirado = (totalRetirado - resAntiguo.retiros) + resNuevo.retiros;
+            totalRetirado = (totalRetirado - resAntiguo.retirosMonetarios) + resNuevo.retirosMonetarios;
             movimientoDisplay[denomEditando] = fNueva;
             conteoActual[denomEditando] = resNuevo.neto;
             generarCampos(); cerrarModalEdicionDetalle();
@@ -473,7 +432,8 @@
             totalContadoFinalSpan.textContent = formatoMoneda(total);
             totalRetirosFinalSpan.textContent = formatoMoneda(totalRetirado);
             const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
-            const dif = total - espVal;
+            // DIFERENCIA REAL = (CAJA + RETIROS) - ESPERADO
+            const dif = (total + totalRetirado) - espVal;
             diferenciaSpan.textContent = formatoMoneda(dif);
             diferenciaSpan.style.color = dif === 0 ? 'var(--success)' : (dif > 0 ? 'var(--warning)' : 'var(--danger)');
             mensajeArqueoP.className = 'mensaje ' + (dif === 0 ? 'cuadrado' : (dif > 0 ? 'sobrante' : 'faltante'));
@@ -487,7 +447,7 @@
 
         function saveState() {
             if(historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
-            history.push({ c: JSON.parse(JSON.stringify(conteoActual)), d: [...detalleMovimientos], r: totalRetirado, m: JSON.parse(JSON.stringify(movimientoDisplay)) });
+            history.push({ c: JSON.parse(JSON.stringify(conteoActual)), r: totalRetirado, m: JSON.parse(JSON.stringify(movimientoDisplay)) });
             historyIndex = history.length - 1; if(history.length > 20) { history.shift(); historyIndex--; }
             undoBtn.disabled = false;
             localStorage.setItem(STORAGE_KEY_CONTEO, JSON.stringify(conteoActual));
@@ -495,38 +455,56 @@
             localStorage.setItem(STORAGE_KEY_RETIROS, totalRetirado.toString());
         }
 
-        function undoAction() { if(historyIndex > 0) { historyIndex--; const s = history[historyIndex]; conteoActual = s.c; detalleMovimientos = s.d; totalRetirado = s.r; movimientoDisplay = s.m; generarCampos(); if(redoBtn) redoBtn.disabled = false; } }
-        function redoAction() { if(historyIndex < history.length - 1) { historyIndex++; const s = history[historyIndex]; conteoActual = s.c; detalleMovimientos = s.d; totalRetirado = s.r; movimientoDisplay = s.m; generarCampos(); } }
+        function undoAction() { if(historyIndex > 0) { historyIndex--; const s = history[historyIndex]; conteoActual = s.c; totalRetirado = s.r; movimientoDisplay = s.m; generarCampos(); if(redoBtn) redoBtn.disabled = false; } }
+        function redoAction() { if(historyIndex < history.length - 1) { historyIndex++; const s = history[historyIndex]; conteoActual = s.c; totalRetirado = s.r; movimientoDisplay = s.m; generarCampos(); } }
 
         async function fetchHistorialDetallado(isModal) {
+            if (isModal) historyContainer.innerHTML = '<p class="text-center text-muted">Cargando...</p>';
             try {
                 const res = await fetch(URL_GET_DATOS + '?action=get');
                 const json = await res.json();
-                let totalPts = 0, grouped = {};
+                let totalPts = 0, totalMontoRec = 0, grouped = {}, divisores = new Set();
                 json.data.forEach(r => {
                     const d = r.fecha.split(' ')[0];
-                    if(!grouped[d]) grouped[d] = { total: 0, div: r.divisor||1 };
+                    if(!grouped[d]) grouped[d] = { total: 0, div: r.divisor||1, types: {} };
                     grouped[d].total += r.monto;
+                    if(!grouped[d].types[r.tipo]) grouped[d].types[r.tipo] = 0;
+                    grouped[d].types[r.tipo] += r.monto;
+                    divisores.add(r.divisor);
                 });
-                let html = '<table><thead><tr><th>Fecha</th><th>Div</th><th>Pts</th><th>Total</th></tr></thead><tbody>';
+
+                if(isModal && divisorFilterSelect.options.length <= 1) {
+                    Array.from(divisores).sort().forEach(div => {
+                        const opt = document.createElement('option'); opt.value = div.toFixed(2); opt.textContent = div.toFixed(2);
+                        divisorFilterSelect.appendChild(opt);
+                    });
+                }
+
+                const divFilter = isModal ? divisorFilterSelect.value : null;
+                let html = '<table><thead><tr><th>Fecha</th><th>Divisor</th><th>Puntos</th><th>Total</th><th>Desglose</th></tr></thead><tbody>';
                 Object.keys(grouped).sort().reverse().forEach(d => {
+                    const item = grouped[d];
+                    if (divFilter && item.div.toFixed(2) !== divFilter) return;
                     if (selectedDates.size > 0 && !selectedDates.has(d)) return;
-                    const pts = Math.round(grouped[d].total / grouped[d].div); totalPts += pts;
-                    html += `<tr><td>${d}</td><td>${grouped[d].div}</td><td class="text-success font-bold">${pts.toLocaleString('es-CL')}</td><td>${formatoMoneda(grouped[d].total)}</td></tr>`;
+                    const pts = Math.round(item.total / item.div); 
+                    totalPts += pts; totalMontoRec += item.total;
+                    let typeBreakdown = ''; Object.entries(item.types).forEach(([t, m]) => { typeBreakdown += `<div style="font-size:0.8em"><b>${t}:</b> ${formatoMoneda(m)}</div>`; });
+                    html += `<tr><td>${d}</td><td class="text-center">${item.div.toFixed(2)}</td><td class="text-success font-bold">${pts.toLocaleString('es-CL')}</td><td>${formatoMoneda(item.total)}</td><td>${typeBreakdown}</td></tr>`;
                 });
                 if(isModal) {
                     historyContainer.innerHTML = html + '</tbody></table>';
-                    historySummaryDiv.innerHTML = `<strong>Total Puntos: ${totalPts.toLocaleString('es-CL')}</strong>`;
+                    historySummaryDiv.innerHTML = `<div style="display:flex; justify-content:space-around;"><div><strong>📊 Puntos:</strong><br><span style="color:var(--success); font-size:1.2em;">${totalPts.toLocaleString('es-CL')}</span></div><div><strong>💰 Recaudación:</strong><br><span style="color:var(--primary); font-size:1.2em;">${formatoMoneda(totalMontoRec)}</span></div></div>`;
                 } else {
                     sumaTotalPuntosHistorialSpan.textContent = totalPts.toLocaleString('es-CL');
                     divisionResultSpan.textContent = totalPts.toLocaleString('es-CL');
                 }
-            } catch (e) { }
+            } catch (e) { if(isModal) historyContainer.innerHTML = 'Error al cargar historial.'; }
         }
 
         function renderCustomCalendar() {
             const y = calendarDate.getFullYear(), m = calendarDate.getMonth();
-            document.getElementById('calendar-month-year').textContent = `${m+1} - ${y}`;
+            const names = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+            document.getElementById('calendar-month-year').textContent = `${names[m]} ${y}`;
             const firstDay = new Date(y, m, 1).getDay(); const startIdx = firstDay === 0 ? 6 : firstDay - 1;
             const daysInMonth = new Date(y, m + 1, 0).getDate();
             const container = document.getElementById('calendar-days'); container.innerHTML = '';
@@ -538,6 +516,7 @@
                 div.onclick = () => { if(selectedDates.has(dStr)) selectedDates.delete(dStr); else selectedDates.add(dStr); renderCustomCalendar(); fetchHistorialDetallado(true); };
                 container.appendChild(div);
             }
+            document.getElementById('selected-dates-count').textContent = `${selectedDates.size} seleccionados`;
         }
         function prevMonth() { calendarDate.setMonth(calendarDate.getMonth()-1); renderCustomCalendar(); }
         function nextMonth() { calendarDate.setMonth(calendarDate.getMonth()+1); renderCustomCalendar(); }
@@ -548,10 +527,15 @@
         function renderStats() {
             const container = document.getElementById('stats-content'); if(!globalDesgloseEsperado.length) return;
             let total = 0; globalDesgloseEsperado.forEach(i => total += i.monto);
-            let h = '<div class="stats-grid"><div class="stat-card"><h4>💰 Total Bruto</h4>' + formatoMoneda(total/100) + '</div><div class="stat-card"><h4>📈 Promedio</h4>' + formatoMoneda((total/globalDesgloseEsperado.length)/100) + '</div></div>';
-            globalDesgloseEsperado.forEach(item => {
+            const sortedData = [...globalDesgloseEsperado].sort((a, b) => b.monto - a.monto);
+            const average = total / globalDesgloseEsperado.length;
+            let h = `<div class="stats-grid">
+                    <div class="stat-card"><h4>🏆 Top Fuente</h4><div class="font-bold text-primary">${sortedData[0].tipo}</div><div>${formatoMoneda(sortedData[0].monto/100)}</div></div>
+                    <div class="stat-card"><h4>📈 Promedio</h4><div class="font-bold">${formatoMoneda(average/100)}</div><div>Total: ${formatoMoneda(total/100)}</div></div>
+                </div><h3 style="font-size:1rem; border-bottom:1px solid var(--border); padding-bottom:5px; margin-top:20px;">Distribución Porcentual</h3>`;
+            sortedData.forEach(item => {
                 const p = ((item.monto/total)*100).toFixed(1);
-                h += `<div class="chart-row"><div style="width:100px; font-size:0.8em">${item.tipo}</div><div class="chart-bar-area"><div class="chart-bar" style="width:${p}%">${p}%</div></div><div style="width:100px; text-align:right;">${formatoMoneda(item.monto/100)}</div></div>`;
+                h += `<div class="chart-row"><div style="width:120px; font-size:0.8em; overflow:hidden">${item.tipo}</div><div class="chart-bar-area"><div class="chart-bar" style="width:${p}%">${p}%</div></div><div style="width:100px; text-align:right;">${formatoMoneda(item.monto/100)}</div></div>`;
             });
             container.innerHTML = h;
         }
@@ -562,8 +546,6 @@
         function cerrarModalDetalle() { document.getElementById('modalDetalle').style.display='none'; }
         function openHistoryModal() { document.getElementById('historyModal').style.display='block'; renderCustomCalendar(); fetchHistorialDetallado(true); }
         function closeHistoryModal() { document.getElementById('historyModal').style.display='none'; }
-        function exportarDataToJson() { const d = { conteoActual, detalleMovimientos, totalRetirado, movimientoDisplay }; const b = new Blob([JSON.stringify(d)], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'arqueo.json'; a.click(); }
-        function importarDataFromJson(e) { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = (ex) => { const d = JSON.parse(ex.target.result); conteoActual = d.conteoActual; movimientoDisplay = d.movimientoDisplay || {}; generarCampos(); }; r.readAsText(f); }
 
         window.onload = function() {
             const sc = localStorage.getItem(STORAGE_KEY_CONTEO); 
