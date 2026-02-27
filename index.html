@@ -327,17 +327,21 @@
         }
 
         // --- BACKUP LOCAL ACUMULATIVO ---
-        // CORREGIDO: Ahora guarda explícitamente anticipos y retiros
+        // CORREGIDO: Guarda anticipos y retiros, y calcula Rendido = Caja + Anticipos
         function crearBackupLocal() {
             const totalCaja = calcularTotalGeneral();
             const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
+            
+            // Fórmula corregida: Rendido = Caja + Anticipos. (Retiros NO se suman para el cuadre)
+            const dif = (totalCaja + totalAnticiposNube) - espVal;
+
             const backup = {
                 fecha: new Date().toLocaleString(),
                 totalContado: totalCaja,
                 esperado: espVal,
                 anticipos: totalAnticiposNube, // GUARDADO EXPLICITAMENTE
                 retiros: totalRetirado,       // GUARDADO EXPLICITAMENTE
-                diferencia: (totalCaja + totalAnticiposNube) - espVal,
+                diferencia: dif,
                 conteo: JSON.parse(JSON.stringify(conteoActual)),
                 rastros: JSON.parse(JSON.stringify(movimientoDisplay))
             };
@@ -363,10 +367,10 @@
             else {
                 let html = "";
                 historial.forEach((b, index) => {
-                    // MANTENIENDO EL DISEÑO DETALLADO
-                    const totalRendidoHist = (b.totalContado || 0) + (b.retiros || 0) + (b.anticipos || 0);
                     const colorDif = b.diferencia >= 0 ? 'var(--success)' : 'var(--danger)';
                     const signoDif = b.diferencia > 0 ? '+' : '';
+                    // Rendido = Caja + Anticipos
+                    const totalRendidoHist = (b.totalContado || 0) + (b.anticipos || 0);
 
                     html += `
                     <div class="card" style="border-left: 4px solid var(--purple); margin-bottom: 15px; padding: 15px;">
@@ -530,6 +534,7 @@
             
             // --- NUEVO: ADVERTENCIA AL RETIRAR ---
             if(sign === -1) {
+                // Solo advertir si hay una cantidad válida para restar
                 if(res.neto > 0) {
                     const montoRetiro = Math.abs(res.neto) * val;
                     const confirmacion = confirm(`⚠️ CONFIRMAR RETIRO ⚠️\n\n` +
