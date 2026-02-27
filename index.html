@@ -221,7 +221,7 @@
         <div class="modal-content">
             <span class="close" onclick="cerrarModalEdicionDetalle()">&times;</span>
             <h2 id="titulo-edicion">✏️ Editar Fórmula</h2>
-            <input type="text" id="formula-edit-input" style="font-size:1.2em; font-family:monospace; margin-top:10px; width:100%;">
+            <input type="text" id="formula-edit-input" placeholder="Pega tu fórmula aquí..." style="font-size:1.2em; font-family:monospace; margin-top:10px; width:100%;">
             <button onclick="guardarEdicionDetalle()" class="btn btn-success" style="width: 100%; margin-top: 20px;">Guardar Cambios</button>
         </div>
     </div>
@@ -308,15 +308,22 @@
         function hideLoader() { if(loaderOverlay) loaderOverlay.style.display = 'none'; }
 
         function evalMathAdvanced(str, valDenom) {
-            let clean = str.toString().replace(/^=/, '').replace(/[^0-9+\-*/().]/g, '');
+            let clean = str.toString().replace(/[^0-9+\-*/().]/g, '');
             if(!clean) return { neto: 0, retirosUnits: 0, retirosMonetarios: 0 };
+            
             try {
                 let netoUnits = Function('"use strict"; return (' + clean + ')')();
                 let terms = clean.split(/(?=[+-])/); 
                 let retiroUnits = 0;
-                terms.forEach(t => { let n = parseFloat(t); if(n < 0) retiroUnits += Math.abs(n); });
+                terms.forEach(t => { 
+                    let n = parseFloat(t); 
+                    if(n < 0) retiroUnits += Math.abs(n); 
+                });
                 return { neto: netoUnits, retirosUnits: retiroUnits, retirosMonetarios: retiroUnits * valDenom };
-            } catch(e) { return { neto: 0, retirosUnits: 0, retirosMonetarios: 0 }; }
+            } catch(e) { 
+                console.error("Error interpretando formula:", e);
+                return { neto: 0, retirosUnits: 0, retirosMonetarios: 0 }; 
+            }
         }
 
         // --- BACKUP LOCAL ACUMULATIVO ---
@@ -337,19 +344,54 @@
             localStorage.setItem(STORAGE_KEY_HISTORIAL_LOCAL, JSON.stringify(historial));
         }
 
+        // FUNCIÓN PARA BORRAR REGISTROS DEL HISTORIAL LOCAL
+        function borrarBackup(index) {
+            if(!confirm("¿Estás seguro de que quieres eliminar este registro archivado?")) return;
+            let historial = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORIAL_LOCAL)) || [];
+            historial.splice(index, 1);
+            localStorage.setItem(STORAGE_KEY_HISTORIAL_LOCAL, JSON.stringify(historial));
+            abrirModalBackup(); // Refrescar la vista
+        }
+
         function abrirModalBackup() {
             const historial = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORIAL_LOCAL)) || [];
             const container = document.getElementById('backup-history-list');
             if(historial.length === 0) { container.innerHTML = "<p>Sin registros archivados.</p>"; }
             else {
                 let html = "";
-                historial.forEach(b => {
-                    html += `<div class="card" style="border-left: 4px solid var(--purple); margin-bottom: 10px; padding: 10px;">
-                        <div style="display:flex; justify-content:space-between; font-size:0.9em;"><b>${b.fecha}</b> <b style="color:var(--success)">${formatoMoneda(b.totalContado)}</b></div>
-                        <details style="font-size:0.8em; margin-top:5px;">
-                            <summary style="cursor:pointer; color:var(--primary)">Ver Desglose Fórmulas</summary>
+                historial.forEach((b, index) => {
+                    // MANTENIENDO EL DISEÑO DETALLADO PERO CON LA ESTRUCTURA ORIGINAL SOLICITADA
+                    // Se agregó el botón de borrar y se mantiene la información esencial.
+                    // Si 'retiros' o 'anticipos' no existen en backups viejos, se muestran como 0.
+                    const totalRendidoHist = (b.totalContado || 0) + (b.retiros || 0) + (b.anticipos || 0);
+                    const colorDif = b.diferencia >= 0 ? 'var(--success)' : 'var(--danger)';
+                    const signoDif = b.diferencia > 0 ? '+' : '';
+
+                    html += `
+                    <div class="card" style="border-left: 4px solid var(--purple); margin-bottom: 15px; padding: 15px;">
+                        <div style="border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:bold; color:var(--text-light);">${b.fecha}</span>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <span style="font-size:0.8em; background:#f1f5f9; padding:2px 6px; border-radius:4px;">Archivado</span>
+                                <button onclick="borrarBackup(${index})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:1.1em;" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.9em; margin-bottom:10px;">
+                            <div>💰 En Caja: <br><b>${formatoMoneda(b.totalContado)}</b></div>
+                            <div>📉 Retiros: <br><b style="color:var(--danger)">${formatoMoneda(b.retiros || 0)}</b></div>
+                            <div>🧾 Anticipos: <br><b style="color:var(--purple)">${formatoMoneda(b.anticipos || 0)}</b></div>
+                            <div>📝 Rendido: <br><b style="color:var(--primary)">${formatoMoneda(totalRendidoHist)}</b></div>
+                        </div>
+
+                        <div style="background:${b.diferencia >= 0 ? '#dcfce7' : '#fee2e2'}; padding:10px; border-radius:6px; text-align:center; font-weight:bold; color:${colorDif}; border:1px solid ${colorDif}">
+                            Diferencia: ${signoDif}${formatoMoneda(b.diferencia)} (Esperado: ${formatoMoneda(b.esperado)})
+                        </div>
+
+                        <details style="font-size:0.85em; margin-top:10px; border-top:1px dashed #e2e8f0; padding-top:5px;">
+                            <summary style="cursor:pointer; color:var(--primary); font-weight:600;">Ver Desglose Billetes</summary>
                             <table style="width:100%; margin-top:5px;">
-                                ${DENOMINACIONES.map(v => (b.conteo[v] > 0 || b.rastros[v]) ? `<tr><td>${formatoMoneda(v)}</td><td>${b.conteo[v]}</td><td style="font-family:monospace; color:var(--primary)">${b.rastros[v] || '-'}</td></tr>` : '').join('')}
+                                ${DENOMINACIONES.map(v => (b.conteo[v] > 0 || (b.rastros && b.rastros[v])) ? `<tr><td>${formatoMoneda(v)}</td><td>${b.conteo[v]}</td><td style="font-family:monospace; color:var(--primary)">${(b.rastros ? b.rastros[v] : '') || '-'}</td></tr>` : '').join('')}
                             </table>
                         </details>
                     </div>`;
@@ -462,7 +504,7 @@
                         <label>${formatoMoneda(val)}</label>
                         <div class="button-group">
                             <button class="btn btn-danger" onclick="actCant(${val}, -1)">-</button>
-                            <input type="text" id="inp-${val}" placeholder="1+1" style="width:70px; text-align:center;">
+                            <input type="text" id="inp-${val}" placeholder="Pegar Excel aquí" style="width:120px; text-align:center; font-size:0.8em;">
                             <button class="btn btn-success" onclick="actCant(${val}, 1)">+</button>
                         </div>
                         <div class="total-display">
@@ -482,15 +524,39 @@
         function actCant(val, sign) {
             const inp = document.getElementById(`inp-${val}`);
             const formula = inp.value.trim() || "1";
+            
             const res = evalMathAdvanced(formula, val);
+            
+            // --- NUEVO: ADVERTENCIA AL RETIRAR ---
+            if(sign === -1) {
+                // Solo advertir si hay una cantidad válida para restar
+                if(res.neto > 0) {
+                    const montoRetiro = Math.abs(res.neto) * val;
+                    const confirmacion = confirm(`⚠️ CONFIRMAR RETIRO ⚠️\n\n` +
+                                                 `Se retirarán: ${res.neto} unidades de ${formatoMoneda(val)}\n` +
+                                                 `Total a retirar: ${formatoMoneda(montoRetiro)}\n\n` +
+                                                 `¿Proceder con el retiro?`);
+                    if (!confirmacion) return; // Si cancela, no hace nada
+                }
+            }
+            // -------------------------------------
+
             saveState();
-            if(sign === -1) { totalRetirado += (Math.abs(res.neto) * val); conteoActual[val] -= res.neto; }
-            else { conteoActual[val] += res.neto; }
+
+            if(sign === -1) { 
+                totalRetirado += (Math.abs(res.neto) * val); 
+                conteoActual[val] -= res.neto; 
+            } else { 
+                conteoActual[val] += res.neto; 
+                totalRetirado += res.retirosMonetarios;
+            }
 
             let prev = movimientoDisplay[val] || "";
             let conector = (prev === "") ? (sign === -1 ? "-" : "") : (sign === 1 ? "+" : "-");
             movimientoDisplay[val] = prev + conector + "(" + formula + ")";
-            inp.value = ''; generarCampos();
+            
+            inp.value = ''; 
+            generarCampos();
         }
 
         function manualEdit(val) {
@@ -507,12 +573,25 @@
             document.getElementById('modalEdicionDetalle').style.display = 'block';
         }
         function cerrarModalEdicionDetalle() { document.getElementById('modalEdicionDetalle').style.display = 'none'; }
+        
         function guardarEdicionDetalle() {
+            const val = denomEditando;
             const fNueva = document.getElementById('formula-edit-input').value;
-            const res = evalMathAdvanced(fNueva, denomEditando);
+            const fVieja = movimientoDisplay[val] || "";
+            
+            const resNueva = evalMathAdvanced(fNueva, val);
+            const resVieja = evalMathAdvanced(fVieja, val);
+
             saveState();
-            conteoActual[denomEditando] = res.neto;
-            movimientoDisplay[denomEditando] = fNueva;
+
+            totalRetirado -= resVieja.retirosMonetarios;
+            totalRetirado += resNueva.retirosMonetarios;
+            
+            if(totalRetirado < 0) totalRetirado = 0;
+
+            conteoActual[val] = resNueva.neto;
+            movimientoDisplay[val] = fNueva;
+
             generarCampos(); cerrarModalEdicionDetalle();
         }
 
