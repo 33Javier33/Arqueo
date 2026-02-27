@@ -327,6 +327,7 @@
         }
 
         // --- BACKUP LOCAL ACUMULATIVO ---
+        // CORREGIDO: Ahora guarda explícitamente anticipos y retiros
         function crearBackupLocal() {
             const totalCaja = calcularTotalGeneral();
             const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
@@ -334,6 +335,8 @@
                 fecha: new Date().toLocaleString(),
                 totalContado: totalCaja,
                 esperado: espVal,
+                anticipos: totalAnticiposNube, // GUARDADO EXPLICITAMENTE
+                retiros: totalRetirado,       // GUARDADO EXPLICITAMENTE
                 diferencia: (totalCaja + totalAnticiposNube) - espVal,
                 conteo: JSON.parse(JSON.stringify(conteoActual)),
                 rastros: JSON.parse(JSON.stringify(movimientoDisplay))
@@ -360,9 +363,7 @@
             else {
                 let html = "";
                 historial.forEach((b, index) => {
-                    // MANTENIENDO EL DISEÑO DETALLADO PERO CON LA ESTRUCTURA ORIGINAL SOLICITADA
-                    // Se agregó el botón de borrar y se mantiene la información esencial.
-                    // Si 'retiros' o 'anticipos' no existen en backups viejos, se muestran como 0.
+                    // MANTENIENDO EL DISEÑO DETALLADO
                     const totalRendidoHist = (b.totalContado || 0) + (b.retiros || 0) + (b.anticipos || 0);
                     const colorDif = b.diferencia >= 0 ? 'var(--success)' : 'var(--danger)';
                     const signoDif = b.diferencia > 0 ? '+' : '';
@@ -529,7 +530,6 @@
             
             // --- NUEVO: ADVERTENCIA AL RETIRAR ---
             if(sign === -1) {
-                // Solo advertir si hay una cantidad válida para restar
                 if(res.neto > 0) {
                     const montoRetiro = Math.abs(res.neto) * val;
                     const confirmacion = confirm(`⚠️ CONFIRMAR RETIRO ⚠️\n\n` +
