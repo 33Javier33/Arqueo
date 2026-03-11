@@ -193,7 +193,6 @@
         </div>
     </div>
     
-    <!-- MODALES -->
     <div id="modalConteo" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModalConteo()">&times;</span>
@@ -207,7 +206,6 @@
         </div>
     </div>
 
-    <!-- MODAL VISTA ÚLTIMO (Backup Local) -->
     <div id="modalBackup" class="modal">
         <div class="modal-content" style="max-width: 800px;">
             <span class="close" onclick="document.getElementById('modalBackup').style.display='none'">&times;</span>
@@ -301,6 +299,7 @@
 
         const DENOMINACIONES = [20000, 10000, 5000, 2000, 1000, 500, 100, 50, 10];
 
+        // CORRECCIÓN DECIMALES: Usamos Math.round en el formateo de moneda para asegurar visualización entera
         function formatoMoneda(n) { return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(Math.round(n || 0)); }
         function formatoFactor(n) { return parseFloat(n).toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -327,37 +326,35 @@
         }
 
         // --- BACKUP LOCAL ACUMULATIVO ---
-        // CORREGIDO: Guarda anticipos y retiros, y calcula Rendido = Caja + Anticipos
         function crearBackupLocal() {
-            const totalCaja = calcularTotalGeneral();
-            const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
+            const totalCaja = Math.round(calcularTotalGeneral());
+            const espVal = Math.round(parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, ''))) || 0;
             
-            // Fórmula corregida: Rendido = Caja + Anticipos. (Retiros NO se suman para el cuadre)
-            const dif = (totalCaja + totalAnticiposNube) - espVal;
+            // CORRECCIÓN DECIMALES: Aseguramos diferencia entera
+            const dif = Math.round((totalCaja + totalAnticiposNube) - espVal);
 
             const backup = {
                 fecha: new Date().toLocaleString(),
                 totalContado: totalCaja,
                 esperado: espVal,
-                anticipos: totalAnticiposNube, // GUARDADO EXPLICITAMENTE
-                retiros: totalRetirado,       // GUARDADO EXPLICITAMENTE
+                anticipos: Math.round(totalAnticiposNube), 
+                retiros: Math.round(totalRetirado),       
                 diferencia: dif,
                 conteo: JSON.parse(JSON.stringify(conteoActual)),
                 rastros: JSON.parse(JSON.stringify(movimientoDisplay))
             };
             let historial = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORIAL_LOCAL)) || [];
             historial.unshift(backup);
-            if(historial.length > 20) historial.pop();
+            if(historial.length === 20) historial.pop();
             localStorage.setItem(STORAGE_KEY_HISTORIAL_LOCAL, JSON.stringify(historial));
         }
 
-        // FUNCIÓN PARA BORRAR REGISTROS DEL HISTORIAL LOCAL
         function borrarBackup(index) {
             if(!confirm("¿Estás seguro de que quieres eliminar este registro archivado?")) return;
             let historial = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORIAL_LOCAL)) || [];
             historial.splice(index, 1);
             localStorage.setItem(STORAGE_KEY_HISTORIAL_LOCAL, JSON.stringify(historial));
-            abrirModalBackup(); // Refrescar la vista
+            abrirModalBackup(); 
         }
 
         function abrirModalBackup() {
@@ -369,8 +366,7 @@
                 historial.forEach((b, index) => {
                     const colorDif = b.diferencia >= 0 ? 'var(--success)' : 'var(--danger)';
                     const signoDif = b.diferencia > 0 ? '+' : '';
-                    // Rendido = Caja + Anticipos
-                    const totalRendidoHist = (b.totalContado || 0) + (b.anticipos || 0);
+                    const totalRendidoHist = Math.round((b.totalContado || 0) + (b.anticipos || 0));
 
                     html += `
                     <div class="card" style="border-left: 4px solid var(--purple); margin-bottom: 15px; padding: 15px;">
@@ -406,7 +402,6 @@
             document.getElementById('modalBackup').style.display = 'block';
         }
 
-        // --- RESETEAR PANTALLA ---
         function resetearPantallaCompleto() {
             conteoActual = {}; movimientoDisplay = {}; totalRetirado = 0;
             detalleMovimientos = []; historyStates = []; historyIndex = -1;
@@ -416,7 +411,6 @@
             generarCampos(); realizarArqueo();
         }
 
-        // --- ANTICIPOS (Full Lógica Original) ---
         async function fetchAnticiposDeLaNube(isSilent = false) {
             try {
                 const response = await fetch(SCRIPT_URL_SOCIOS, { method: 'POST', body: JSON.stringify({ action: 'getAllDataDesdeSheets' }) });
@@ -443,7 +437,6 @@
             finally { realizarArqueo(); }
         }
 
-        // --- DATOS ESPERADOS (Full Lógica Original) ---
         async function fetchEsperadoData() {
             showLoader("Sincronizando...");
             try {
@@ -464,7 +457,6 @@
             finally { hideLoader(); realizarArqueo(); }
         }
 
-        // --- ESTADOS (Undo/Redo) ---
         function saveState() {
             if(historyIndex < historyStates.length - 1) historyStates = historyStates.slice(0, historyIndex + 1);
             historyStates.push({ c: JSON.parse(JSON.stringify(conteoActual)), r: totalRetirado, m: JSON.parse(JSON.stringify(movimientoDisplay)) });
@@ -498,7 +490,6 @@
             }
         }
 
-        // --- CONTEO Y EDICIÓN ---
         function generarCampos() {
             if(!contenedorForm) return; contenedorForm.innerHTML = '';
             DENOMINACIONES.forEach(val => {
@@ -529,22 +520,18 @@
         function actCant(val, sign) {
             const inp = document.getElementById(`inp-${val}`);
             const formula = inp.value.trim() || "1";
-            
             const res = evalMathAdvanced(formula, val);
             
-            // --- NUEVO: ADVERTENCIA AL RETIRAR ---
             if(sign === -1) {
-                // Solo advertir si hay una cantidad válida para restar
                 if(res.neto > 0) {
                     const montoRetiro = Math.abs(res.neto) * val;
                     const confirmacion = confirm(`⚠️ CONFIRMAR RETIRO ⚠️\n\n` +
                                                  `Se retirarán: ${res.neto} unidades de ${formatoMoneda(val)}\n` +
                                                  `Total a retirar: ${formatoMoneda(montoRetiro)}\n\n` +
                                                  `¿Proceder con el retiro?`);
-                    if (!confirmacion) return; // Si cancela, no hace nada
+                    if (!confirmacion) return; 
                 }
             }
-            // -------------------------------------
 
             saveState();
 
@@ -583,33 +570,32 @@
             const val = denomEditando;
             const fNueva = document.getElementById('formula-edit-input').value;
             const fVieja = movimientoDisplay[val] || "";
-            
             const resNueva = evalMathAdvanced(fNueva, val);
             const resVieja = evalMathAdvanced(fVieja, val);
 
             saveState();
-
             totalRetirado -= resVieja.retirosMonetarios;
             totalRetirado += resNueva.retirosMonetarios;
-            
             if(totalRetirado < 0) totalRetirado = 0;
-
             conteoActual[val] = resNueva.neto;
             movimientoDisplay[val] = fNueva;
-
             generarCampos(); cerrarModalEdicionDetalle();
         }
 
-        // --- GUARDAR / ARCHIVAR ---
         async function guardarEnNube() {
             if(!confirm("☁️ ¿Subir arqueo y reiniciar?")) return;
             showLoader("Guardando...");
-            const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
-            const totalCaja = calcularTotalGeneral();
+            // CORRECCIÓN DECIMALES: Redondear antes de enviar
+            const espVal = Math.round(parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, ''))) || 0;
+            const totalCaja = Math.round(calcularTotalGeneral());
             const payload = { 
-                conteoActual, totalRetirado, movimientoDisplay, 
-                totalContado: totalCaja, totalEsperado: espVal, 
-                totalAnticiposNomina: totalAnticiposNube, diferencia: (totalCaja + totalAnticiposNube) - espVal,
+                conteoActual, 
+                totalRetirado: Math.round(totalRetirado), 
+                movimientoDisplay, 
+                totalContado: totalCaja, 
+                totalEsperado: espVal, 
+                totalAnticiposNomina: Math.round(totalAnticiposNube), 
+                diferencia: Math.round((totalCaja + totalAnticiposNube) - espVal),
                 divisorPlanta: document.getElementById('divisor-planta').value,
                 divisorPartTime: document.getElementById('divisor-part-time').value
             };
@@ -623,12 +609,17 @@
         async function archivarEnNube() {
             if(!confirm("🚨 ¿ARCHIVAR FINAL?")) return;
             showLoader("Archivando...");
-            const totalCaja = calcularTotalGeneral();
-            const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
+            const totalCaja = Math.round(calcularTotalGeneral());
+            const espVal = Math.round(parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, ''))) || 0;
             const payload = { 
-                action: 'archive', conteoActual, totalRetirado, movimientoDisplay, 
-                totalContado: totalCaja, totalEsperado: espVal, 
-                totalAnticiposNomina: totalAnticiposNube, diferencia: (totalCaja + totalAnticiposNube) - espVal,
+                action: 'archive', 
+                conteoActual, 
+                totalRetirado: Math.round(totalRetirado), 
+                movimientoDisplay, 
+                totalContado: totalCaja, 
+                totalEsperado: espVal, 
+                totalAnticiposNomina: Math.round(totalAnticiposNube), 
+                diferencia: Math.round((totalCaja + totalAnticiposNube) - espVal),
                 divisorPlanta: document.getElementById('divisor-planta').value,
                 divisorPartTime: document.getElementById('divisor-part-time').value
             };
@@ -638,22 +629,34 @@
             } catch (e) { alert("Error."); } finally { hideLoader(); }
         }
 
+        // CORRECCIÓN DECIMALES EN CÁLCULO DE DIFERENCIA
         function realizarArqueo() {
-            const total = calcularTotalGeneral();
+            const total = Math.round(calcularTotalGeneral());
             if(totalContadoFinalSpan) totalContadoFinalSpan.textContent = formatoMoneda(total);
             if(totalRetirosFinalSpan) totalRetirosFinalSpan.textContent = formatoMoneda(totalRetirado);
-            const espVal = parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, '')) || 0;
-            const dif = (total + totalAnticiposNube) - espVal;
-            if(diferenciaSpan) { diferenciaSpan.textContent = formatoMoneda(dif); diferenciaSpan.style.color = dif === 0 ? 'var(--success)' : (dif > 0 ? 'var(--warning)' : 'var(--danger)'); }
-            if(mensajeArqueoP) { mensajeArqueoP.className = 'mensaje ' + (dif === 0 ? 'cuadrado' : (dif > 0 ? 'sobrante' : 'faltante')); mensajeArqueoP.textContent = dif === 0 ? "CUADRADO 🎉" : (dif > 0 ? "SOBRA ⚠️" : "FALTA 🚨"); }
+            
+            const espVal = Math.round(parseInt(esperadoDisplay.textContent.replace(/[^0-9-]/g, ''))) || 0;
+            
+            // CORRECCIÓN: La diferencia se calcula con valores redondeados a entero
+            const dif = Math.round((total + totalAnticiposNube) - espVal);
+
+            if(diferenciaSpan) { 
+                diferenciaSpan.textContent = formatoMoneda(dif); 
+                diferenciaSpan.style.color = dif === 0 ? 'var(--success)' : (dif > 0 ? 'var(--warning)' : 'var(--danger)'); 
+            }
+            if(mensajeArqueoP) { 
+                mensajeArqueoP.className = 'mensaje ' + (dif === 0 ? 'cuadrado' : (dif > 0 ? 'sobrante' : 'faltante')); 
+                mensajeArqueoP.textContent = dif === 0 ? "CUADRADO 🎉" : (dif > 0 ? "SOBRA ⚠️" : "FALTA 🚨"); 
+            }
+            
             let h = '<table><thead><tr><th>Denom.</th><th>Cant.</th><th>Subtotal</th></tr></thead><tbody>';
-            let any = false; DENOMINACIONES.forEach(v => { if(conteoActual[v] > 0) { any = true; h += `<tr><td>${formatoMoneda(v)}</td><td>${conteoActual[v]}</td><td>${formatoMoneda(v*conteoActual[v])}</td></tr>`; } });
+            let any = false; 
+            DENOMINACIONES.forEach(v => { if(conteoActual[v] > 0) { any = true; h += `<tr><td>${formatoMoneda(v)}</td><td>${conteoActual[v]}</td><td>${formatoMoneda(v*conteoActual[v])}</td></tr>`; } });
             if(desgloseContadoDiv) desgloseContadoDiv.innerHTML = any ? h + '</tbody></table>' : '<p class="text-muted text-center">Sin ingresos.</p>';
         }
 
         function calcularTotalGeneral() { let t = 0; DENOMINACIONES.forEach(v => t += v * (conteoActual[v] || 0)); return t; }
 
-        // --- HISTORIAL SERVIDOR (Lógica Original de Puntos) ---
         async function fetchHistorialDetallado(isModal) {
             if (isModal) historyContainer.innerHTML = '<p class="text-center text-muted">Cargando...</p>';
             try {
@@ -680,22 +683,24 @@
                     const item = grouped[d];
                     if (divFilter && item.div.toFixed(2) !== divFilter) return;
                     if (selectedDates.size > 0 && !selectedDates.has(d)) return;
-                    const pts = Math.round(item.total / item.div); 
-                    totalPts += pts;
-                    html += `<tr><td>${d}</td><td class="text-success font-bold">${pts.toLocaleString()}</td><td>${formatoMoneda(item.total)}</td></tr>`;
+                    
+                    // CORRECCIÓN CLAVE: Acumulamos el decimal de manera exacta, y lo redondeamos solo para pintar.
+                    const ptsExacto = item.total / item.div; 
+                    totalPts += ptsExacto;
+                    
+                    html += `<tr><td>${d}</td><td class="text-success font-bold">${Math.round(ptsExacto).toLocaleString()}</td><td>${formatoMoneda(item.total)}</td></tr>`;
                 });
                 
                 if(isModal) {
                     historyContainer.innerHTML = html + '</tbody></table>';
-                    historySummaryDiv.innerHTML = `<div style="text-align:center;"><strong>📊 TOTAL PUNTOS: ${totalPts.toLocaleString()}</strong></div>`;
+                    historySummaryDiv.innerHTML = `<div style="text-align:center;"><strong>📊 TOTAL PUNTOS: ${Math.round(totalPts).toLocaleString()}</strong></div>`;
                 } else {
-                    sumaTotalPuntosHistorialSpan.textContent = totalPts.toLocaleString();
-                    divisionResultSpan.textContent = totalPts.toLocaleString();
+                    sumaTotalPuntosHistorialSpan.textContent = Math.round(totalPts).toLocaleString();
+                    divisionResultSpan.textContent = Math.round(totalPts).toLocaleString();
                 }
             } catch (e) { if(isModal) historyContainer.innerHTML = 'Error.'; }
         }
 
-        // --- STATS (Lógica Original Completa con Gráfico) ---
         function renderStats() {
             const container = document.getElementById('stats-content'); if(!globalDesgloseEsperado.length) { container.innerHTML = "No hay datos."; return; }
             let total = 0; globalDesgloseEsperado.forEach(i => total += i.monto);
@@ -712,7 +717,6 @@
             container.innerHTML = h;
         }
 
-        // --- CALENDARIO (Lógica Original Completa) ---
         function renderCustomCalendar() {
             const y = calendarDate.getFullYear(), m = calendarDate.getMonth();
             const names = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -733,7 +737,6 @@
         function nextMonth() { calendarDate.setMonth(calendarDate.getMonth()+1); renderCustomCalendar(); }
         function clearCalendar() { selectedDates.clear(); renderCustomCalendar(); fetchHistorialDetallado(true); }
 
-        // --- MODALES ---
         function abrirModalConteo() { generarCampos(); document.getElementById('modalConteo').style.display='block'; }
         function cerrarModalConteo() { document.getElementById('modalConteo').style.display='none'; }
         function openHistoryModal() { document.getElementById('historyModal').style.display='block'; renderCustomCalendar(); fetchHistorialDetallado(true); }
